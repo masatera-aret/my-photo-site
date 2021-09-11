@@ -1,16 +1,20 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-height: 60px;
+  --footer-height: 50px;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.t-def-header {
+  @apply h-[var(--header-height)];
 }
 
-* {
-  box-sizing: border-box;
+.t-def-footer {
+  @apply h-[var(--footer-height)];
+}
+
+.t-def-main {
+  @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))];
 }
