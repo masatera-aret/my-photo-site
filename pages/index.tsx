@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import DefLayout from "../layouts/layout";
 import Test from "../components/TestComponent";
+import PhotosList from "../components/PhotosList";
 
 export const getStaticProps = () => ({
   props: {
@@ -9,6 +10,9 @@ export const getStaticProps = () => ({
 });
 
 export default function Home() {
+  const [test, setTest]: any = useState(window);
+
+  useEffect(() => {}, []);
   return (
     <>
       <Head>
@@ -16,6 +20,20 @@ export default function Home() {
       </Head>
       <div className={`bg-blue-300`}>test</div>
       <Test />
+      <button
+        onClick={() => setTest("チェンジ")}
+        className={`text-white bg-blue-500 hover:bg-blue-300`}
+      >
+        てすと
+      </button>
+      <PhotosList />
+      <div>
+        <ul>
+          <li>なんかおかしい</li>
+          <li>なんかおかしい</li>
+          <li>なんかおかしい</li>
+        </ul>
+      </div>
     </>
   );
 }
