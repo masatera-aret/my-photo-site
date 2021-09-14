@@ -1,8 +1,11 @@
+import React, { FC } from "react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import Egypt1 from "../public/Egypt/_MG_5531.jpg";
 import Egypt2 from "../public/_MG_1914.jpg";
 import Egypt3 from "../public/Egypt/_MG_5721.jpg";
+import Photo1 from "../public/Egypt/_MG_6324.jpg";
 
 type PhotoList = {
   id: number;
@@ -10,73 +13,72 @@ type PhotoList = {
   alt: string;
 };
 
-const PhotosList = () => {
-  const photo_lists: PhotoList[] = [
+const PhotosList: FC = () => {
+  const photo_list: PhotoList[] = [
     { id: 1, src: Egypt1, alt: "エジプトの写真" },
     { id: 2, src: Egypt2, alt: "モロッコの写真" },
     { id: 3, src: Egypt3, alt: "モロッコの写真" },
+    { id: 4, src: Photo1, alt: "テスト" },
   ];
-
+  const nodeRef = React.useRef(null);
   const break_point = 650;
+  const photos_length = photo_list.length;
 
-  const [width, setWidth] = useState(document.documentElement.clientWidth);
-  const [photo_id, setPhoto_id] = useState(1);
+  const [viewport_width, setViewportWidth] = useState(
+    document.documentElement.clientWidth
+  );
+  const [current_photo_id, setCurrentPhotoId] = useState<number>();
 
-  const click = () => {
-    const leng = photo_lists.length;
-    if (leng <= photo_id) return setPhoto_id(1);
-    setPhoto_id(photo_id + 1);
+  const getInitialPhotoId = (photos_length: number): void => {
+    const min = 1;
+    const max = photos_length;
+    const photo_id = Math.floor(Math.random() * (max + 1 - min)) + min;
+    setCurrentPhotoId(photo_id);
+  };
+
+  const wait = (ms: number): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  };
+
+  const execPhotoSlider = async (ms: number): Promise<void> => {
+    await wait(ms);
+    if (photos_length <= current_photo_id) return setCurrentPhotoId(1);
+    setCurrentPhotoId(current_photo_id + 1);
   };
 
   useEffect(() => {
     window.addEventListener("resize", () =>
-      setWidth(document.documentElement.clientWidth)
+      setViewportWidth(document.documentElement.clientWidth)
     );
+    getInitialPhotoId(photos_length);
   }, []);
 
   useEffect(() => {
-    // setInterval(click, 5000);
-  });
+    execPhotoSlider(6000);
+  }, [current_photo_id]);
 
-  const PhotoListsRender = photo_lists.map((photo) => (
-    <div key={photo.id} className={`px-7 pt-7`}>
-      <div className={`w-full h-auto t-box relative bg-blue-300`}>
-        <Image
-          layout="fill"
-          objectFit="cover"
-          src={photo.src}
-          alt={photo.alt}
-        />
-      </div>
-    </div>
-  ));
-
-  const TestContent = photo_lists.map((photo) => (
-    <div
+  const PhotoListsRender: JSX.Element[] = photo_list.map((photo) => (
+    <CSSTransition
+      unmountOnExit
+      appear
       key={photo.id}
-      className={`absolute top-0 w-full h-full max-w-[700px] px-7 pt-7 duration-300 ${
-        photo_id === photo.id ? `opacity-100` : `opacity-0`
-      }`}
+      timeout={1000}
+      in={current_photo_id === photo.id}
+      classNames={`fade`}
+      className={`w-full h-auto t-box relative`}
     >
-      <div className={`w-full h-auto t-box relative bg-blue-300`}>
-        <Image
-          layout="fill"
-          objectFit="cover"
-          src={photo.src}
-          alt={photo.alt}
-        />
-      </div>
-    </div>
+      <Image layout="fill" objectFit="cover" src={photo.src} alt={photo.alt} />
+    </CSSTransition>
   ));
 
   return (
-    <>
-      {/* {width < break_point ? PhotoListsRender : <div>れすぽんしぶ</div>} */}
-      <div className={`relative pt-[100%]`}>{TestContent}</div>
-      <button className={`t-button`} onClick={click}>
-        くりっく
-      </button>
-    </>
+    viewport_width <= break_point && (
+      <div className={`p-7`}>
+        <div className={`relative pt-[100%]`}>{PhotoListsRender}</div>
+      </div>
+    )
   );
 };
 
