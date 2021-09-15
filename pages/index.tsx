@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Head from "next/head";
-import Test from "../components/TestComponent";
 import PhotosList from "../components/PhotosList";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const getStaticProps = () => ({
   props: {
@@ -9,31 +9,53 @@ export const getStaticProps = () => ({
   },
 });
 
-export default function Home() {
-  const [test, setTest]: any = useState(window);
+const break_point = 650;
 
-  useEffect(() => {}, []);
+const Home: FC = () => {
+  const [test, setTest]: any = useState("てすと");
+  const [viewport_width, setViewportWidth] = useState(
+    document.documentElement.clientWidth
+  );
+
+  const changeTest = () => {
+    if (test === "てすと") return setTest("テスト");
+    setTest("てすと");
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", () =>
+      setViewportWidth(document.documentElement.clientWidth)
+    );
+  }, []);
+
   return (
     <>
       <Head>
         <title>タイトルです</title>
       </Head>
       <div className={`bg-blue-300`}>test</div>
-      <Test />
       <button
-        onClick={() => setTest("チェンジ")}
+        onClick={changeTest}
         className={`text-white bg-blue-500 hover:bg-blue-300`}
       >
-        てすと
+        {test}
       </button>
-      <PhotosList />
+      {viewport_width <= break_point && <PhotosList />}
       <div>
         <ul>
-          <li>なんかおかしい</li>
+          <motion.li
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            {test}
+          </motion.li>
           <li>なんかおかしい</li>
           <li>なんかおかしい</li>
         </ul>
       </div>
     </>
   );
-}
+};
+
+export default Home;

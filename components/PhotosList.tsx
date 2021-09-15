@@ -1,7 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import Link from "next/link";
+import { useEffect, useState, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+//写真
 import Egypt1 from "../public/Egypt/_MG_5531.jpg";
 import Egypt2 from "../public/_MG_1914.jpg";
 import Egypt3 from "../public/Egypt/_MG_5721.jpg";
@@ -13,20 +16,21 @@ type PhotoList = {
   alt: string;
 };
 
-const PhotosList: FC = () => {
-  const photo_list: PhotoList[] = [
-    { id: 1, src: Egypt1, alt: "エジプトの写真" },
-    { id: 2, src: Egypt2, alt: "モロッコの写真" },
-    { id: 3, src: Egypt3, alt: "モロッコの写真" },
-    { id: 4, src: Photo1, alt: "テスト" },
-  ];
-  const nodeRef = React.useRef(null);
-  const break_point = 650;
-  const photos_length = photo_list.length;
+const photo_list: PhotoList[] = [
+  { id: 1, src: Egypt1, alt: "エジプトの写真" },
+  { id: 2, src: Egypt2, alt: "モロッコの写真" },
+  { id: 3, src: Egypt3, alt: "モロッコの写真" },
+  { id: 4, src: Photo1, alt: "テスト" },
+];
+const photos_length = photo_list.length;
 
-  const [viewport_width, setViewportWidth] = useState(
-    document.documentElement.clientWidth
-  );
+const wait = (ms: number): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
+const PhotosList: FC = memo(() => {
   const [current_photo_id, setCurrentPhotoId] = useState<number>();
 
   const getInitialPhotoId = (photos_length: number): void => {
@@ -36,50 +40,68 @@ const PhotosList: FC = () => {
     setCurrentPhotoId(photo_id);
   };
 
-  const wait = (ms: number): Promise<void> => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  };
-
-  const execPhotoSlider = async (ms: number): Promise<void> => {
-    await wait(ms);
+  const execPhotoSlide = async (): Promise<void> => {
+    await wait(5000);
     if (photos_length <= current_photo_id) return setCurrentPhotoId(1);
     setCurrentPhotoId(current_photo_id + 1);
   };
 
   useEffect(() => {
-    window.addEventListener("resize", () =>
-      setViewportWidth(document.documentElement.clientWidth)
-    );
     getInitialPhotoId(photos_length);
   }, []);
 
   useEffect(() => {
-    execPhotoSlider(6000);
+    if (!current_photo_id) return;
+    let unmount = false;
+    execPhotoSlide();
+    return () => {
+      unmount = true;
+    };
   }, [current_photo_id]);
 
-  const PhotoListsRender: JSX.Element[] = photo_list.map((photo) => (
-    <CSSTransition
-      unmountOnExit
-      appear
-      key={photo.id}
-      timeout={1000}
-      in={current_photo_id === photo.id}
-      classNames={`fade`}
-      className={`w-full h-auto t-box relative`}
-    >
-      <Image layout="fill" objectFit="cover" src={photo.src} alt={photo.alt} />
-    </CSSTransition>
-  ));
+  const PhotoElement = ({ id, src, alt }: PhotoList): JSX.Element => (
+    <>
+      <motion.li
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+        className={`absolute top-0 left-0 w-full h-full`}
+      >
+        <Link href={`/testpage/${id}`}>
+          <a className={`block relative pt-[100%]`}>
+            <Image
+              className={`cursor-pointer`}
+              layout="fill"
+              objectFit="cover"
+              src={src}
+              alt={alt}
+            />
+          </a>
+        </Link>
+      </motion.li>
+    </>
+  );
 
   return (
-    viewport_width <= break_point && (
-      <div className={`p-7`}>
-        <div className={`relative pt-[100%]`}>{PhotoListsRender}</div>
-      </div>
-    )
+    <div className={`p-7`}>
+      <ul className={`relative pt-[100%]`}>
+        <AnimatePresence>
+          {photo_list.map(
+            (photo) =>
+              current_photo_id === photo.id && (
+                <PhotoElement
+                  key={photo.id}
+                  id={photo.id}
+                  src={photo.src}
+                  alt={photo.alt}
+                />
+              )
+          )}
+        </AnimatePresence>
+      </ul>
+    </div>
   );
-};
+});
 
 export default PhotosList;

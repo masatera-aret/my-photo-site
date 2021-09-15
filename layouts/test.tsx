@@ -1,4 +1,4 @@
-import DefHeader from "../components/header/def-header";
+import DefHeader from "../components/header/DefHeader";
 
 export default function TestLayout({ children }) {
   return (
