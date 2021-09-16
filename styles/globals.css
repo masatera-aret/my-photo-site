@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --header-height: 40px;
+  --header-height: 45px;
   --footer-height: 50px;
 }
 
@@ -16,5 +16,5 @@
 }
 
 .t-def-main {
-  @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))];
+  @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))] w-[90%] mx-auto;
 }

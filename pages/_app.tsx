@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 // import "tailwindcss/tailwind.css";
 import DefLayout from "../layouts/layout";
 import TestLayout from "../layouts/test";
+import { Provider } from "react-redux";
+import store from "../store/index";
 
 function MyApp({ Component, pageProps }) {
   const NoSSR = dynamic(() => import("../components/NoSSR"), {
@@ -12,18 +14,22 @@ function MyApp({ Component, pageProps }) {
     case "test": {
       return (
         <NoSSR>
-          <TestLayout>
-            <Component {...pageProps} />
-          </TestLayout>
+          <Provider store={store}>
+            <TestLayout>
+              <Component {...pageProps} />
+            </TestLayout>
+          </Provider>
         </NoSSR>
       );
     }
     default: {
       return (
         <NoSSR>
-          <DefLayout>
-            <Component {...pageProps} />
-          </DefLayout>
+          <Provider store={store}>
+            <DefLayout>
+              <Component {...pageProps} />
+            </DefLayout>
+          </Provider>
         </NoSSR>
       );
     }
