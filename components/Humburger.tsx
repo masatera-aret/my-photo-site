@@ -46,12 +46,15 @@ const Humburger = () => {
           }
           .v-hamburger span:nth-of-type(1) {
             top: 0;
+            width: 50%;
           }
           .v-hamburger.v-active span:nth-of-type(1) {
-            transform: translateY(7px) rotate(-45deg);
+            width: 100%;
+            transform: translateY(7px) rotate(45deg);
           }
 
           .v-hamburger span:nth-of-type(2) {
+            width: 70%;
             top: 7px;
             transition: all 0.25s;
             opacity: 1;
@@ -64,7 +67,7 @@ const Humburger = () => {
             bottom: 0;
           }
           .v-hamburger.v-active span:nth-of-type(3) {
-            transform: translateY(-7px) rotate(45deg);
+            transform: translateY(-7px) rotate(-45deg);
           }
         `}
       </style>

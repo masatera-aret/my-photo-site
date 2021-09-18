@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import Head from "next/head";
-import PhotosList from "../components/PhotosList";
+import TopPhotoViewer from "../components/TopPhotoViewer";
+import SiteDiscription from "../components/SiteDiscription";
+import Category from "../components/Category";
 import { AnimatePresence, motion } from "framer-motion";
 
 // export const getStaticProps = () => ({
@@ -34,16 +36,13 @@ const Home: FC = () => {
         <title>タイトルです</title>
       </Head>
       <section id={`top-view-photos`}>
-        {viewport_width <= break_point && <PhotosList />}
+        {viewport_width <= break_point && <TopPhotoViewer />}
       </section>
       <section id={`site-description`}>
-        <div className={`mt-4 p-2 border text-xs font-thin text-gray-500`}>
-          ただ写真を掲載しているサイトです <br />
-          良く旅行に行ったので、その時の写真が多いです <br />
-          写真を眺めてると撮りたくなります <br />
-          自分の写真を眺めてると得に撮りたくなります <br />
-          だから作ってみたサイトです
-        </div>
+        <SiteDiscription />
+      </section>
+      <section id={`photo-category`}>
+        <Category />
       </section>
       <button
         onClick={changeTest}

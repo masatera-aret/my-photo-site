@@ -7,6 +7,10 @@
   --footer-height: 50px;
 }
 
+body {
+  @apply font-serif overflow-y-scroll;
+}
+
 .t-def-header {
   @apply h-[var(--header-height)];
 }
