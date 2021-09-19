@@ -36,7 +36,11 @@ const Home: FC = () => {
         <title>タイトルです</title>
       </Head>
       <section id={`top-view-photos`}>
-        {viewport_width <= break_point && <TopPhotoViewer />}
+        {viewport_width <= break_point ? (
+          <TopPhotoViewer />
+        ) : (
+          <div className={`w-[300px] h-[300px] bg-gray-800`}>テスト用</div>
+        )}
       </section>
       <section id={`site-description`}>
         <SiteDiscription />

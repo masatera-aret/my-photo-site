@@ -9,28 +9,22 @@ import * as Photos from "../assets/ts/images";
 const PhotoImages = Photos.top_view_photos;
 const photos_length = PhotoImages.length;
 
-const wait = (ms: number): Promise<void> => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-};
-
-const PhotosList: FC = memo(() => {
-  console.log("レンダリング");
+const PhotosList: FC = () => {
+  // console.log("レンダリング");
   const [current_photo_index, setCurrentPhotoIndex] = useState<number>();
 
-  const getInitialPhotoIndex = (photos_length: number): void => {
+  function getInitialPhotoIndex(photos_length: number): void {
     const min = 0;
     const max = photos_length - 1;
     const photo_index = Math.floor(Math.random() * (max + 1 - min)) + min;
     setCurrentPhotoIndex(photo_index);
-  };
+  }
 
-  const execPhotoSlide = (): void => {
+  function execPhotoSlide(): void {
     if (photos_length - 1 <= current_photo_index)
       return setCurrentPhotoIndex(0);
     setCurrentPhotoIndex((state) => state + 1);
-  };
+  }
 
   useEffect(() => {
     getInitialPhotoIndex(photos_length);
@@ -48,7 +42,7 @@ const PhotosList: FC = memo(() => {
     };
   }, [current_photo_index]);
 
-  const PhotoElement: FC<Types.PhotoList> = ({ id, src, alt }) => (
+  const PhotoElement: FC<Types.PhotoList> = ({ id, src, alt, label }) => (
     <>
       <motion.li
         initial={{ opacity: 0 }}
@@ -57,7 +51,7 @@ const PhotosList: FC = memo(() => {
         transition={{ duration: 1 }}
         className={`absolute top-0 left-0 w-full h-full`}
       >
-        <Link href={`/photos/${id}`}>
+        <Link href={`/photo/${label.toLowerCase()}?photo_id=${id}`}>
           <a className={`block relative pt-[100%]`}>
             <Image
               className={`cursor-pointer`}
@@ -103,6 +97,6 @@ const PhotosList: FC = memo(() => {
       </ul>
     </>
   );
-});
+};
 
-export default PhotosList;
+export default memo(PhotosList);

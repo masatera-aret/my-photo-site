@@ -2,9 +2,7 @@ import React, { FC } from "react";
 
 const SiteDiscription: FC = () => {
   return (
-    <div
-      className={`mt-4 px-2 pt-2 pb-7 text-xs leading-6 font-thin text-gray-500`}
-    >
+    <div className={`px-2 py-5 text-xs leading-6 font-thin text-gray-500`}>
       <h2 className={`text-xl font-bold mb-5`}>良く写真を撮っていた</h2>
       ただ写真を掲載しているWebサイトです <br />
       写真が好きで血迷って4×5カメラを買った事もあります <br />
