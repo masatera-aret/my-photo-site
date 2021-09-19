@@ -10,6 +10,7 @@ const all_photos = Photos.all_photos;
 const PhotoLabel: FC = () => {
   const route = useRouter();
   const { photo_label, photo_id, photo_number } = route.query;
+  const inner_photo_number = Number(photo_number) - 1;
   const [filtered_photo, setFilteredPhotos] = useState<Types.PhotoList[]>();
   const [photo, setPhoto] = useState<Types.PhotoList>();
 
@@ -33,34 +34,35 @@ const PhotoLabel: FC = () => {
   }
 
   function validatePhotoId(id: number): void {
-    console.log("validatePhotoId");
-    if (!isValidPhotoId(id)) route.push(`/photo/${photo_label}?photo_number=0`);
+    if (!isValidPhotoId(id)) route.push(`/photo/${photo_label}?photo_number=1`);
     setPhoto(fetchPhotoById(id));
   }
 
   function validatePhotoIndex(index: number): void {
-    console.log("validatePhotoIndex");
-    if (!isValidPhotoIndex(index)) {
-      route.push(`/photo/${photo_label}?photo_number=0`);
+    const inner_index = index - 1;
+    if (!isValidPhotoIndex(inner_index)) {
+      route.push(`/photo/${photo_label}?photo_number=1`);
     }
-    setPhoto(filtered_photo[index]);
+    setPhoto(filtered_photo[inner_index]);
   }
 
   function prevPhoto() {
-    const index = fetchIndexByPhotoId(photo.id);
-    const last_photo = filtered_photo.length - 1;
+    let index = fetchIndexByPhotoId(photo.id);
+    index += 1;
+    const last_photo = filtered_photo.length;
     const prev_photo = index - 1;
-    if (index === 0) {
+    if (index === 1) {
       return route.push(`/photo/${photo_label}?photo_number=${last_photo}`);
     }
     route.push(`/photo/${photo_label}?photo_number=${prev_photo}`);
   }
 
   function nextPhoto() {
-    const index = fetchIndexByPhotoId(photo.id);
-    const last_photo = filtered_photo.length - 1;
+    let index = fetchIndexByPhotoId(photo.id);
+    index += 1;
+    const last_photo = filtered_photo.length;
     if (index === last_photo)
-      route.push(`/photo/${photo_label}?photo_number=0`);
+      route.push(`/photo/${photo_label}?photo_number=1`);
     route.push(`/photo/${photo_label}?photo_number=${index + 1}`);
   }
 
@@ -79,10 +81,14 @@ const PhotoLabel: FC = () => {
     if (!photo_id && !photo_number) return setPhoto(filtered_photo[0]);
   }, [filtered_photo]);
 
+  // useEffect(() => {
+  //   console.log(`テスト`, NaN + 1);
+  // });
+
   return (
     <>
-      <h1>{photo_number}</h1>
-      {photo && (
+      {/* <h1>{photo_number}</h1> */}
+      {photo ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -103,6 +109,8 @@ const PhotoLabel: FC = () => {
             height={photo.src.height}
           />
         </motion.div>
+      ) : (
+        <div>読込中...</div>
       )}
     </>
   );
