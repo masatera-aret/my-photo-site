@@ -9,22 +9,18 @@ type Props = {
 
 const DefHeader: FC = () => {
   return (
-    <>
-      <header
-        className={"t-def-header relative flex items-center w-[90%] mx-auto"}
-      >
-        <Humburger />
-        <div className={`absolute right-0`}>
-          <Link href={`/`}>
-            <a
-              className={`n-title-font text-green-600 text-lg tracking-wider font-extralight`}
-            >
-              Journeys photo{" "}
-            </a>
-          </Link>
-        </div>
-      </header>
-    </>
+    <div className={`flex relative items-center w-[90%] mx-auto`}>
+      <Humburger />
+      <div className={`absolute right-0`}>
+        <Link href={`/`}>
+          <a
+            className={`n-title-font text-green-600 text-lg tracking-wider font-extralight`}
+          >
+            Journeys photo{" "}
+          </a>
+        </Link>
+      </div>
+    </div>
   );
 };
 

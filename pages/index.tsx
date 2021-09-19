@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 //   },
 // });
 
-const break_point = 650;
+const break_point = 1250;
 
 const Home: FC = () => {
   const [test, setTest]: any = useState("てすと");

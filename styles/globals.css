@@ -20,5 +20,5 @@ body {
 }
 
 .t-def-main {
-  @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))] w-[90%] mx-auto;
+  @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))] w-[90%] mx-auto mt-[var(--header-height)];
 }
