@@ -17,13 +17,13 @@
 
 # firebase conf
 /firebase
+firebase.json
 firebase-debug.log
 firestore.rules
 firestore.indexes.json
 
 # images
-
-/public/images
+# /public/images
 
 # misc
 .DS_Store
