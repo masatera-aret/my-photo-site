@@ -6,18 +6,25 @@ import * as Photos from "../assets/ts/images";
 
 const PhotoImages = Photos.category;
 
-const Horizon = ({ id, src, label }: Partial<Types.PhotoList>): JSX.Element => (
-  <>
-    <li key={id} className={`w-[50%] mb-5 inline-block`}>
-      <Link href={`/photo/${label.toLowerCase()}`}>
-        <a className={`block relative w-[75%] pt-[75%] mx-auto opacity-80`}>
-          <Image layout="fill" objectFit="cover" src={src} />
-        </a>
-      </Link>
-      <span className={`text-gray-500`}>{label}</span>
-    </li>
-  </>
-);
+const Horizon = ({
+  id,
+  src,
+  label,
+  alt,
+}: Partial<Types.PhotoList>): JSX.Element => {
+  return (
+    <>
+      <li key={id} className={`w-[50%] mb-5 inline-block`}>
+        <Link href={`/photo/${label.toLowerCase()}`}>
+          <a className={`block relative w-[75%] pt-[75%] mx-auto opacity-80`}>
+            <Image layout="fill" objectFit="cover" src={src} alt={alt} />
+          </a>
+        </Link>
+        <span className={`text-gray-500`}>{label}</span>
+      </li>
+    </>
+  );
+};
 
 const Category = () => {
   // console.log("Category");
@@ -29,6 +36,7 @@ const Category = () => {
             key={photo.id}
             id={photo.id}
             src={photo.src}
+            alt={photo.alt}
             label={photo.label}
           />
         ))}

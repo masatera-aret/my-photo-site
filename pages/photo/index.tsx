@@ -5,7 +5,7 @@ const Photo: FC = () => {
   const route = useRouter();
   useEffect(() => {
     route.replace(`/`);
-  }, []);
+  }, [route]);
   return <></>;
 };
 

@@ -51,7 +51,7 @@ const PhotosList: FC = () => {
         transition={{ duration: 1 }}
         className={`absolute top-0 left-0 w-full h-full`}
       >
-        <Link href={`/photo/${label.toLowerCase()}?photo_id=${id}`}>
+        <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a className={`block relative pt-[100%]`}>
             <Image
               className={`cursor-pointer`}

@@ -35,6 +35,17 @@ import Jordan5 from "../../public/Jordan/_MG_7042.jpg";
 import Jordan6 from "../../public/Jordan/_MG_7082.jpg";
 import Jordan7 from "../../public/Jordan/_MG_7159.jpg";
 
+import Morocco1 from "../../public/Morocco/_MG_1862.jpg";
+import Morocco2 from "../../public/Morocco/_MG_1864.jpg";
+import Morocco3 from "../../public/Morocco/_MG_1914.jpg";
+import Morocco4 from "../../public/Morocco/_MG_1932.jpg";
+import Morocco5 from "../../public/Morocco/_MG_1938.jpg";
+import Morocco6 from "../../public/Morocco/_MG_1966.jpg";
+import Morocco7 from "../../public/Morocco/_MG_2096.jpg";
+import Morocco8 from "../../public/Morocco/_MG_2292.jpg";
+import Morocco9 from "../../public/Morocco/_MG_2374.jpg";
+import Morocco10 from "../../public/Morocco/_MG_2472.jpg";
+import Morocco11 from "../../public/Morocco/_MG_2612.jpg";
 
 export const all_photos: Types.PhotoList[] = [
   //エジプト
@@ -72,14 +83,25 @@ export const all_photos: Types.PhotoList[] = [
   { id: 205, src: Jordan5, label: "Jordan", alt: "ヨルダンの写真" },
   { id: 206, src: Jordan6, label: "Jordan", alt: "ヨルダンの写真" },
   { id: 207, src: Jordan7, label: "Jordan", alt: "ヨルダンの写真" },
-
+  //モロッコ
+  { id: 301, src: Morocco1, label: "Morocco", alt: "モロッコの写真" },
+  { id: 302, src: Morocco2, label: "Morocco", alt: "モロッコの写真" },
+  { id: 303, src: Morocco3, label: "Morocco", alt: "モロッコの写真" },
+  { id: 304, src: Morocco4, label: "Morocco", alt: "モロッコの写真" },
+  { id: 305, src: Morocco5, label: "Morocco", alt: "モロッコの写真" },
+  { id: 306, src: Morocco6, label: "Morocco", alt: "モロッコの写真" },
+  { id: 307, src: Morocco7, label: "Morocco", alt: "モロッコの写真" },
+  { id: 308, src: Morocco8, label: "Morocco", alt: "モロッコの写真" },
+  { id: 309, src: Morocco9, label: "Morocco", alt: "モロッコの写真" },
+  { id: 310, src: Morocco10, label: "Morocco", alt: "モロッコの写真" },
+  { id: 311, src: Morocco11, label: "Morocco", alt: "モロッコの写真" },
 
 ]
 
 export const top_view_photos: Types.PhotoList[] = [
   { id: 1, src: Egypt1, label: "Egypt", alt: "エジプトの写真" },
   { id: 206, src: Jordan6, label: "Jordan", alt: "ヨルダンの写真" },
-  { id: 102, src: Turkey2, label: "Turkey", alt: "トルコの写真" },
+  { id: 305, src: Morocco5, label: "Morocco", alt: "モロッコの写真" },
   { id: 103, src: Turkey3, label: "Turkey", alt: "トルコの写真" },
 ]
 
@@ -87,4 +109,5 @@ export const category: Types.PhotoList[] = [
   { id: 5, src: Egypt5, label: "Egypt", alt: "エジプトの写真" },
   { id: 109, src: Turkey9, label: "Turkey", alt: "トルコの写真" },
   { id: 207, src: Jordan7, label: "Jordan", alt: "ヨルダンの写真" },
+  { id: 304, src: Morocco4, label: "Morocco", alt: "モロッコの写真" },
 ]

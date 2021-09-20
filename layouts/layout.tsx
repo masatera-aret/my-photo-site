@@ -14,7 +14,7 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
       </Head>
       <header
         className={
-          "t-def-header fixed bg-white bg-opacity-90 flex justify-center top-0 left-0 w-full z-20"
+          "t-def-header fixed bg-white bg-opacity-90 flex justify-center top-0 left-0 w-full z-50"
         }
       >
         <DefHeader />
