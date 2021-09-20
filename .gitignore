@@ -17,6 +17,7 @@
 
 # firebase conf
 /firebase
+firebase.json
 firebase-debug.log
 firestore.rules
 firestore.indexes.json
