@@ -21,6 +21,10 @@ firebase-debug.log
 firestore.rules
 firestore.indexes.json
 
+# images
+
+/public/images
+
 # misc
 .DS_Store
 *.pem
