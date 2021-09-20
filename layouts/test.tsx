@@ -1,9 +1,11 @@
+import DefHeader from "../components/header/DefHeader";
+
 export default function TestLayout({ children }) {
   return (
     <>
-      <header>テストヘッダー</header>
-      <main>{children}</main>
-      <footer>テストフッター</footer>
+      <DefHeader />
+      <main className={`t-def-main`}>{children}</main>
+      <footer className={`t-def-footer bg-pink-300`}>テストフッター</footer>
     </>
   );
 }

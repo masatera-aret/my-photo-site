@@ -1,21 +1,42 @@
+import React, { FC, useState, useEffect } from "react";
 import Head from "next/head";
-import DefLayout from "../layouts/layout";
-import Test from "../components/TestComponent";
+import TopPhotoViewer from "../components/TopPhotoViewer";
+import SiteDiscription from "../components/SiteDiscription";
+import Category from "../components/Category";
 
-export const getStaticProps = () => ({
-  props: {
-    layout: "test",
-  },
-});
+const break_point = 1250;
 
-export default function Home() {
+const Home: FC = () => {
+  const [viewport_width, setViewportWidth] = useState(
+    document.documentElement.clientWidth
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", () =>
+      setViewportWidth(document.documentElement.clientWidth)
+    );
+  }, []);
+
   return (
     <>
       <Head>
         <title>タイトルです</title>
       </Head>
-      <div className={`bg-blue-300`}>test</div>
-      <Test />
+      <section id={`top-view-photos`}>
+        {viewport_width <= break_point ? (
+          <TopPhotoViewer />
+        ) : (
+          <div className={`w-[300px] h-[300px] bg-gray-800`}>テスト用</div>
+        )}
+      </section>
+      <section id={`site-description`}>
+        <SiteDiscription />
+      </section>
+      <section id={`photo-category`}>
+        <Category />
+      </section>
     </>
   );
-}
+};
+
+export default Home;

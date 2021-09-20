@@ -15,6 +15,12 @@
 # production
 /build
 
+# firebase conf
+/firebase
+firebase-debug.log
+firestore.rules
+firestore.indexes.json
+
 # misc
 .DS_Store
 *.pem
