@@ -10,7 +10,6 @@ const PhotoImages = Photos.top_view_photos;
 const photos_length = PhotoImages.length;
 
 const PhotosList: FC = () => {
-  // console.log("レンダリング");
   const [current_photo_index, setCurrentPhotoIndex] = useState<number>();
 
   function getInitialPhotoIndex(photos_length: number): void {

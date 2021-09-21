@@ -58,11 +58,9 @@ const PhotoLabel: FC = () => {
     const prev_photo = index - 1;
 
     if (index === 1) {
-      // setCurrentPhoto(null);
       route.push(`/photo/${photo_label}?num=${last_photo}`);
       return;
     }
-    // setCurrentPhoto(null);
     route.push(`/photo/${photo_label}?num=${prev_photo}`);
   }
 
@@ -75,11 +73,9 @@ const PhotoLabel: FC = () => {
     const next_photo = index + 1;
 
     if (index === last_photo) {
-      // setCurrentPhoto(null);
       route.push(`/photo/${photo_label}?num=1`);
       return;
     }
-    // setCurrentPhoto(null);
     route.push(`/photo/${photo_label}?num=${next_photo}`);
   }
 

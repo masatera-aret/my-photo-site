@@ -7,7 +7,6 @@ import Category from "../components/Category";
 const break_point = 1250;
 
 const Home: FC = () => {
-  // console.log("Home");
   const [viewport_width, setViewportWidth] = useState<number>();
 
   useEffect(() => {
