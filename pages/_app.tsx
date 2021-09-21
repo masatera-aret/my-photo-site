@@ -13,24 +13,24 @@ function MyApp({ Component, pageProps }) {
   switch (pageProps.layout) {
     case "test": {
       return (
-        <NoSSR>
+        // <NoSSR>
           <Provider store={store}>
             <TestLayout>
               <Component {...pageProps} />
             </TestLayout>
           </Provider>
-        </NoSSR>
+        // </NoSSR>
       );
     }
     default: {
       return (
-        <NoSSR>
+        // <NoSSR>
           <Provider store={store}>
             <DefLayout>
               <Component {...pageProps} />
             </DefLayout>
           </Provider>
-        </NoSSR>
+        // </NoSSR>
       );
     }
   }

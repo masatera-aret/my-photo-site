@@ -17,6 +17,7 @@
 
 # firebase conf
 /firebase
+.firebaserc
 firebase.json
 firebase-debug.log
 firestore.rules

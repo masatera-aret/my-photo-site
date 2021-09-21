@@ -7,11 +7,11 @@ import Category from "../components/Category";
 const break_point = 1250;
 
 const Home: FC = () => {
-  const [viewport_width, setViewportWidth] = useState(
-    document.documentElement.clientWidth
-  );
+  // console.log("Home");
+  const [viewport_width, setViewportWidth] = useState<number>();
 
   useEffect(() => {
+    setViewportWidth(document.documentElement.clientWidth);
     window.addEventListener("resize", () =>
       setViewportWidth(document.documentElement.clientWidth)
     );
