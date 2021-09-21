@@ -16,7 +16,7 @@ const Horizon = ({
     <>
       <li key={id} className={`w-1/2 mb-5 inline-block`}>
         <Link href={`/photo/${label.toLowerCase()}`}>
-          <a className={`block relative w-[75%] pt-[75%] mx-auto opacity-80`}>
+          <a className={`block relative w-[75%] pt-[75%] mx-auto`}>
             <Image layout="fill" objectFit="cover" src={src} alt={alt} />
           </a>
         </Link>
