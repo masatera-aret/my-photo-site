@@ -11,9 +11,10 @@ const PhotoLabel: FC = () => {
   const route = useRouter();
   const { photo_label, id, num } = route.query;
   const [filtered_photo, setFilteredPhotos] = useState<Types.PhotoList[]>();
-  const [photo, setPhoto] = useState<Types.PhotoList>();
+  const [current_photo, setCurrentPhoto] = useState<Types.PhotoList>();
 
   function fetchPhotoById(id: number): Types.PhotoList {
+    if (!filtered_photo) return;
     return filtered_photo.find((photo) => photo.id === id);
   }
 
@@ -23,18 +24,22 @@ const PhotoLabel: FC = () => {
 
   function isValidPhotoIndex(index: number): boolean {
     if (Number.isNaN(index)) return false;
-    const lng = filtered_photo.length;
-    return 0 <= index && index < lng;
+    if (filtered_photo) {
+      const lng = filtered_photo.length;
+      return 0 <= index && index < lng;
+    }
+    return false;
   }
 
   function isValidPhotoId(id: number): boolean {
     if (Number.isNaN(id)) return false;
+
     return filtered_photo.some((photo) => photo.id === id);
   }
 
   function validatePhotoId(id: number): void {
     if (!isValidPhotoId(id)) route.push(`/photo/${photo_label}?num=1`);
-    setPhoto(fetchPhotoById(id));
+    setCurrentPhoto(fetchPhotoById(id));
   }
 
   function validatePhotoIndex(index: number): void {
@@ -43,32 +48,42 @@ const PhotoLabel: FC = () => {
       route.push(`/photo/${photo_label}?num=1`);
       return;
     }
-    setPhoto(filtered_photo[inner_index]);
+    setCurrentPhoto(filtered_photo[inner_index]);
   }
 
   function prevPhoto() {
-    let index = fetchIndexByPhotoId(photo.id);
+    let index = fetchIndexByPhotoId(current_photo.id);
     index += 1;
     const last_photo = filtered_photo.length;
     const prev_photo = index - 1;
+
     if (index === 1) {
+      // setCurrentPhoto(null);
       route.push(`/photo/${photo_label}?num=${last_photo}`);
       return;
     }
+    // setCurrentPhoto(null);
     route.push(`/photo/${photo_label}?num=${prev_photo}`);
   }
 
+  // 写真の右半分をクリックした際の関数。写真は filtered_photo のindex「num」で取得している。
+  // urlで ?num=0 となるのはきれいではないのでurlでの表示はindexの+1となっている。その為 index += 1 としている。
   function nextPhoto() {
-    let index = fetchIndexByPhotoId(photo.id);
+    let index = fetchIndexByPhotoId(current_photo.id);
     index += 1;
     const last_photo = filtered_photo.length;
+    const next_photo = index + 1;
+
     if (index === last_photo) {
+      // setCurrentPhoto(null);
       route.push(`/photo/${photo_label}?num=1`);
       return;
     }
-    route.push(`/photo/${photo_label}?num=${index + 1}`);
+    // setCurrentPhoto(null);
+    route.push(`/photo/${photo_label}?num=${next_photo}`);
   }
 
+  //route.query の photo_label でフィルターした写真を filtered_photo に更新
   useEffect(() => {
     if (!photo_label) return;
     const photos = all_photos.filter((photo) => {
@@ -77,13 +92,18 @@ const PhotoLabel: FC = () => {
     setFilteredPhotos(photos);
   }, [photo_label]);
 
+  // route.query で受け取る値で表示する写真を変える
   useEffect(() => {
+    if (!Object.keys(route.query).length) return;
     if (!filtered_photo) return;
-    if (!filtered_photo.length) route.replace(`/`);
+    if (!filtered_photo.length) {
+      route.push(`/`);
+      return;
+    }
+    if (!id && !num) return setCurrentPhoto(filtered_photo[0]);
     if (id) return validatePhotoId(Number(id));
     if (num) return validatePhotoIndex(Number(num));
-    if (!id && !num) return setPhoto(filtered_photo[0]);
-  }, [filtered_photo]);
+  }, [filtered_photo, id, num]);
 
   const LoadingModal = (): JSX.Element => (
     <AnimatePresence>
@@ -112,30 +132,35 @@ const PhotoLabel: FC = () => {
     </AnimatePresence>
   );
 
+  const ViewPhotoElment = ({ src, alt }): JSX.Element => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className={`relative`}
+    >
+      <span
+        className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
+        onClick={prevPhoto}
+      ></span>
+      <span
+        className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
+        onClick={nextPhoto}
+      ></span>
+      <Image src={src} alt={alt} width={src.width} height={src.height} />
+    </motion.div>
+  );
+
   return (
     <>
-      {photo ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className={`relative`}
-        >
-          <span
-            className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
-            onClick={prevPhoto}
-          ></span>
-          <span
-            className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
-            onClick={nextPhoto}
-          ></span>
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.src.width}
-            height={photo.src.height}
-          />
-        </motion.div>
+      {filtered_photo ? (
+        filtered_photo.map(
+          (el) =>
+            current_photo &&
+            current_photo.id === el.id && (
+              <ViewPhotoElment key={el.id} src={el.src} alt={el.alt} />
+            )
+        )
       ) : (
         <LoadingModal />
       )}

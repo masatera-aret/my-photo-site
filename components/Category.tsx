@@ -14,7 +14,7 @@ const Horizon = ({
 }: Partial<Types.PhotoList>): JSX.Element => {
   return (
     <>
-      <li key={id} className={`w-[50%] mb-5 inline-block`}>
+      <li key={id} className={`w-1/2 mb-5 inline-block`}>
         <Link href={`/photo/${label.toLowerCase()}`}>
           <a className={`block relative w-[75%] pt-[75%] mx-auto opacity-80`}>
             <Image layout="fill" objectFit="cover" src={src} alt={alt} />
