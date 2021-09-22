@@ -15,8 +15,8 @@ const MainModal = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className={`fixed t-main-modal overflow-hidden left-0 w-full bg-gray-300 bg-opacity-90 z-20`}
+      transition={{ duration: 0.3 }}
+      className={`fixed t-main-modal left-0 w-full bg-white z-20`}
     >
       <p>test</p>
     </motion.div>
@@ -33,9 +33,9 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
         <title>デフォルトレイアウト</title>
       </Head>
       <header
-        className={`t-def-header fixed ${
-          is_modal_active ? `bg-gray-300` : `bg-white`
-        } bg-opacity-90 flex justify-center top-0 left-0 w-full z-50 duration-[0.2s]`}
+        className={`t-def-header fixed bg-white ${
+          is_modal_active ? `bg-opacity-100` : `bg-opacity-90`
+        } flex justify-center top-0 left-0 w-full z-50 duration-300`}
       >
         <DefHeader />
       </header>
@@ -44,7 +44,7 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
         <AnimatePresence>{is_modal_active && <MainModal />}</AnimatePresence>
       </main>
       <footer className={`t-def-footer flex justify-center items-center`}>
-        <div>©Terashima</div>
+        <div className={`test`}>©Terashima</div>
       </footer>
     </>
   );

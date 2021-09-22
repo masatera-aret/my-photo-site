@@ -4,12 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      backgroundColor: theme => ({
-        ...theme('colors'),
-        'primary': '#ffffff',
-        'secondary': '#ffed4a',
-        'danger': '#e3342f',
-      }),
+      screens: {
+        't-photo-width': '550px'
+      },
     },
   },
   variants: {

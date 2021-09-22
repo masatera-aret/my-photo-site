@@ -9,7 +9,7 @@ import * as Photos from "../assets/ts/images";
 const PhotoImages = Photos.top_view_photos;
 const photos_length = PhotoImages.length;
 
-const PhotosList: FC = () => {
+const TopPhotoViewer: FC = () => {
   const [current_photo_index, setCurrentPhotoIndex] = useState<number>();
 
   function getInitialPhotoIndex(photos_length: number): void {
@@ -43,17 +43,17 @@ const PhotosList: FC = () => {
 
   const PhotoElement: FC<Types.PhotoList> = ({ id, src, alt, label }) => (
     <>
-      <motion.li
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
-        className={`absolute top-0 left-0 w-full h-full`}
+        className={`absolute top-0 left-0 w-full md:w-[500px]`}
       >
         <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a className={`block relative pt-[100%]`}>
             <Image
-              className={`cursor-pointer`}
+              className={`cursor-pointer pointer-events-none`}
               layout="fill"
               objectFit="cover"
               src={src}
@@ -61,13 +61,13 @@ const PhotosList: FC = () => {
             />
           </a>
         </Link>
-      </motion.li>
+      </motion.div>
     </>
   );
 
   return (
-    <>
-      <ul className={`relative pt-[100%]`}>
+    <div>
+      <div className={`relative pt-[100%] md:pt-0 md:w-[500px] md:h-[500px]`}>
         <AnimatePresence>
           {PhotoImages.map(
             (photo, index) =>
@@ -82,7 +82,7 @@ const PhotosList: FC = () => {
               )
           )}
         </AnimatePresence>
-      </ul>
+      </div>
       <ul className={`flex list-none mt-1 p-1`}>
         {PhotoImages.map((photo, index) => (
           <li
@@ -94,8 +94,8 @@ const PhotosList: FC = () => {
           ></li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 
-export default memo(PhotosList);
+export default memo(TopPhotoViewer);
