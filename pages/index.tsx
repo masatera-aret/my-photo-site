@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import TopPhotoViewer from "../components/TopPhotoViewer";

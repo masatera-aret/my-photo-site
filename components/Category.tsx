@@ -17,7 +17,6 @@ type ExpansionPhotoList = Types.PhotoList & {
 };
 
 const Category = () => {
-  console.log("Category");
   const el = useRef(null);
 
   const [has_break, setHasBreak] = useState(false);
@@ -26,7 +25,6 @@ const Category = () => {
   let el_top_y: number;
 
   useEffect(() => {
-    console.log("ここはどうなの");
     if (el.current === null) return;
 
     const el_top_Y = el.current.getBoundingClientRect().top;
@@ -34,7 +32,6 @@ const Category = () => {
   }, [el]);
 
   useEffect(() => {
-    console.log(has_break);
     if (has_break) {
       window.removeEventListener("scroll", getWindowBottomY);
       window.removeEventListener("resize", getWindowBottomY);
@@ -47,7 +44,6 @@ const Category = () => {
       el_top_y = el.current.getBoundingClientRect().top + scroll_y;
       window_bottom_y = scroll_y + window_height;
       if (el_top_y < window_bottom_y) {
-        console.log(el_top_y, window_bottom_y);
         setHasBreak(true);
       }
     }
