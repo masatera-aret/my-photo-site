@@ -1,39 +1,50 @@
 import React, { FC, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Head from "next/head";
 import TopPhotoViewer from "../components/TopPhotoViewer";
 import SiteDiscription from "../components/SiteDiscription";
 import Category from "../components/Category";
-
-const break_point = 1250;
+import MidCategory from "../components/MidCategory";
+import { StoreState } from "../store/index";
 
 const Home: FC = () => {
-  const [viewport_width, setViewportWidth] = useState<number>();
+  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
+  const [isViewPortMid, setIsViewPortMid] = useState<boolean>();
 
+  let width: number;
   useEffect(() => {
-    setViewportWidth(document.documentElement.clientWidth);
-    window.addEventListener("resize", () =>
-      setViewportWidth(document.documentElement.clientWidth)
-    );
+    function docWidth() {
+      width = document.documentElement.clientWidth;
+      let isMid: boolean = false;
+      if (768 < width) isMid = true;
+      setIsViewPortMid(isMid);
+      setIsViewPortMid((state) => {
+        return state;
+      });
+    }
+    docWidth();
+    window.addEventListener("resize", docWidth);
+
+    return () => {
+      window.removeEventListener("resize", docWidth);
+    };
   }, []);
 
   return (
     <>
       <Head>
         <title>タイトルです</title>
+        {isModalActive && <style>{`body {overflow-y: hidden}`}</style>}
       </Head>
-      <section id={`top-view-photos`}>
-        {viewport_width <= break_point ? (
-          <TopPhotoViewer />
-        ) : (
-          <div className={`w-[300px] h-[300px] bg-gray-800`}>テスト用</div>
-        )}
-      </section>
-      <section id={`site-description`}>
-        <SiteDiscription />
-      </section>
-      <section id={`photo-category`}>
+      <div id={`top-view-photos`} className={`md:flex md:justify-between`}>
+        <TopPhotoViewer />
+        <section id={`site-description`}>
+          <SiteDiscription />
+        </section>
+      </div>
+      <div id={`photo-category`}>
         <Category />
-      </section>
+      </div>
     </>
   );
 };

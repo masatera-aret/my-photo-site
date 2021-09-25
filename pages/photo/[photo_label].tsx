@@ -128,24 +128,29 @@ const PhotoLabel: FC = () => {
     </AnimatePresence>
   );
 
-  const ViewPhotoElment = ({ src, alt }): JSX.Element => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className={`relative`}
-    >
-      <span
-        className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
-        onClick={prevPhoto}
-      ></span>
-      <span
-        className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
-        onClick={nextPhoto}
-      ></span>
-      <Image src={src} alt={alt} width={src.width} height={src.height} />
-    </motion.div>
-  );
+  const ViewPhotoElment = ({ src, alt }): JSX.Element => {
+    const width = src.width;
+    const height = src.height;
+    const isHorizon = height < width;
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`relative ${isHorizon ? `max-w-[750px]` : `max-w-[500px]`}`}
+      >
+        <span
+          className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
+          onClick={prevPhoto}
+        ></span>
+        <span
+          className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
+          onClick={nextPhoto}
+        ></span>
+        <Image src={src} alt={alt} width={src.width} height={src.height} />
+      </motion.div>
+    );
+  };
 
   return (
     <>

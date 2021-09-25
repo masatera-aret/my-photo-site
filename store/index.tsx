@@ -4,7 +4,7 @@ export type StoreState = ReturnType<typeof reducer>;
 type Action = { type: string };
 
 const initial_satate = {
-  is_modal_active: false,
+  isModalActive: false,
 };
 
 const reducer = (state = initial_satate, action: Partial<Action>) => {
@@ -12,12 +12,12 @@ const reducer = (state = initial_satate, action: Partial<Action>) => {
     case `active`:
       return {
         ...initial_satate,
-        is_modal_active: true,
+        isModalActive: true,
       };
     case `inactive`:
       return {
         ...initial_satate,
-        is_modal_active: false,
+        isModalActive: false,
       };
     default:
       return state;

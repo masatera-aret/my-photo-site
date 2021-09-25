@@ -15,36 +15,36 @@ const MainModal = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className={`fixed t-main-modal overflow-hidden left-0 w-full bg-gray-300 bg-opacity-90 z-20`}
+      transition={{ duration: 0.3 }}
+      className={`fixed t-main-modal left-0 w-full bg-white flex justify-center items-center z-20`}
     >
-      <p>test</p>
+      <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
+        test
+      </div>
     </motion.div>
   );
 };
 
 const Layout: React.FC<ChildElement> = ({ children }) => {
-  const is_modal_active = useSelector(
-    (state: StoreState) => state.is_modal_active
-  );
+  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   return (
     <>
       <Head>
         <title>デフォルトレイアウト</title>
       </Head>
       <header
-        className={`t-def-header fixed ${
-          is_modal_active ? `bg-gray-300` : `bg-white`
-        } bg-opacity-90 flex justify-center top-0 left-0 w-full z-50 duration-[0.2s]`}
+        className={`t-def-header fixed bg-white ${
+          isModalActive ? `bg-opacity-100` : `bg-opacity-90`
+        } flex justify-center top-0 left-0 w-full z-50 duration-300`}
       >
         <DefHeader />
       </header>
       <main className={`t-def-main`}>
         {children}
-        <AnimatePresence>{is_modal_active && <MainModal />}</AnimatePresence>
+        <AnimatePresence>{isModalActive && <MainModal />}</AnimatePresence>
       </main>
       <footer className={`t-def-footer flex justify-center items-center`}>
-        <div>©Terashima</div>
+        <div className={`test`}>©Terashima</div>
       </footer>
     </>
   );

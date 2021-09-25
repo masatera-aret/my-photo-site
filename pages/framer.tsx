@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useViewportScroll } from "framer-motion";
 
 const Framer = () => {
   const variants = {

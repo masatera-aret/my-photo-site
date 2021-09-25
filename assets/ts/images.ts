@@ -133,7 +133,7 @@ export const top_view_photos: Types.PhotoList[] = [
 
 export const category: Types.PhotoList[] = [
   { id: 5, src: Egypt5, label: "Egypt", alt: "エジプトの写真" },
-  { id: 109, src: Turkey9, label: "Turkey", alt: "トルコの写真" },
+  { id: 106, src: Turkey6, label: "Turkey", alt: "トルコの写真" },
   { id: 207, src: Jordan7, label: "Jordan", alt: "ヨルダンの写真" },
   { id: 304, src: Morocco4, label: "Morocco", alt: "モロッコの写真" },
   { id: 404, src: Flower4, label: "Flower", alt: "お花の写真" },
