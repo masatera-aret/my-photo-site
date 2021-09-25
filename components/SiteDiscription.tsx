@@ -3,7 +3,7 @@ import React, { FC } from "react";
 const SiteDiscription: FC = () => {
   return (
     <>
-      <div className={`px-2 pt-5 font-thin text-gray-500`}>
+      <div className={`font-serif px-2 pt-5 font-thin text-gray-500`}>
         <h1 className={`text-xl font-bold mb-5`}>良く写真を撮っていた</h1>
         <p
           className={`md:text-right text-xs leading-7 tracking-widest md:tracking-tight`}

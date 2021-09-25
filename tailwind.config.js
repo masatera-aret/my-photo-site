@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       screens: {
         't-photo-width': '550px'
-      },
+      }
     },
   },
   variants: {

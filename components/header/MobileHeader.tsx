@@ -17,12 +17,14 @@ const DefHeader: FC = () => {
     return;
   }
   return (
-    <div className={`flex relative items-center w-[90%] mx-auto`}>
+    <div
+      className={`flex relative items-center w-[90%] max-w-[1024px] mx-auto`}
+    >
       <Humburger />
       <div className={`absolute right-0`}>
         <a
           href={`/`}
-          className={`n-title-font text-green-600 text-lg tracking-wider font-extralight`}
+          className={`n-title-font text-green-600 text-xl tracking-wider font-extralight`}
           onClick={(e) => handleClick(e)}
         >
           Journeys photo{" "}
