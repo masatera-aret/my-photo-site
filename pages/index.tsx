@@ -4,25 +4,29 @@ import Head from "next/head";
 import TopPhotoViewer from "../components/TopPhotoViewer";
 import SiteDiscription from "../components/SiteDiscription";
 import Category from "../components/Category";
+import MidCategory from "../components/MidCategory";
 import { StoreState } from "../store/index";
 
-const break_point = 1250;
-
 const Home: FC = () => {
-  const [viewport_width, setViewportWidth] = useState<number>();
-  const is_modal_active = useSelector(
-    (state: StoreState) => state.is_modal_active
-  );
+  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
+  const [isViewPortMid, setIsViewPortMid] = useState<boolean>();
 
+  let width: number;
   useEffect(() => {
-    function docwidth() {
-      setViewportWidth(document.documentElement.clientWidth);
+    function docWidth() {
+      width = document.documentElement.clientWidth;
+      let isMid: boolean = false;
+      if (768 < width) isMid = true;
+      setIsViewPortMid(isMid);
+      setIsViewPortMid((state) => {
+        return state;
+      });
     }
-    docwidth();
-    window.addEventListener("resize", docwidth);
+    docWidth();
+    window.addEventListener("resize", docWidth);
 
     return () => {
-      window.removeEventListener("resize", docwidth);
+      window.removeEventListener("resize", docWidth);
     };
   }, []);
 
@@ -30,7 +34,7 @@ const Home: FC = () => {
     <>
       <Head>
         <title>タイトルです</title>
-        {is_modal_active && <style>{`body {overflow-y: hidden}`}</style>}
+        {isModalActive && <style>{`body {overflow-y: hidden}`}</style>}
       </Head>
       <div id={`top-view-photos`} className={`md:flex md:justify-between`}>
         <TopPhotoViewer />

@@ -23,19 +23,19 @@ const TopPhotoViewer: FC = () => {
 
   function PhotoSlideToNext(): void {
     if (!isMounted) return;
-    setCurrentPhotoIndex((index) => {
-      if (photosLength - 1 <= index) {
-        return (index = 0);
+    setCurrentPhotoIndex((state) => {
+      if (photosLength - 1 <= state) {
+        return (state = 0);
       }
-      return index + 1;
+      return state + 1;
     });
   }
   function PhotoSlideToPrev(): void {
-    setCurrentPhotoIndex((index) => {
-      if (index <= 0) {
-        return (index = photosLength - 1);
+    setCurrentPhotoIndex((state) => {
+      if (state <= 0) {
+        return (state = photosLength - 1);
       }
-      return (index = index - 1);
+      return (state = state - 1);
     });
   }
 
@@ -66,19 +66,20 @@ const TopPhotoViewer: FC = () => {
 
   let tapPositionX: number;
   let unTapPositionX: number;
-
   function onTapStart(event: any, info: any) {
     clearTimeout(photoSliderInterval);
     tapPositionX = info.point.x;
   }
 
+  const positionX = 30;
   function onTap(event: any, info: any) {
     unTapPositionX = info.point.x;
     let movedPosition = unTapPositionX - tapPositionX;
-    if (movedPosition < -50) {
+
+    if (movedPosition < -positionX) {
       PhotoSlideToNext();
       return;
-    } else if (50 < movedPosition) {
+    } else if (positionX < movedPosition) {
       PhotoSlideToPrev();
       return;
     }
@@ -109,6 +110,7 @@ const TopPhotoViewer: FC = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
         className={`absolute top-0 left-0 w-full`}
+        style={{ touchAction: "none" }}
       >
         <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a

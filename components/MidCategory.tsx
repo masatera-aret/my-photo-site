@@ -25,7 +25,6 @@ const Category: FC = () => {
     function checkWhetherReachBreakpoint(): void {
       const scrollPositionY = window.scrollY;
       const windowBottomY = scrollPositionY + window.innerHeight;
-      if (el.current === null) return;
       const breakpoint =
         el.current.getBoundingClientRect().top + scrollPositionY;
       if (breakpoint < windowBottomY) {
@@ -54,7 +53,7 @@ const Category: FC = () => {
     return (
       <>
         {hasBreak ? (
-          <li key={id} className={`w-1/2 md:w-1/5 mb-5 inline-block`}>
+          <li key={id} className={`w-1/5 mb-5 inline-block`}>
             <Link href={`/photo/${label.toLowerCase()}`}>
               <motion.a
                 initial={{ opacity: 0, y: 20 }}
@@ -63,11 +62,8 @@ const Category: FC = () => {
                   y: [null, -2, 0],
                   transition: { duration: 1, delay: index / 3 },
                 }}
-                whileHover={{
-                  scale: 1.05,
-                  transition: { duration: 0.3 },
-                }}
-                className={`block cursor-pointer relative w-[75%] md:w-[90%] pt-[75%] md:pt-[90%] mx-auto`}
+                whileHover={{ rotate: 3, transition: { duration: 0.3 } }}
+                className={`block cursor-pointer relative w-[90%] pt-[90%] mx-auto`}
               >
                 <Image
                   className={`pointer-events-none`}
@@ -87,7 +83,7 @@ const Category: FC = () => {
             </motion.h2>
           </li>
         ) : (
-          <li className={`w-1/2 pt-[75%] mb-5 inline-block`}></li>
+          <li className={`w-1/4 pt-[75%] mb-5 inline-block`}></li>
         )}
       </>
     );

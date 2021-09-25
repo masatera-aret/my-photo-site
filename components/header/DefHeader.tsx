@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
-import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import Humburger from "../Humburger";
 
 type Props = {
@@ -7,17 +8,25 @@ type Props = {
 };
 
 const DefHeader: FC = () => {
+  const deipatch = useDispatch();
+  const router = useRouter();
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    e.preventDefault();
+    deipatch({ type: `inactive` });
+    router.push(`/`);
+    return;
+  }
   return (
     <div className={`flex relative items-center w-[90%] mx-auto`}>
       <Humburger />
       <div className={`absolute right-0`}>
-        <Link href={`/`}>
-          <a
-            className={`n-title-font text-green-600 text-lg tracking-wider font-extralight`}
-          >
-            Journeys photo{" "}
-          </a>
-        </Link>
+        <a
+          href={`/`}
+          className={`n-title-font text-green-600 text-lg tracking-wider font-extralight`}
+          onClick={(e) => handleClick(e)}
+        >
+          Journeys photo{" "}
+        </a>
       </div>
     </div>
   );

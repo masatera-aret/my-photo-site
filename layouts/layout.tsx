@@ -16,17 +16,17 @@ const MainModal = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className={`fixed t-main-modal left-0 w-full bg-white z-20`}
+      className={`fixed t-main-modal left-0 w-full bg-white flex justify-center items-center z-20`}
     >
-      <p>test</p>
+      <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
+        test
+      </div>
     </motion.div>
   );
 };
 
 const Layout: React.FC<ChildElement> = ({ children }) => {
-  const is_modal_active = useSelector(
-    (state: StoreState) => state.is_modal_active
-  );
+  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   return (
     <>
       <Head>
@@ -34,14 +34,14 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
       </Head>
       <header
         className={`t-def-header fixed bg-white ${
-          is_modal_active ? `bg-opacity-100` : `bg-opacity-90`
+          isModalActive ? `bg-opacity-100` : `bg-opacity-90`
         } flex justify-center top-0 left-0 w-full z-50 duration-300`}
       >
         <DefHeader />
       </header>
       <main className={`t-def-main`}>
         {children}
-        <AnimatePresence>{is_modal_active && <MainModal />}</AnimatePresence>
+        <AnimatePresence>{isModalActive && <MainModal />}</AnimatePresence>
       </main>
       <footer className={`t-def-footer flex justify-center items-center`}>
         <div className={`test`}>©Terashima</div>
