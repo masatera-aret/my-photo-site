@@ -4,25 +4,10 @@ import { useSelector } from "react-redux";
 import { StoreState } from "../store/index"; //useSelectorのstateの型
 import { motion, AnimatePresence } from "framer-motion";
 import DefHeader from "../components/header/DefHeader";
+import MainModal from "../components/MainModal";
 
 type ChildElement = {
   children: JSX.Element | JSX.Element[];
-};
-
-const MainModal = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`fixed t-main-modal left-0 w-full bg-white flex justify-center items-center z-20`}
-    >
-      <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
-        test
-      </div>
-    </motion.div>
-  );
 };
 
 const Layout: React.FC<ChildElement> = ({ children }) => {
@@ -33,9 +18,9 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
         <title>デフォルトレイアウト</title>
       </Head>
       <header
-        className={`t-def-header fixed bg-white ${
+        className={`t-def-header fixed bg-white flex justify-center top-0 left-0 w-full z-50 duration-300 ${
           isModalActive ? `bg-opacity-100` : `bg-opacity-90`
-        } flex justify-center top-0 left-0 w-full z-50 duration-300`}
+        }`}
       >
         <DefHeader />
       </header>

@@ -87,7 +87,7 @@ const Category: FC = () => {
             </motion.h2>
           </li>
         ) : (
-          <li className={`w-1/2 pt-[75%] mb-5 inline-block`}></li>
+          <li className={`w-1/2 md:w-1/5 mb-5 inline-block`}></li>
         )}
       </>
     );
@@ -96,11 +96,11 @@ const Category: FC = () => {
   return (
     <>
       <div className={`flex justify-center items-center`}>
-        <h1 className={`c-category-title text-green-600 my-4 mx-auto text-xl`}>
+        <h1 className={`c-category-title text-green-600 my-4 mx-auto text-2xl`}>
           Category
         </h1>
       </div>
-      <ul ref={el} className={`pt-5`}>
+      <ul ref={el} className={`pt-5 mx-auto`}>
         {PhotoImages.map((photo, index) => (
           <CategotyImage
             index={index}
@@ -121,7 +121,7 @@ const Category: FC = () => {
           .c-category-title::after {
             content: "";
             position: absolute;
-            bottom: -5px;
+            bottom: -10px;
             left: 0;
             background-color: #c4c4c4;
             width: 100%;
