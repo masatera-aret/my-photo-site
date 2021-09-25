@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../store/index"; //useSelectorのstateの型
 import { motion, AnimatePresence } from "framer-motion";
-import DefHeader from "../components/header/DefHeader";
+import MobileHeader from "../components/header/MobileHeader";
+import PcHeader from "../components/header/PcHeader";
 import MainModal from "../components/MainModal";
 
 type ChildElement = {
   children: JSX.Element | JSX.Element[];
 };
 
+const breakpoint = 768;
+
 const Layout: React.FC<ChildElement> = ({ children }) => {
+  const dispatch = useDispatch();
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
+  const [isMobile, setIsMobile] = useState<boolean>();
+
+  let viewPortwWidth: number;
+  useEffect(() => {
+    function setViewPortWidth() {
+      viewPortwWidth = document.documentElement.clientWidth;
+      setIsMobile(viewPortwWidth < breakpoint);
+      setIsMobile((state) => {
+        if (!state) dispatch({ type: `inactive` });
+        return state;
+      });
+    }
+    setViewPortWidth();
+    window.addEventListener("resize", setViewPortWidth);
+    return () => {
+      window.removeEventListener("resize", setViewPortWidth);
+    };
+  }, [isMobile]);
+
   return (
     <>
       <Head>
@@ -22,7 +45,8 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
           isModalActive ? `bg-opacity-100` : `bg-opacity-90`
         }`}
       >
-        <DefHeader />
+        {isMobile !== undefined && isMobile && <MobileHeader />}
+        {isMobile !== undefined && !isMobile && <PcHeader />}
       </header>
       <main className={`t-def-main`}>
         {children}

@@ -14,7 +14,6 @@ const DefHeader: FC = () => {
     e.preventDefault();
     deipatch({ type: `inactive` });
     router.push(`/`);
-    // window.location.href = `/`;
     return;
   }
   return (
