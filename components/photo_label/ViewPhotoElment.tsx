@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import * as Types from "@/assets/ts/types/types";
 import { motion } from "framer-motion";
+import LoadingModal from "./LoadingModal";
 
 type Params = {
   src: StaticImageData;
@@ -57,6 +58,13 @@ const ViewPhotoElment: React.FC<Params> = ({
     route.push(`/photo/${photo_label}?num=${next_photo}`);
   }
 
+  // let isImaconsole.log();geLoad = true;
+  const [isImageLoad, setImageLoad] = useState(true);
+  function test() {
+    console.log(isImageLoad);
+    setImageLoad(false);
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -80,7 +88,9 @@ const ViewPhotoElment: React.FC<Params> = ({
         width={src.width}
         height={src.height}
         placeholder="blur"
+        onLoad={test}
       />
+      {isImageLoad && <LoadingModal />}
     </motion.div>
   );
 };

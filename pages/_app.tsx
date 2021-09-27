@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
-// import "tailwindcss/tailwind.css";
 import Layout from "@/components/layouts/Layout";
 import Test from "@/components/layouts/test";
 import { Provider } from "react-redux";
