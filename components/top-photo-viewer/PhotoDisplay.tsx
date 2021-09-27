@@ -1,28 +1,25 @@
-import React, { FC, memo, useRef } from "react";
+import React, { FC, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import * as Types from "../assets/ts/types/types";
-import * as Photos from "../assets/ts/images";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import * as Types from "@/assets/ts/types/types";
+import * as Photos from "@/assets/ts/images";
 import { useRouter } from "next/router";
+//context component
+import { CurrentPhotoIndexComponent } from "./TopPhotoViewer";
 
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
 
-const TopPhotoViewer: FC = () => {
+const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
   const router = useRouter();
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>();
-
-  function getInitialPhotoIndex(): void {
-    const min = 0;
-    const max = photosLength - 1;
-    const photo_index = Math.floor(Math.random() * (max + 1 - min)) + min;
-    setCurrentPhotoIndex(photo_index);
-  }
+  const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
+    CurrentPhotoIndexComponent
+  );
 
   function PhotoSlideToNext(): void {
-    if (!isMounted) return;
+    // if (!isMounted) return;
     setCurrentPhotoIndex((state) => {
       if (photosLength - 1 <= state) {
         return (state = 0);
@@ -39,11 +36,6 @@ const TopPhotoViewer: FC = () => {
     });
   }
 
-  // 最初に表示させる写真を決める関数を実行させる
-  useEffect(() => {
-    getInitialPhotoIndex();
-  }, []);
-
   // 写真のスライドをsetIntervalでセット
   let photoSliderInterval: NodeJS.Timer;
   const slideTime = 5000;
@@ -51,9 +43,6 @@ const TopPhotoViewer: FC = () => {
     photoSliderInterval = setInterval(PhotoSlideToNext, slideTime);
   }
 
-  /**
-   *
-   */
   let isMounted: boolean;
   useEffect(() => {
     isMounted = true;
@@ -99,7 +88,7 @@ const TopPhotoViewer: FC = () => {
     router.push(`/photo/${label.toLowerCase()}?id=${id}`);
   }
 
-  const PhotoElement: FC<Types.PhotoList> = ({ id, src, alt, label }) => (
+  return (
     <>
       <motion.div
         onTapStart={onTapStart}
@@ -129,38 +118,6 @@ const TopPhotoViewer: FC = () => {
       </motion.div>
     </>
   );
-
-  return (
-    <div className={`md:w-[55%]`}>
-      <div className={`relative pt-[100%]`}>
-        <AnimatePresence>
-          {PhotoImages.map(
-            (photo, index) =>
-              currentPhotoIndex === index && (
-                <PhotoElement
-                  key={photo.id}
-                  id={photo.id}
-                  src={photo.src}
-                  alt={photo.alt}
-                  label={photo.label}
-                />
-              )
-          )}
-        </AnimatePresence>
-      </div>
-      <ul className={`flex list-none mt-1 p-1`}>
-        {PhotoImages.map((photo, index) => (
-          <li
-            key={photo.id}
-            className={`rounded-[50%] border border-gray-400 w-2 h-2 mr-2 cursor-pointer duration-1000 ${
-              currentPhotoIndex === index && `bg-gray-400`
-            }`}
-            onClick={() => setCurrentPhotoIndex(index)}
-          ></li>
-        ))}
-      </ul>
-    </div>
-  );
 };
 
-export default memo(TopPhotoViewer);
+export default DisplayingPhoto;

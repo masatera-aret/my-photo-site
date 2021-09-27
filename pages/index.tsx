@@ -1,11 +1,10 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
-import TopPhotoViewer from "../components/TopPhotoViewer";
-import SiteDiscription from "../components/SiteDiscription";
-import Category from "../components/Category";
-import MidCategory from "../components/MidCategory";
-import { StoreState } from "../store/index";
+import TopPhotoViewer from "@/components/top-photo-viewer/TopPhotoViewer";
+import SiteDiscription from "@/components/SiteDiscription";
+import Category from "@/components/photo-category/Category";
+import { StoreState } from "@/store/index";
 
 const Home: FC = () => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);

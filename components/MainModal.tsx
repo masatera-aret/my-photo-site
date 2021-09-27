@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { category } from "../assets/ts/images";
-import * as Types from "../assets/ts/types/types";
+import { category } from "@/assets/ts/images";
+import * as Types from "@/assets/ts/types/types";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "../store/index";
+import { StoreState } from "@/store/index";
 
 const MainModal: FC = () => {
   const router = useRouter();
@@ -31,7 +31,10 @@ const MainModal: FC = () => {
       <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
         <ul>
           {category.map((el) => (
-            <li key={el.id} className={`pb-2 text-center text-green-600`}>
+            <li
+              key={el.id}
+              className={`text-center text-green-600 pb-2 last-of-type:pb-0`}
+            >
               <Link href={`/photo/${el.label.toLowerCase()}`}>
                 <a onClick={(e) => handleClick(e, el)}>{el.label}</a>
               </Link>

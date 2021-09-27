@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import styles from "@/assets/css/anime.module.css";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import Test from "@/components/Test";
 
 const Anime = () => {
   const [is_visible, setIsVisible] = useState(false);
@@ -47,7 +49,10 @@ const Anime = () => {
           transition={{ duration: 1 }}
         ></motion.span>
       </div>
-      <button onClick={startAnimate}>ボタン</button>
+      <button className={styles.test} onClick={startAnimate}>
+        ボタン
+      </button>
+      <Test />
     </div>
   );
 };

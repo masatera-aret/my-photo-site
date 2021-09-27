@@ -60,6 +60,7 @@ import Flower10 from "../../public/images/Flower/img_13.jpg";
 import Flower11 from "../../public/images/Flower/img_14.jpg";
 import Flower12 from "../../public/images/Flower/img_15.jpg";
 
+import Landscape1 from "../../public/images/Landscape/_MG_5808.jpg";
 
 export const all_photos: Types.PhotoList[] = [
   //エジプト
@@ -121,6 +122,8 @@ export const all_photos: Types.PhotoList[] = [
   { id: 410, src: Flower10, label: "Flower", alt: "お花の写真" },
   { id: 411, src: Flower11, label: "Flower", alt: "お花の写真" },
   { id: 412, src: Flower12, label: "Flower", alt: "お花の写真" },
+  //Landscape
+  { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
 ]
 
 export const top_view_photos: Types.PhotoList[] = [
@@ -129,6 +132,7 @@ export const top_view_photos: Types.PhotoList[] = [
   { id: 305, src: Morocco5, label: "Morocco", alt: "モロッコの写真" },
   { id: 103, src: Turkey3, label: "Turkey", alt: "トルコの写真" },
   { id: 409, src: Flower9, label: "Flower", alt: "お花の写真" },
+  { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
 ]
 
 export const category: Types.PhotoList[] = [
@@ -137,4 +141,5 @@ export const category: Types.PhotoList[] = [
   { id: 207, src: Jordan7, label: "Jordan", alt: "ヨルダンの写真" },
   { id: 304, src: Morocco4, label: "Morocco", alt: "モロッコの写真" },
   { id: 404, src: Flower4, label: "Flower", alt: "お花の写真" },
+  { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
 ]
