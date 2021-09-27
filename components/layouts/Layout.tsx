@@ -53,7 +53,7 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
         <AnimatePresence>{isModalActive && <MainModal />}</AnimatePresence>
       </main>
       <footer className={`t-def-footer flex justify-center items-center`}>
-        <div className={`test`}>©Terashima</div>
+        <div className={`test`}>©Journeys photo</div>
       </footer>
     </>
   );

@@ -63,6 +63,7 @@ import Flower12 from "@/public/images/Flower/img_15.jpg";
 import Landscape1 from "@/public/images/Landscape/_MG_5808.jpg";
 import Landscape2 from "@/public/images/Landscape/_MG_5888.jpg";
 import Landscape3 from "@/public/images/Landscape/_MG_8672.jpg";
+import Landscape4 from "@/public/images/Landscape/_MG_5885.jpg";
 
 export const all_photos: Types.PhotoList[] = [
   //エジプト
@@ -129,6 +130,7 @@ export const all_photos: Types.PhotoList[] = [
   { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
   { id: 501, src: Landscape2, label: "Landscape", alt: "風景の写真" },
   { id: 502, src: Landscape3, label: "Landscape", alt: "風景の写真" },
+  { id: 503, src: Landscape4, label: "Landscape", alt: "風景の写真" },
 ]
 
 export const top_view_photos: Types.PhotoList[] = [
