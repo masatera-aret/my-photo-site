@@ -2,7 +2,6 @@ import React, { memo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import * as Types from "@/assets/ts/types/types";
 import * as Photos from "@/assets/ts/images";
-import LoadingModal from "@/components/photo_label/LoadingModal";
 import ViewPhotoElment from "@/components/photo_label/ViewPhotoElment";
 
 const all_photos = Photos.all_photos;
@@ -71,7 +70,7 @@ const PhotoLabel: React.FC = () => {
 
   return (
     <>
-      {filtered_photo ? (
+      {filtered_photo &&
         filtered_photo.map(
           (el) =>
             current_photo &&
@@ -85,10 +84,7 @@ const PhotoLabel: React.FC = () => {
                 photo_label={photo_label}
               />
             )
-        )
-      ) : (
-        <LoadingModal />
-      )}
+        )}
     </>
   );
 };

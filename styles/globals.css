@@ -26,7 +26,7 @@
   }
 
   .t-def-main {
-    @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))] w-[90%] max-w-[1024px] mx-auto pt-[var(--header-height)];
+    @apply min-h-[calc(100vh-var(--footer-height))] w-[90%] max-w-[1024px] mx-auto pt-[var(--header-height)];
   }
 
   .t-loading-text {
