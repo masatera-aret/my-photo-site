@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "../store/index"; //useSelectorのstateの型
+import { StoreState } from "@/store/index"; //useSelectorのstateの型
 import { motion, AnimatePresence } from "framer-motion";
-import MobileHeader from "../components/header/MobileHeader";
-import PcHeader from "../components/header/PcHeader";
-import MainModal from "../components/MainModal";
+import MobileHeader from "@/components/header/MobileHeader";
+import PcHeader from "@/components/header/PcHeader";
+import MainModal from "@/components/MainModal";
 
 type ChildElement = {
   children: JSX.Element | JSX.Element[];
@@ -41,7 +41,7 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
         <title>デフォルトレイアウト</title>
       </Head>
       <header
-        className={`t-def-header fixed bg-white flex justify-center top-0 left-0 w-full z-50 duration-300 ${
+        className={`t-def-header bg-white fixed flex justify-center top-0 left-0 w-full z-50 duration-300 ${
           isModalActive ? `bg-opacity-100` : `bg-opacity-90`
         }`}
       >

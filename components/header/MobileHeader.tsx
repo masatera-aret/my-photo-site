@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Humburger from "../Humburger";
+import Humburger from "@/components/header/Humburger";
 
 type Props = {
   css: string;

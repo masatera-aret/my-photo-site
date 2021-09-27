@@ -1,13 +1,13 @@
-import "../styles/globals.css";
+import "@/styles/globals.css";
 import dynamic from "next/dynamic";
 // import "tailwindcss/tailwind.css";
-import DefLayout from "../layouts/layout";
-import TestLayout from "../layouts/test";
+import Layout from "@/components/layouts/Layout";
+import Test from "@/components/layouts/test";
 import { Provider } from "react-redux";
-import store from "../store/index";
+import store from "@/store/index";
 
 function MyApp({ Component, pageProps }) {
-  const NoSSR = dynamic(() => import("../components/NoSSR"), {
+  const NoSSR = dynamic(() => import("@/components/NoSSR"), {
     ssr: false,
   });
   switch (pageProps.layout) {
@@ -15,9 +15,9 @@ function MyApp({ Component, pageProps }) {
       return (
         <>
           <Provider store={store}>
-            <TestLayout>
+            <Test>
               <Component {...pageProps} />
-            </TestLayout>
+            </Test>
           </Provider>
         </>
       );
@@ -26,9 +26,9 @@ function MyApp({ Component, pageProps }) {
       return (
         <>
           <Provider store={store}>
-            <DefLayout>
+            <Layout>
               <Component {...pageProps} />
-            </DefLayout>
+            </Layout>
           </Provider>
         </>
       );

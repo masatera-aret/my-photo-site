@@ -1,4 +1,4 @@
-import * as Photos from "../../../assets/ts/images";
+import * as Photos from "@/assets/ts/images";
 
 export default function handler({ query: { label } }, res) {
   const filterd_photos = Photos.all_photos.filter(photo => photo.label.toLocaleLowerCase() === label)
