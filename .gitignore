@@ -16,12 +16,7 @@
 /build
 
 # firebase conf
-/firebase
-.firebaserc
-firebase.json
-firebase-debug.log
-firestore.rules
-firestore.indexes.json
+/assets/ts/firebase/
 
 # images
 # /public/images
