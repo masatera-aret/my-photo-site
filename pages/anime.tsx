@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import Test from "@/components/Test";
 
 const Anime = () => {
-  const [is_visible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const controls = useAnimation();
   function startAnimate() {
     setIsVisible((state) => !state);

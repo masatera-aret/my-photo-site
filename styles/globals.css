@@ -9,6 +9,13 @@
   h1 {
     @apply text-2xl;
   }
+  h2 {
+    @apply text-xl;
+  }
+
+  input {
+    @apply border border-gray-400 rounded;
+  }
 }
 
 @layer components {
@@ -29,12 +36,21 @@
     @apply min-h-[calc(100vh-var(--footer-height))] w-[90%] max-w-[1024px] mx-auto pt-[var(--header-height)];
   }
 
+  .t-main-height {
+    @apply min-h-[calc(100vh-(var(--header-height)+var(--footer-height)))];
+  }
+
   .t-loading-text {
     @apply top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%];
   }
 
   .t-main-modal {
     @apply fixed left-0 top-0 h-[100vh] min-h-[300px];
+  }
+
+  .t-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
   }
 }
 

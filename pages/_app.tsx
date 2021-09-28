@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
 import Layout from "@/components/layouts/Layout";
-import Test from "@/components/layouts/test";
+import CSRLayout from "../components/layouts/CSRLayout";
 import { Provider } from "react-redux";
 import store from "@/store/index";
 
@@ -10,14 +10,21 @@ function MyApp({ Component, pageProps }) {
     ssr: false,
   });
   switch (pageProps.layout) {
-    case "test": {
+    case "csr": {
+      return (
+        <NoSSR>
+          <Provider store={store}>
+            <CSRLayout>
+              <Component {...pageProps} />
+            </CSRLayout>
+          </Provider>
+        </NoSSR>
+      );
+    }
+    case "plain": {
       return (
         <>
-          <Provider store={store}>
-            <Test>
-              <Component {...pageProps} />
-            </Test>
-          </Provider>
+          <Component {...pageProps} />
         </>
       );
     }

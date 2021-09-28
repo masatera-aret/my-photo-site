@@ -5,6 +5,8 @@ type Action = { type: string };
 
 const initial_satate = {
   isModalActive: false,
+  breakpoint: 768,
+  siteTitle: "Journey's Photo",
 };
 
 const reducer = (state = initial_satate, action: Partial<Action>) => {

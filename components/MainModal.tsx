@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { category } from "@/assets/ts/images";
+import { location } from "@/assets/ts/images";
 import * as Types from "@/assets/ts/types/types";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,13 +28,12 @@ const MainModal: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
       className={`t-main-modal w-full bg-white flex justify-center items-center z-20`}
     >
       <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
         <ul>
-          {category.map((el) => (
+          {location.map((el) => (
             <li
               key={el.id}
               className={`text-center pb-2 last-of-type:pb-0 ${

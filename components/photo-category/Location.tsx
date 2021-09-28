@@ -1,17 +1,16 @@
 import React, { FC, memo, useState, useEffect, useRef } from "react";
 import * as Types from "@/assets/ts/types/types";
 import * as Photos from "@/assets/ts/images";
-import styles from "./category.module.css";
 import ImagePhoto from "./ImagePhoto";
 
-const PhotoImages = Photos.category;
+const PhotoImages = Photos.location;
 
 export type ExpansionPhotoList = Types.PhotoList & {
   index: number;
   hasBreak: boolean;
 };
 
-const Category: FC = () => {
+const Location: FC = () => {
   const el = useRef(null);
 
   const [hasBreak, setHasBreak] = useState(false);
@@ -48,7 +47,7 @@ const Category: FC = () => {
     <>
       <div className={`flex justify-center items-center`}>
         <h1 className={`t-under-border text-green-600 my-4 mx-auto`}>
-          Category
+          Location
         </h1>
       </div>
       <ul ref={el} className={`pt-5 mx-auto`}>
@@ -68,4 +67,4 @@ const Category: FC = () => {
   );
 };
 
-export default memo(Category);
+export default memo(Location);
