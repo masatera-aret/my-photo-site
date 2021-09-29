@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { initializeApp } from "firebase/app";
+import { getAuth, signOut } from "firebase/auth";
 import {
   getFirestore,
   collection,
   addDoc,
   getDocs,
   query,
+  orderBy,
   serverTimestamp,
 } from "firebase/firestore";
 import firebaseConfig from "@/assets/ts/firebase/firebaseConfig";
@@ -27,7 +30,7 @@ type typeNews = {
 export const getStaticProps: GetStaticProps = async () => {
   // `getStaticProps` はサーバー側で実行されます
   const newsData = [];
-  const res = await getDocs(query(admin));
+  const res = await getDocs(query(admin, orderBy("timestamp", "desc")));
   res.docs.map((doc) => {
     newsData.push(doc.data());
   });
@@ -35,6 +38,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       newsData: json,
+      layout: "plain",
     },
   };
 };
@@ -42,6 +46,7 @@ export const getStaticProps: GetStaticProps = async () => {
 const Post: React.FC = ({
   newsData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
   const [newNews, setNewNews] = useState<string>("");
   const [testData, setTestData] = useState<typeNews[]>(JSON.parse(newsData));
 
@@ -59,6 +64,18 @@ const Post: React.FC = ({
     }
   }
 
+  const auth = getAuth();
+  function Logout() {
+    signOut(auth)
+      .then(() => router.push(`/login`))
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    console.log(auth.currentUser);
+    if (!auth.currentUser) router.push(`/login`);
+  }, []);
+
   return (
     <>
       <Head>
@@ -66,6 +83,9 @@ const Post: React.FC = ({
       </Head>
       <div>
         <h1>Post</h1>
+        <button onClick={Logout} className={`bg-red-600 text-white py-1 px-3`}>
+          ログアウト
+        </button>
         <form>
           <input
             type="text"

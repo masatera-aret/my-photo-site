@@ -1,18 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import firebaseConfig from "@/assets/ts/firebase/firebaseConfig";
+import { useRouter } from "next/router";
 
-export const getServerSideProps = async () => ({
+initializeApp(firebaseConfig);
+const auth = getAuth();
+
+export const getStaticProps = () => ({
   props: {
     layout: "plain",
   },
 });
-const login = () => {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
 
-  function login(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+const Login: React.FC = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  async function authLogin(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
+    const res = await signInWithEmailAndPassword(auth, email, password).catch(
+      (err) => console.log("エラーです", err.code, err.message)
+    );
+    if (!res) return;
+    router.push("/news/post");
   }
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/news/post");
+      }
+    });
+  }, []);
+
   return (
     <>
       <Head>
@@ -44,7 +71,7 @@ const login = () => {
             />
           </div>
           <button
-            onClick={(e) => login(e)}
+            onClick={(e) => authLogin(e)}
             className={`w-full bg-green-500 text-white rounded py-1 mt-5`}
           >
             ログイン
@@ -55,4 +82,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
