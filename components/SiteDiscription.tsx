@@ -9,7 +9,7 @@ const SiteDiscription: React.FC = () => {
         <h1 className={`text-xl font-bold mb-5 md:mb-0 md:ml-5`}>
           良く写真を撮っていた
         </h1>
-        <p className={`text-xs leading-7 tracking-widest`}>
+        <p className={`t-font-clamp-sm leading-7 md:leading-9 tracking-widest`}>
           ただ写真を掲載しているwebサイトです <br />
           写真が好きで血迷って4×5カメラを買った事もあります <br />
           良く旅行に行ったのでその時の写真が多いです <br />

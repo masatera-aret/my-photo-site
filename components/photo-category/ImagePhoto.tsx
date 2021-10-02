@@ -42,7 +42,7 @@ const ImagePhoto: React.FC<ExpansionPhotoList> = ({
           <motion.h2
             animate={{ opacity: [0, 1], x: [-5, 0] }}
             transition={{ duration: 0.5, delay: index / 2 }}
-            className={`text-gray-500`}
+            className={`font-extralight`}
           >
             {label}
           </motion.h2>

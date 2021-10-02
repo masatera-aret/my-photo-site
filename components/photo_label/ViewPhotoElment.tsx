@@ -64,31 +64,33 @@ const ViewPhotoElment: React.FC<Params> = ({
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`relative inline-block leading-3 ${
-        isPhotoVertical ? `w-3/4 max-w-[500px]` : `max-w-[750px]`
-      }`}
-    >
-      <span
-        className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
-        onClick={prevPhoto}
-      ></span>
-      <span
-        className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
-        onClick={nextPhoto}
-      ></span>
-      <Image
-        src={src}
-        alt={alt}
-        width={src.width}
-        height={src.height}
-        onLoad={photoLoaded}
-      />
-      <AnimatePresence>{isImageLoad && <Loading />}</AnimatePresence>
-    </motion.div>
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`relative inline-block leading-3 ${
+          isPhotoVertical ? `w-3/4 max-w-[600px]` : `max-w-[950px]`
+        }`}
+      >
+        <span
+          className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
+          onClick={prevPhoto}
+        ></span>
+        <span
+          className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
+          onClick={nextPhoto}
+        ></span>
+        <Image
+          src={src}
+          alt={alt}
+          width={src.width}
+          height={src.height}
+          onLoad={photoLoaded}
+        />
+        <AnimatePresence>{isImageLoad && <Loading />}</AnimatePresence>
+      </motion.div>
+    </>
   );
 };
 

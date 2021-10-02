@@ -4,13 +4,10 @@
 
 @layer base {
   body {
-    @apply font-sans;
+    @apply font-sans text-gray-800;
   }
   h1 {
     @apply text-2xl;
-  }
-  h2 {
-    @apply text-xl;
   }
 
   input {
@@ -61,10 +58,14 @@
   .t-under-border::after {
     content: "";
     position: absolute;
-    bottom: -10px;
-    left: 0;
+    bottom: -7px;
+    left: -15px;
     background-color: #c4c4c4;
-    width: 100%;
+    width: calc(100% + 30px);
     height: 1px;
+  }
+
+  .t-font-clamp-sm {
+    font-size: clamp(12px, 2vw, 20px);
   }
 }

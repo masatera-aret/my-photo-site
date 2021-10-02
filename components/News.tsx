@@ -1,13 +1,27 @@
-const News = () => {
+import React from "react";
+import moment from "moment";
+
+type typeNews = {
+  news: string;
+  timestamp: any;
+};
+
+const News = ({ news }) => {
   return (
     <>
-      <div className={`bg-green-100 flex justify-center`}>
-        <h2 className={`border border-gray-300 inline-block px-5 py-2`}>
-          News
-        </h2>
+      <div className={`flex justify-center`}>
+        <h1 className={`t-under-border text-green-600 inline-block`}>News</h1>
       </div>
-      <ul>
-        <li>Egyptの写真を追加しました</li>
+      <ul className={`mt-5`}>
+        {news &&
+          news.map((el: typeNews, index) => (
+            <li
+              key={index}
+              className={`font-thin text-sm mb-2 last-of-type:mb-0`}
+            >
+              {`${el.news}${moment(el.timestamp).format(`YYYY/M/D`)}`}
+            </li>
+          ))}
       </ul>
     </>
   );

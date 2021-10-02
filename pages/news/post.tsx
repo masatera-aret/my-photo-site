@@ -3,8 +3,7 @@ import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { initializeApp } from "firebase/app";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -14,10 +13,7 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import firebaseConfig from "@/assets/ts/firebase/firebaseConfig";
-
-// Initialize Firebase
-initializeApp(firebaseConfig);
+import Loading from "@/components/photo_label/Loading";
 
 const db = getFirestore();
 const admin = collection(db, "admin");
@@ -46,7 +42,9 @@ export const getStaticProps: GetStaticProps = async () => {
 const Post: React.FC = ({
   newsData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  console.log("post");
   const router = useRouter();
+  const auth = getAuth();
   const [newNews, setNewNews] = useState<string>("");
   const [testData, setTestData] = useState<typeNews[]>(JSON.parse(newsData));
 
@@ -60,20 +58,25 @@ const Post: React.FC = ({
       console.log(news.id);
       setNewNews("");
     } catch (err) {
-      console.log("Error発生", err);
+      console.log("書き込み失敗", err);
     }
   }
 
-  const auth = getAuth();
   function Logout() {
     signOut(auth)
       .then(() => router.push(`/login`))
       .catch((err) => console.log(err));
   }
 
+  const [isAuthUser, setIsAuthUser] = useState(false);
   useEffect(() => {
-    console.log(auth.currentUser);
-    if (!auth.currentUser) router.push(`/login`);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthUser(true);
+      } else {
+        router.push(`/login`);
+      }
+    });
   }, []);
 
   return (
@@ -81,32 +84,39 @@ const Post: React.FC = ({
       <Head>
         <title>Post</title>
       </Head>
-      <div>
-        <h1>Post</h1>
-        <button onClick={Logout} className={`bg-red-600 text-white py-1 px-3`}>
-          ログアウト
-        </button>
-        <form>
-          <input
-            type="text"
-            value={newNews}
-            id={`news`}
-            onChange={(e) => setNewNews(e.target.value)}
-          />
-          <button
-            className={`bg-green-400 text-white py-1 px-3`}
-            onClick={(e) => click(e)}
-          >
-            テスト
-          </button>
-        </form>
+      {isAuthUser ? (
         <div>
-          <ul>
-            {testData &&
-              testData.map((el, index) => <li key={index}>{el.news}</li>)}
-          </ul>
+          <h1>Post</h1>
+          <button
+            onClick={Logout}
+            className={`bg-red-600 text-white py-1 px-3`}
+          >
+            ログアウト
+          </button>
+          <form>
+            <input
+              type="text"
+              value={newNews}
+              id={`news`}
+              onChange={(e) => setNewNews(e.target.value)}
+            />
+            <button
+              className={`bg-green-400 text-white py-1 px-3`}
+              onClick={(e) => click(e)}
+            >
+              テスト
+            </button>
+          </form>
+          <div>
+            <ul>
+              {testData &&
+                testData.map((el, index) => <li key={index}>{el.news}</li>)}
+            </ul>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

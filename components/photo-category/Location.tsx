@@ -46,11 +46,11 @@ const Location: FC = () => {
   return (
     <>
       <div className={`flex justify-center items-center`}>
-        <h1 className={`t-under-border text-green-600 my-4 mx-auto`}>
+        <h1 className={`t-under-border text-green-600 mt-5 mx-auto`}>
           Location
         </h1>
       </div>
-      <ul ref={el} className={`pt-5 mx-auto`}>
+      <ul ref={el} className={`mt-10 mx-auto`}>
         {PhotoImages.map((photo, index) => (
           <ImagePhoto
             index={index}

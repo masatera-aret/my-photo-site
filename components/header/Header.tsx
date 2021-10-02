@@ -15,7 +15,7 @@ const Header: React.FC = () => {
   let viewPortwWidth: number;
   useEffect(() => {
     function setViewPortWidth() {
-      viewPortwWidth = document.documentElement.clientWidth;
+      viewPortwWidth = window.innerWidth;
       setIsMobile(viewPortwWidth < breakpoint);
       setIsMobile((state) => {
         if (!state) dispatch({ type: `inactive` });
