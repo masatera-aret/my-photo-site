@@ -1,12 +1,12 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LoadingModal = (): JSX.Element => {
   const loading = Array.from("Loading...");
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
       className={`fixed top-0 left-0 w-full min-h-screen bg-white flex justify-center items-center z-20`}
