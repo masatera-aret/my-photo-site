@@ -4,9 +4,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      screens: {
-        't-photo-width': '550px'
-      }
+
     },
   },
   variants: {

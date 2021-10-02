@@ -6,4 +6,7 @@ module.exports = {
     config.resolve.alias['@'] = path.join(__dirname, './')
     return config
   },
+  images: {
+    domains: ['firebasestorage.googleapis.com']
+  }
 }

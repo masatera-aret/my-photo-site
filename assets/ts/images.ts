@@ -12,14 +12,13 @@ import Turkey1 from "@/public/images/Turkey/_MG_3775.jpg";
 import Turkey2 from "@/public/images/Turkey/_MG_3813.jpg";
 import Turkey3 from "@/public/images/Turkey/_MG_3841.jpg";
 import Turkey4 from "@/public/images/Turkey/_MG_4037.jpg";
-import Turkey5 from "@/public/images/Turkey/_MG_4095.jpg";
+// import Turkey5 from "@/public/images/Turkey/_MG_4095.jpg";
 import Turkey6 from "@/public/images/Turkey/_MG_4135.jpg";
 import Turkey7 from "@/public/images/Turkey/_MG_4264.jpg";
-import Turkey8 from "@/public/images/Turkey/_MG_4296.jpg";
-import Turkey9 from "@/public/images/Turkey/_MG_4308.jpg";
+// import Turkey8 from "@/public/images/Turkey/_MG_4296.jpg";
+// import Turkey9 from "@/public/images/Turkey/_MG_4308.jpg";
 import Turkey10 from "@/public/images/Turkey/_MG_4321.jpg";
-import Turkey11 from "@/public/images/Turkey/_MG_4810.jpg";
-import Turkey12 from "@/public/images/Turkey/_MG_4846.jpg";
+// import Turkey12 from "@/public/images/Turkey/_MG_4846.jpg";
 import Turkey13 from "@/public/images/Turkey/_MG_4907.jpg";
 import Turkey14 from "@/public/images/Turkey/_MG_5266.jpg";
 import Turkey15 from "@/public/images/Turkey/_MG_5272.jpg";
@@ -52,18 +51,18 @@ import Flower2 from "@/public/images/Flower/img_2.jpg";
 import Flower3 from "@/public/images/Flower/img_3.jpg";
 import Flower4 from "@/public/images/Flower/img_5.jpg";
 import Flower5 from "@/public/images/Flower/img_6.jpg";
-import Flower6 from "@/public/images/Flower/img_7.jpg";
 import Flower7 from "@/public/images/Flower/img_10.jpg";
 import Flower8 from "@/public/images/Flower/img_11.jpg";
 import Flower9 from "@/public/images/Flower/img_12.jpg";
 import Flower10 from "@/public/images/Flower/img_13.jpg";
-import Flower11 from "@/public/images/Flower/img_14.jpg";
 import Flower12 from "@/public/images/Flower/img_15.jpg";
 
 import Landscape1 from "@/public/images/Landscape/_MG_5808.jpg";
 import Landscape2 from "@/public/images/Landscape/_MG_5888.jpg";
-import Landscape3 from "@/public/images/Landscape/_MG_8672.jpg";
-import Landscape4 from "@/public/images/Landscape/_MG_5885.jpg";
+import Landscape3 from "@/public/images/Landscape/_MG_3919.jpg";
+import Landscape4 from "@/public/images/Landscape/img_1.jpg";
+import Landscape5 from "@/public/images/Landscape/see_1.jpg";
+
 
 export const all_photos: Types.PhotoList[] = [
   //エジプト
@@ -79,14 +78,14 @@ export const all_photos: Types.PhotoList[] = [
   { id: 102, src: Turkey2, label: "Turkey", alt: "トルコの写真" },
   { id: 103, src: Turkey3, label: "Turkey", alt: "トルコの写真" },
   { id: 104, src: Turkey4, label: "Turkey", alt: "トルコの写真" },
-  { id: 105, src: Turkey5, label: "Turkey", alt: "トルコの写真" },
+  // { id: 105, src: Turkey5, label: "Turkey", alt: "トルコの写真" },
   { id: 106, src: Turkey6, label: "Turkey", alt: "トルコの写真" },
   { id: 107, src: Turkey7, label: "Turkey", alt: "トルコの写真" },
-  { id: 108, src: Turkey8, label: "Turkey", alt: "トルコの写真" },
-  { id: 109, src: Turkey9, label: "Turkey", alt: "トルコの写真" },
+  // { id: 108, src: Turkey8, label: "Turkey", alt: "トルコの写真" },
+  // { id: 109, src: Turkey9, label: "Turkey", alt: "トルコの写真" },
   { id: 110, src: Turkey10, label: "Turkey", alt: "トルコの写真" },
-  { id: 111, src: Turkey11, label: "Turkey", alt: "トルコの写真" },
-  { id: 112, src: Turkey12, label: "Turkey", alt: "トルコの写真" },
+  // { id: 111, src: Turkey11, label: "Turkey", alt: "トルコの写真" },
+  // { id: 112, src: Turkey12, label: "Turkey", alt: "トルコの写真" },
   { id: 113, src: Turkey13, label: "Turkey", alt: "トルコの写真" },
   { id: 114, src: Turkey14, label: "Turkey", alt: "トルコの写真" },
   { id: 115, src: Turkey15, label: "Turkey", alt: "トルコの写真" },
@@ -119,18 +118,19 @@ export const all_photos: Types.PhotoList[] = [
   { id: 403, src: Flower3, label: "Flower", alt: "お花の写真" },
   { id: 404, src: Flower4, label: "Flower", alt: "お花の写真" },
   { id: 405, src: Flower5, label: "Flower", alt: "お花の写真" },
-  { id: 406, src: Flower6, label: "Flower", alt: "お花の写真" },
+  // { id: 406, src: Flower6, label: "Flower", alt: "お花の写真" },
   { id: 407, src: Flower7, label: "Flower", alt: "お花の写真" },
   { id: 408, src: Flower8, label: "Flower", alt: "お花の写真" },
   { id: 409, src: Flower9, label: "Flower", alt: "お花の写真" },
   { id: 410, src: Flower10, label: "Flower", alt: "お花の写真" },
-  { id: 411, src: Flower11, label: "Flower", alt: "お花の写真" },
+  // { id: 411, src: Flower11, label: "Flower", alt: "お花の写真" },
   { id: 412, src: Flower12, label: "Flower", alt: "お花の写真" },
   //Landscape
   { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
   { id: 501, src: Landscape2, label: "Landscape", alt: "風景の写真" },
   { id: 502, src: Landscape3, label: "Landscape", alt: "風景の写真" },
   { id: 503, src: Landscape4, label: "Landscape", alt: "風景の写真" },
+  { id: 504, src: Landscape5, label: "Landscape", alt: "風景の写真" },
 ]
 
 export const top_view_photos: Types.PhotoList[] = [
@@ -142,7 +142,7 @@ export const top_view_photos: Types.PhotoList[] = [
   { id: 500, src: Landscape1, label: "Landscape", alt: "風景の写真" },
 ]
 
-export const category: Types.PhotoList[] = [
+export const location: Types.PhotoList[] = [
   { id: 5, src: Egypt5, label: "Egypt", alt: "エジプトの写真" },
   { id: 106, src: Turkey6, label: "Turkey", alt: "トルコの写真" },
   { id: 207, src: Jordan7, label: "Jordan", alt: "ヨルダンの写真" },

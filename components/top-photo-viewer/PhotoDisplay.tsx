@@ -43,6 +43,10 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     photoSliderInterval = setInterval(PhotoSlideToNext, slideTime);
   }
 
+  /**
+   * 表示する写真がセットされたら発火し、mount状態である以上は
+   * startPhotoSliderInterval() で写真を入れ替える関数がintervalでセットされる
+   */
   let isMounted: boolean;
   useEffect(() => {
     isMounted = true;
@@ -53,6 +57,13 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     };
   }, [currentPhotoIndex]);
 
+  /**
+   * 画面tapでの挙動
+   * 以下3つの関数で写真のスワイプで写真が変わる
+   * onTapStart   tapすると発火
+   * onTap        tapして画面から指が離れると発火
+   * onTapCancel  要素外で指が離れると発火
+   */
   let tapPositionX: number;
   let unTapPositionX: number;
   function onTapStart(event: any, info: any) {
@@ -60,15 +71,15 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     tapPositionX = info.point.x;
   }
 
-  const positionX = 30;
+  const necessaryMoveX = 30;
   function onTap(event: any, info: any) {
     unTapPositionX = info.point.x;
-    let movedPosition = unTapPositionX - tapPositionX;
+    const movedPositionX = unTapPositionX - tapPositionX;
 
-    if (movedPosition < -positionX) {
+    if (movedPositionX < -necessaryMoveX) {
       PhotoSlideToNext();
       return;
-    } else if (positionX < movedPosition) {
+    } else if (necessaryMoveX < movedPositionX) {
       PhotoSlideToPrev();
       return;
     }
@@ -79,7 +90,7 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     startPhotoSliderInterval();
   }
 
-  function click(
+  function clickImage(
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     label: string,
     id: number
@@ -104,7 +115,7 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
         <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a
             className={`block relative pt-[100%]`}
-            onClick={(e) => click(e, label, id)}
+            onClick={(e) => clickImage(e, label, id)}
           >
             <Image
               className={`cursor-pointer pointer-events-none`}

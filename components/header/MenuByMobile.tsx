@@ -21,7 +21,7 @@ const Humburger = () => {
       controls.start(
         (i) => i === 0 && { rotate: 45, y: "9.5px", width: "100%" }
       );
-      controls.start((i) => i === 1 && { opacity: 0, width: "100%" });
+      controls.start((i) => i === 1 && { opacity: 0, width: "0%" });
       controls.start((i) => i === 2 && { rotate: -45, y: "-9.5px" });
     }
     if (!isModalActive) {
@@ -59,4 +59,6 @@ const Humburger = () => {
   );
 };
 
-export default Humburger;
+const MenuByMobile = () => <Humburger />;
+
+export default MenuByMobile;

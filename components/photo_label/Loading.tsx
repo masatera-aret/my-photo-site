@@ -1,20 +1,17 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LoadingModal = (): JSX.Element => {
   const loading = Array.from("Loading...");
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.5 } }}
-      transition={{ duration: 0.1 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
       className={`fixed top-0 left-0 w-full min-h-screen bg-white flex justify-center items-center z-20`}
     >
-      <div
-        className={`t-loading-text select-none absolute bg-green-600 py-5 px-7`}
-      >
+      <div>
         {loading.map((el, index) => (
           <motion.p
             key={index}
@@ -29,7 +26,7 @@ const LoadingModal = (): JSX.Element => {
                 duration: 2,
               },
             }}
-            className={`inline text-white text-md tracking-widest font-extralight`}
+            className={`inline text-green-600 text-md tracking-widest font-extralight`}
           >
             {el}
           </motion.p>

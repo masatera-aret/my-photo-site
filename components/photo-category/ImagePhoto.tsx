@@ -2,8 +2,7 @@ import React, { FC, memo, useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ExpansionPhotoList } from "./Category";
-import * as Photos from "@/assets/ts/images";
+import { ExpansionPhotoList } from "./Location";
 
 const ImagePhoto: React.FC<ExpansionPhotoList> = ({
   id,
@@ -42,8 +41,8 @@ const ImagePhoto: React.FC<ExpansionPhotoList> = ({
           </Link>
           <motion.h2
             animate={{ opacity: [0, 1], x: [-5, 0] }}
-            transition={{ duration: 1, delay: index / 3 }}
-            className={`text-gray-500`}
+            transition={{ duration: 0.5, delay: index / 2 }}
+            className={`font-extralight`}
           >
             {label}
           </motion.h2>
