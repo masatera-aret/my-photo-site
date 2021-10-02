@@ -3,6 +3,7 @@ import { createStore } from "redux";
 export type StoreState = ReturnType<typeof reducer>;
 type Action = { type: string };
 
+console.log("store");
 const initial_satate = {
   isModalActive: false,
   breakpoint: 768,

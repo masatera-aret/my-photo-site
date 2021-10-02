@@ -5,6 +5,11 @@ import CSRLayout from "../layouts/CSRLayout";
 import Plain from "@/layouts/Plain";
 import { Provider } from "react-redux";
 import store from "@/store/index";
+import { initializeApp } from "firebase/app";
+import firebaseConfig from "@/assets/ts/firebase/firebaseConfig";
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
 
 function MyApp({ Component, pageProps }) {
   const NoSSR = dynamic(() => import("@/components/NoSSR"), {

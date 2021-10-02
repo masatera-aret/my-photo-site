@@ -5,11 +5,9 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "@/assets/ts/firebase/firebaseConfig";
 import { useRouter } from "next/router";
+import Loading from "@/components/photo_label/Loading";
 
-initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const getStaticProps = () => ({
@@ -31,14 +29,6 @@ const Login: React.FC = () => {
     if (!res) return;
     router.push("/news/post");
   }
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push("/news/post");
-      }
-    });
-  }, []);
 
   return (
     <>
@@ -82,4 +72,19 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+const Container = () => {
+  const router = useRouter();
+  const [isAuthUser, setIsAuthUser] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/news/post");
+      } else {
+        setIsAuthUser(true);
+      }
+    });
+  }, []);
+  return <>{isAuthUser ? <Login /> : <Loading />}</>;
+};
+export default Container;

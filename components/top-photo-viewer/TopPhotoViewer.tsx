@@ -29,7 +29,7 @@ const TopPhotoViewer: FC = () => {
 
   return (
     <CurrentPhotoIndexComponent.Provider value={contextValue}>
-      <div className={`md:w-[65%]`}>
+      <div className={`md:w-[60%]`}>
         <div className={`relative pt-[100%]`}>
           <AnimatePresence>
             {PhotoImages.map(
