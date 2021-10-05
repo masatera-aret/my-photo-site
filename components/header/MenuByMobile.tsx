@@ -1,30 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "@/store/index";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import React, { useEffect } from "react";
+import { useHeadersContext, InitialState } from "./HeadersContext";
+import { motion, useAnimation } from "framer-motion";
+
+type State = {
+  state: InitialState;
+  dispatch: React.Dispatch<any>;
+};
 
 const Humburger = () => {
-  const dispatch = useDispatch();
   const controls = useAnimation();
-  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
+  const { state, dispatch }: State = useHeadersContext();
 
   function toggleModal() {
-    dispatch({ type: isModalActive ? `inactive` : `active` });
+    dispatch({ type: state.isModalActive ? `inactive` : `active` });
   }
 
   useEffect(() => {
     startAnimate();
-  }, [isModalActive]);
+  }, [state.isModalActive]);
+
+  useEffect(() => {
+    return () => {};
+  });
 
   function startAnimate() {
-    if (isModalActive) {
+    if (state.isModalActive) {
       controls.start(
         (i) => i === 0 && { rotate: 45, y: "9.5px", width: "100%" }
       );
       controls.start((i) => i === 1 && { opacity: 0, width: "0%" });
       controls.start((i) => i === 2 && { rotate: -45, y: "-9.5px" });
     }
-    if (!isModalActive) {
+    if (!state.isModalActive) {
       controls.start((i) => i === 0 && { rotate: 0, y: "0px", width: "50%" });
       controls.start((i) => i === 1 && { opacity: 1, width: "75%" });
       controls.start((i) => i === 2 && { rotate: 0, y: "0px" });

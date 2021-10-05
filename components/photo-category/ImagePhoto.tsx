@@ -25,10 +25,10 @@ const ImagePhoto: React.FC<ExpansionPhotoList> = ({
                 transition: { duration: 1, delay: index / 3 },
               }}
               whileHover={{
-                scale: 1.05,
-                transition: { duration: 0.3 },
+                scale: [null, 1.05, 1.02],
+                transition: { duration: 0.5 },
               }}
-              className={`block cursor-pointer relative w-[75%] md:w-[90%] pt-[75%] md:pt-[90%] mx-auto`}
+              className={`block cursor-pointer relative w-[90%] pt-[45%] mx-auto`}
             >
               <Image
                 className={`pointer-events-none`}

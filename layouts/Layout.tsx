@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index"; //useSelectorのstateの型
 import Header from "@/components/header/Header";
+import { HeadersContextProvider } from "@/components/header/HeadersContext";
 
 type ChildElement = {
   children: JSX.Element | JSX.Element[];
@@ -18,7 +19,9 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
           isModalActive ? `bg-opacity-100` : `bg-opacity-90`
         }`}
       >
-        <Header />
+        <HeadersContextProvider>
+          <Header />
+        </HeadersContextProvider>
       </header>
       <main className={`t-def-main`}>{children}</main>
       <footer className={`t-def-footer flex justify-center items-center`}>

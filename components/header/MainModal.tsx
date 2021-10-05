@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { location } from "@/assets/ts/images";
 import * as Types from "@/assets/ts/types/types";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "@/store/index";
+import { useHeadersContext, InitialState } from "./HeadersContext";
+
+type State = {
+  state: InitialState;
+  dispatch: React.Dispatch<any>;
+};
 
 const MainModal: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
+  const { state, dispatch } = useHeadersContext();
 
   let photo_label: string;
   if (typeof router.query.photo_label === "string") {
@@ -21,7 +24,7 @@ const MainModal: React.FC = () => {
     el: Types.PhotoList
   ) {
     e.preventDefault();
-    dispatch({ type: isModalActive ? `inactive` : `active` });
+    dispatch({ type: state.isModalActive ? `inactive` : `active` });
     router.push(`/photo/${el.label.toLocaleLowerCase()}`);
   }
   return (
