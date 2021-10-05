@@ -1,9 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index"; //useSelectorのstateの型
-import { AnimatePresence } from "framer-motion";
 import Header from "@/components/header/Header";
-import MainModal from "@/components/MainModal";
 
 type ChildElement = {
   children: JSX.Element | JSX.Element[];
@@ -22,10 +20,7 @@ const Layout: React.FC<ChildElement> = ({ children }) => {
       >
         <Header />
       </header>
-      <main className={`t-def-main`}>
-        {children}
-        <AnimatePresence>{isModalActive && <MainModal />}</AnimatePresence>
-      </main>
+      <main className={`t-def-main`}>{children}</main>
       <footer className={`t-def-footer flex justify-center items-center`}>
         <div className={`test`}>{`©${siteTitle}`}</div>
       </footer>

@@ -28,8 +28,8 @@ const MainModal: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      className={`t-main-modal w-full bg-white flex justify-center items-center z-20`}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      className={`t-modal-height bg-white w-full flex justify-center items-center z-50`}
     >
       <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
         <ul>
