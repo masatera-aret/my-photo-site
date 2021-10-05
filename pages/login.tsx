@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useRouter } from "next/router";
-import Loading from "@/components/photo_label/Loading";
+import Loading from "@/components/Loading";
 
 const auth = getAuth();
 

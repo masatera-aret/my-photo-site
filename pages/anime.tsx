@@ -1,30 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/assets/css/anime.module.css";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import Test from "@/components/Test";
+import Test from "@/components/test_component/Test";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import Loading from "@/components/photo_label/Loading";
+import Loading from "@/components/Loading";
 import Img from "next/image";
 
 const storage = getStorage();
 const listRef = ref(storage, `Egypt`);
 const storageRef = ref(storage);
 
-// async function fetchAll() {
-//   const res = await listAll(listRef).catch((err) => console.log(err));
-//   if (!res) return;
-//   console.log(res);
-// }
-
-// fetchAll();
-
-type images = {
-  url: string;
-  width: number;
-  height: number;
-};
-
 const Anime: React.FC = () => {
+  console.log("レンダリング");
   const [imageUrl, setImageUrl] = useState<any>();
   const [urls, setUrls] = useState<(string | void)[]>();
   const [isVisible, setIsVisible] = useState(false);
@@ -64,29 +51,6 @@ const Anime: React.FC = () => {
     })();
   }, []);
 
-  // function loadImage(src: any): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     const img = new Image();
-  //     img.onload = () => resolve(img);
-  //     img.onerror = (e) => reject(e);
-  //     img.src = src;
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   if (!urls) return;
-  //   (async () => {
-  //     const newUrl = await Promise.all(
-  //       urls.map(async (el: any) => {
-  //         if (!el) return;
-  //         const image = await loadImage(el);
-  //         return { url: image.src, width: image.width, height: image.height };
-  //       })
-  //     );
-  //     setImageUrl(newUrl);
-  //   })();
-  // }, [urls]);
-
   useEffect(() => {
     if (!imageUrl) return;
     console.log("imageUrl", imageUrl);
@@ -122,9 +86,9 @@ const Anime: React.FC = () => {
         <button className={styles.test} onClick={startAnimate}>
           ボタン
         </button>
-        <Test />
       </div>
-      <div>
+      <Test />
+      <div className={`bg-green-400`}>
         {imageUrl &&
           imageUrl.map((el: string, index: number) => (
             <div key={index} className={`relative`}>

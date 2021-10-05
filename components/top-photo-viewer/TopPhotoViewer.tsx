@@ -7,7 +7,7 @@ import PhotoPagination from "./PhotoPagination";
 
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
-export const CurrentPhotoIndexComponent = createContext(null);
+export const CurrentPhotoIndexContext = createContext(null);
 
 const TopPhotoViewer: FC = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>();
@@ -28,7 +28,7 @@ const TopPhotoViewer: FC = () => {
   }, []);
 
   return (
-    <CurrentPhotoIndexComponent.Provider value={contextValue}>
+    <CurrentPhotoIndexContext.Provider value={contextValue}>
       <div className={`md:w-[60%]`}>
         <div className={`relative pt-[100%]`}>
           <AnimatePresence>
@@ -48,7 +48,7 @@ const TopPhotoViewer: FC = () => {
         </div>
         <PhotoPagination />
       </div>
-    </CurrentPhotoIndexComponent.Provider>
+    </CurrentPhotoIndexContext.Provider>
   );
 };
 

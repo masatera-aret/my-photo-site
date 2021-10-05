@@ -3,23 +3,22 @@ import { createStore } from "redux";
 export type StoreState = ReturnType<typeof reducer>;
 type Action = { type: string };
 
-console.log("store");
-const initial_satate = {
+const initialSatate = {
   isModalActive: false,
   breakpoint: 768,
   siteTitle: "Journey's Photo",
 };
 
-const reducer = (state = initial_satate, action: Partial<Action>) => {
+const reducer = (state = initialSatate, action: Partial<Action>) => {
   switch (action.type) {
     case `active`:
       return {
-        ...initial_satate,
+        ...initialSatate,
         isModalActive: true,
       };
     case `inactive`:
       return {
-        ...initial_satate,
+        ...initialSatate,
         isModalActive: false,
       };
     default:

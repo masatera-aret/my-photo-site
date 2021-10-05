@@ -8,7 +8,7 @@ const LoadingModal = (): JSX.Element => {
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
       className={`fixed top-0 left-0 w-full min-h-screen bg-white flex justify-center items-center z-20`}
     >
       <div>
@@ -23,7 +23,7 @@ const LoadingModal = (): JSX.Element => {
                 delay: index * 0.1,
                 repeat: Infinity,
                 repeatType: "reverse",
-                duration: 2,
+                duration: 1,
               },
             }}
             className={`inline text-green-600 text-md tracking-widest font-extralight`}
