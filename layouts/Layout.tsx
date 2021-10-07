@@ -9,20 +9,13 @@ type ChildElement = {
 };
 
 const Layout: React.FC<ChildElement> = ({ children }) => {
-  const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
 
   return (
     <>
-      <header
-        className={`t-def-header bg-white fixed flex justify-center top-0 left-0 w-full z-50 duration-300 ${
-          isModalActive ? `bg-opacity-100` : `bg-opacity-90`
-        }`}
-      >
-        <HeadersContextProvider>
-          <Header />
-        </HeadersContextProvider>
-      </header>
+      <HeadersContextProvider>
+        <Header />
+      </HeadersContextProvider>
       <main className={`t-def-main`}>{children}</main>
       <footer className={`t-def-footer flex justify-center items-center`}>
         <div className={`test`}>{`©${siteTitle}`}</div>

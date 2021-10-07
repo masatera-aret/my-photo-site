@@ -23,7 +23,7 @@ export function reducer(state: InitialState, action: Action) {
     case "inactive":
       return { ...state, isModalActive: (state.isModalActive = false) };
     default:
-      throw new Error("入力ミス");
+      throw new Error("action-type input error");
   }
 }
 

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index";
-import MenuByMobile from "./MenuByMobile";
-import MenuByPC from "./MenuByPC";
 import { AnimatePresence } from "framer-motion";
-import MainModal from "@/components/header/MainModal";
+import HeaderNavByMobile from "./HeaderNavByMobile";
+import HeaderNavByPC from "./HeaderNavByPC";
+import MainModal from "./MainModal";
 import { useHeadersContext, InitialState } from "./HeadersContext";
 
 type State = {
@@ -43,11 +43,19 @@ const Header: React.FC = () => {
   }
 
   return (
-    <>
+    <header
+      className={`t-def-header bg-white fixed flex justify-center top-0 left-0 w-full z-50 duration-300 ${
+        state.isModalActive ? `bg-opacity-100` : `bg-opacity-90`
+      }`}
+    >
       <div
         className={`flex relative items-center w-[90%] max-w-[1024px] mx-auto`}
       >
-        {isMobile ? <MenuByMobile /> : isMobile !== undefined && <MenuByPC />}
+        {isMobile ? (
+          <HeaderNavByMobile />
+        ) : (
+          isMobile !== undefined && <HeaderNavByPC />
+        )}
         <div className={`absolute right-0`}>
           <a
             href={`/`}
@@ -59,7 +67,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <AnimatePresence>{state.isModalActive && <MainModal />}</AnimatePresence>
-    </>
+    </header>
   );
 };
 

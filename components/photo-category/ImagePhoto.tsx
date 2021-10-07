@@ -25,7 +25,7 @@ const ImagePhoto: React.FC<ExpansionPhotoList> = ({
                 transition: { duration: 1, delay: index / 3 },
               }}
               whileHover={{
-                scale: [null, 1.05, 1.02],
+                scale: [null, 1.04, 1.03],
                 transition: { duration: 0.5 },
               }}
               className={`block cursor-pointer relative w-[90%] pt-[45%] mx-auto`}
