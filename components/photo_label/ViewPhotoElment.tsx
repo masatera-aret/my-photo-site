@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import * as Types from "@/assets/ts/types/types";
 import { AnimatePresence, motion } from "framer-motion";
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 type Params = {
   src: StaticImageData;
@@ -57,8 +57,7 @@ const ViewPhotoElment: React.FC<Params> = ({
     route.push(`/photo/${photo_label}?num=${next_photo}`);
   }
 
-  const [isImageLoad, setImageLoad] = useState(true);
-
+  const [isImageLoading, setImageLoad] = useState(true);
   function photoLoaded() {
     setImageLoad(false);
   }
@@ -88,8 +87,8 @@ const ViewPhotoElment: React.FC<Params> = ({
           height={src.height}
           onLoad={photoLoaded}
         />
-        <AnimatePresence>{isImageLoad && <Loading />}</AnimatePresence>
       </motion.div>
+      <AnimatePresence>{isImageLoading && <Loading />}</AnimatePresence>
     </>
   );
 };

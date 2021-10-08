@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index";
-import MenuByMobile from "./MenuByMobile";
-import MenuByPC from "./MenuByPC";
+import { AnimatePresence } from "framer-motion";
+import HeaderNavByMobile from "./HeaderNavByMobile";
+import HeaderNavByPC from "./HeaderNavByPC";
+import MainModal from "./MainModal";
+import { useHeadersContext, InitialState } from "./HeadersContext";
+
+type State = {
+  state: InitialState;
+  dispatch: React.Dispatch<any>;
+};
 
 const Header: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const { state, dispatch }: State = useHeadersContext();
   const [isMobile, setIsMobile] = useState<boolean>();
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
   const breakpoint = useSelector((state: StoreState) => state.breakpoint);
@@ -16,11 +24,9 @@ const Header: React.FC = () => {
   useEffect(() => {
     function setViewPortWidth() {
       viewPortwWidth = window.innerWidth;
-      setIsMobile(viewPortwWidth < breakpoint);
-      setIsMobile((state) => {
-        if (!state) dispatch({ type: `inactive` });
-        return state;
-      });
+      const isWidthMobile = viewPortwWidth < breakpoint;
+      setIsMobile(isWidthMobile);
+      if (!isWidthMobile) return dispatch({ type: `inactive` });
     }
     setViewPortWidth();
     window.addEventListener("resize", setViewPortWidth);
@@ -37,20 +43,31 @@ const Header: React.FC = () => {
   }
 
   return (
-    <div
-      className={`flex relative items-center w-[90%] max-w-[1024px] mx-auto`}
+    <header
+      className={`t-def-header bg-white fixed flex justify-center top-0 left-0 w-full z-50 duration-300 ${
+        state.isModalActive ? `bg-opacity-100` : `bg-opacity-90`
+      }`}
     >
-      {isMobile ? <MenuByMobile /> : <MenuByPC />}
-      <div className={`absolute right-0`}>
-        <a
-          href={`/`}
-          className={`n-title-font text-green-600 text-xl tracking-wider font-extralight`}
-          onClick={(e) => handleClick(e)}
-        >
-          {siteTitle}
-        </a>
+      <div
+        className={`flex relative items-center w-[90%] max-w-[1024px] mx-auto`}
+      >
+        {isMobile ? (
+          <HeaderNavByMobile />
+        ) : (
+          isMobile !== undefined && <HeaderNavByPC />
+        )}
+        <div className={`absolute right-0`}>
+          <a
+            href={`/`}
+            className={`n-title-font text-green-600 text-xl tracking-wider font-extralight`}
+            onClick={(e) => handleClick(e)}
+          >
+            {siteTitle}
+          </a>
+        </div>
       </div>
-    </div>
+      <AnimatePresence>{state.isModalActive && <MainModal />}</AnimatePresence>
+    </header>
   );
 };
 

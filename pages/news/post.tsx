@@ -13,7 +13,7 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import Loading from "@/components/photo_label/Loading";
+import Loading from "@/components/Loading";
 
 const db = getFirestore();
 const admin = collection(db, "admin");

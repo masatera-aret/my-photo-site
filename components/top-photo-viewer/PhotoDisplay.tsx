@@ -7,7 +7,7 @@ import * as Types from "@/assets/ts/types/types";
 import * as Photos from "@/assets/ts/images";
 import { useRouter } from "next/router";
 //context component
-import { CurrentPhotoIndexComponent } from "./TopPhotoViewer";
+import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
@@ -15,7 +15,7 @@ const photosLength = PhotoImages.length;
 const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
   const router = useRouter();
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
-    CurrentPhotoIndexComponent
+    CurrentPhotoIndexContext
   );
 
   function PhotoSlideToNext(): void {

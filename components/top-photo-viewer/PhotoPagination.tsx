@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { CurrentPhotoIndexComponent } from "./TopPhotoViewer";
+import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 import * as Photos from "@/assets/ts/images";
 
 const PhotoImages = Photos.top_view_photos;
 
 const PhotoPagination: React.FC = () => {
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
-    CurrentPhotoIndexComponent
+    CurrentPhotoIndexContext
   );
   return (
     <>

@@ -1,139 +1,133 @@
-import React, { useState, useEffect, useRef } from "react";
-import styles from "@/assets/css/anime.module.css";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import Test from "@/components/Test";
+import React, { useReducer } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import Loading from "@/components/photo_label/Loading";
-import Img from "next/image";
+import { GetStaticProps } from "next";
+import Image from "next/image";
 
-const storage = getStorage();
-const listRef = ref(storage, `Egypt`);
-const storageRef = ref(storage);
-
-// async function fetchAll() {
-//   const res = await listAll(listRef).catch((err) => console.log(err));
-//   if (!res) return;
-//   console.log(res);
-// }
-
-// fetchAll();
-
-type images = {
-  url: string;
-  width: number;
-  height: number;
+const inirialState = {
+  location: `egypt`,
 };
 
-const Anime: React.FC = () => {
-  const [imageUrl, setImageUrl] = useState<any>();
-  const [urls, setUrls] = useState<(string | void)[]>();
-  const [isVisible, setIsVisible] = useState(false);
-  const controls = useAnimation();
-  function startAnimate() {
-    setIsVisible((state) => !state);
-    setIsVisible((state) => {
-      if (state) {
-        controls.start(
-          (i) => i === 0 && { rotate: 45, y: "135px", width: "100%" }
-        );
-        controls.start((i) => i === 1 && { opacity: 0, width: "0" });
-        controls.start((i) => i === 2 && { rotate: -45, y: "-135px" });
-      }
-      if (!state) {
-        controls.start((i) => i === 0 && { rotate: 0, y: "0px", width: "50%" });
-        controls.start((i) => i === 1 && { opacity: 1, width: "75%" });
-        controls.start((i) => i === 2 && { rotate: 0, y: "0px" });
-      }
+type InitialState = typeof inirialState;
+
+type Action = {
+  type: string;
+  payload?: any;
+};
+
+const reducer = (state: InitialState, action: Action) => {
+  switch (action.type) {
+    case `egypt`:
+      return { ...state, location: (state.location = `egypt`) };
+    case `jordan`:
+      return { ...state, location: (state.location = `jordan`) };
+    default:
       return state;
-    });
   }
+};
 
-  useEffect(() => {
-    (async () => {
-      const res = await listAll(listRef).catch((err) => console.log(err));
-      if (!res) return;
-      const url = await Promise.all(
-        res.items.map(async (el) => {
-          const data = getDownloadURL(ref(storage, el.fullPath)).catch((err) =>
-            console.log(err)
-          );
-          return data;
-        })
-      );
-      setImageUrl(url);
-    })();
-  }, []);
-
-  // function loadImage(src: any): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     const img = new Image();
-  //     img.onload = () => resolve(img);
-  //     img.onerror = (e) => reject(e);
-  //     img.src = src;
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   if (!urls) return;
-  //   (async () => {
-  //     const newUrl = await Promise.all(
-  //       urls.map(async (el: any) => {
-  //         if (!el) return;
-  //         const image = await loadImage(el);
-  //         return { url: image.src, width: image.width, height: image.height };
-  //       })
-  //     );
-  //     setImageUrl(newUrl);
-  //   })();
-  // }, [urls]);
-
-  useEffect(() => {
-    if (!imageUrl) return;
-    console.log("imageUrl", imageUrl);
-  }, [imageUrl]);
-
+const Anime = ({
+  imageUrls,
+  topViewImages,
+}: {
+  imageUrls: Object;
+  topViewImages: Array<string>;
+}) => {
+  const [{ location }, dispatch] = useReducer(reducer, inirialState);
   return (
-    <>
-      <AnimatePresence>{!imageUrl && <Loading />}</AnimatePresence>
-      <div className={`w-[300px] h-[300px]`}>
-        <div
-          className={`relative w-full h-full bg-red-400`}
-          onClick={startAnimate}
-        >
-          <motion.span
-            className={`absolute top-0 left-0 inline-block w-1/2 h-[10%] bg-black`}
-            custom={0}
-            animate={controls}
-            transition={{ duration: 1 }}
-          ></motion.span>
-          <motion.span
-            className={`absolute top-[45%] left-0 inline-block w-3/4 h-[10%] bg-black`}
-            custom={1}
-            animate={controls}
-            transition={{ duration: 1 }}
-          ></motion.span>
-          <motion.span
-            className={`absolute bottom-0 left-0 inline-block w-full h-[10%] bg-black`}
-            custom={2}
-            animate={controls}
-            transition={{ duration: 1 }}
-          ></motion.span>
-        </div>
-        <button className={styles.test} onClick={startAnimate}>
-          ボタン
-        </button>
-        <Test />
-      </div>
+    <div>
+      <h1>anime</h1>
+      <p>test</p>
       <div>
-        {imageUrl &&
-          imageUrl.map((el: string, index: number) => (
-            <div key={index} className={`relative`}>
-              <Img key={index} src={el} width={250} height={250} alt="" />
+        {topViewImages &&
+          topViewImages.map((url, index) => (
+            <div
+              key={index}
+              className={`relative w-[350px] h-[350px] pointer-events-none`}
+            >
+              <Image src={url} layout={`fill`} objectFit={`contain`} alt="" />
             </div>
           ))}
       </div>
-    </>
+      {/* <button
+        onClick={() => dispatch({ type: `egypt` })}
+        className={`rounded bg-blue-400 text-white p-2`}
+      >
+        egypt
+      </button>
+      <button
+        onClick={() => dispatch({ type: `jordan` })}
+        className={`rounded bg-blue-400 text-white p-2`}
+      >
+        jordan
+      </button>
+      <div>
+        {imageUrls[location].map((el: string, index: number) => (
+          <img key={index} src={el} alt={``} />
+        ))}
+      </div> */}
+    </div>
   );
+};
+
+const storage = getStorage();
+const imagesRef = ref(storage, `images`);
+
+const fetchImagesDirNames = async () => {
+  const res = await listAll(imagesRef).catch((err) => console.log(err));
+  if (!res) return;
+  const dirNames = await Promise.all(
+    res.prefixes.map((el) => {
+      return el.name;
+    })
+  );
+  return dirNames;
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const imagesDirName = await fetchImagesDirNames();
+  const imageDirRefs = imagesDirName.map((dirName) => {
+    return ref(storage, `images/${dirName}`);
+  });
+
+  const lists = await Promise.all(
+    imageDirRefs.map(async (ref) => {
+      return await listAll(ref).catch((e) => console.log(e));
+    })
+  );
+
+  let imageUrls = {};
+  imagesDirName.forEach((el) => {
+    imageUrls = { ...imageUrls, [el]: [] };
+  });
+
+  await Promise.all(
+    lists.flatMap((el) => {
+      if (!el) return;
+      const urls = el.items.map(async (item) => {
+        const url = await getDownloadURL(ref(storage, item.fullPath));
+        const locationName = item.parent.name;
+        imageUrls[locationName] = [...imageUrls[locationName], url];
+      });
+      return urls;
+    })
+  );
+
+  function getRondomIndexNum(length: number) {
+    return Math.floor(Math.random() * length);
+  }
+
+  const topViewImages = Object.keys(imageUrls).map((key) => {
+    const length = imageUrls[key].length;
+    const index = getRondomIndexNum(length);
+    return imageUrls[key][index];
+  });
+
+  return {
+    props: {
+      imageUrls,
+      topViewImages,
+    },
+  };
 };
 
 export default Anime;
