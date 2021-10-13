@@ -14,6 +14,7 @@ const Home: React.FC = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
+  const images = useSelector((state: StoreState) => state.images);
   const [news] = useState(newsData !== undefined && JSON.parse(newsData));
 
   return (
