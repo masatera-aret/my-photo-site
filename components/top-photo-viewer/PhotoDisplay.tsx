@@ -20,7 +20,7 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
 
   function PhotoSlideToNext(): void {
     // if (!isMounted) return;
-    setCurrentPhotoIndex((state) => {
+    setCurrentPhotoIndex((state: number) => {
       if (photosLength - 1 <= state) {
         return (state = 0);
       }
@@ -28,7 +28,7 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     });
   }
   function PhotoSlideToPrev(): void {
-    setCurrentPhotoIndex((state) => {
+    setCurrentPhotoIndex((state: number) => {
       if (state <= 0) {
         return (state = photosLength - 1);
       }
@@ -93,11 +93,15 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
   function clickImage(
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     label: string,
-    id: number
+    id: number,
+    src: StaticImageData
   ) {
     e.preventDefault();
-    router.push(`/photo/${label.toLowerCase()}?id=${id}`);
+    const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
+    const index = photosHasLabel.findIndex((i) => i.id === id);
+    router.push(`/photo/${label.toLowerCase()}?num=${index + 1}`);
   }
+
 
   return (
     <>
@@ -115,7 +119,7 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
         <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a
             className={`block relative pt-[100%]`}
-            onClick={(e) => clickImage(e, label, id)}
+            onClick={(e) => clickImage(e, label, id, src)}
           >
             <Image
               className={`cursor-pointer pointer-events-none`}

@@ -14,7 +14,6 @@ const Home: React.FC = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
-  const images = useSelector((state: StoreState) => state.images);
   const [news] = useState(newsData !== undefined && JSON.parse(newsData));
 
   return (
@@ -46,19 +45,22 @@ import {
   getDocs,
   query,
   orderBy,
+  doc,
+  setDoc,
 } from "firebase/firestore";
 
 // firestore
 const db = getFirestore();
-const admin = collection(db, "admin");
+const collectionNews = collection(db, "news");
+const docRef = collection(db, `images`, `egypt`, `images`);
 
 export const getStaticProps: GetStaticProps = async () => {
   // `getStaticProps` はサーバー側で実行されます
   const newsData = [];
   const res = await getDocs(
-    query(admin, orderBy("timestamp", "desc"), limit(5))
+    query(collectionNews, orderBy("timestamp", "desc"), limit(5))
   );
-  res.docs.map((doc) => {
+  res.docs.forEach((doc) => {
     const timestamp = doc.data().timestamp.toDate();
     newsData.push({ news: doc.data().news, timestamp });
   });

@@ -1,14 +1,17 @@
+import React from "react";
 import { useRouter } from "next/router";
 
 const NotFound = () => {
   const router = useRouter();
 
-  function edirect() {
-    setTimeout(() => {
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
       router.push(`/`);
     }, 3000);
-  }
-  edirect();
+    return () => {
+      clearTimeout(timer);
+    };
+  });
 
   return (
     <div>
