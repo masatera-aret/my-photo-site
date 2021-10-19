@@ -18,35 +18,40 @@ type data = {
   timestamp: any
 }
 
-router
-  .route(`/test`)
-  .get((req, res) => {
-    res.send(`received req by GET`)
-  })
-  .post((req, res) => {
-    res.send(`received request by POST`)
-  })
-
 
 router
-  .route(`/test/:id`)
-  .get((req, res) => {
-    res.send(`GET ${req.params.id}`)
+  .route(`/images/:location`)
+  .get(async (req, res) => {
+    const { location } = req.params
+    try {
+      const snapshoto = await db.collection(`images`).doc(location).collection(`photos`).orderBy(`createAt`, `desc`).get()
+      let images: any[] = []
+      snapshoto.forEach(doc => {
+        images.push({
+          imageId: doc.id,
+          ...doc.data()
+        })
+      })
+      res.json({ images: images })
+    } catch (error) {
+      console.log(error);
+    }
   })
+
 
 router
   .route(`/news`)
   .get(async (req, res) => {
     const news: news[] = []
     try {
-      const querySnapshot = await db.collection(`news`).orderBy(`timestamp`, `desc`).get()
+      const querySnapshot = await db.collection(`news`).orderBy(`timestamp`, `desc`).limit(5).get()
       querySnapshot.forEach(doc => {
         news.push({ id: doc.id, text: { ...doc.data() as data } })
       })
+      res.json({ status: `successful`, news: news })
     } catch (error) {
       console.log(error, `@@@@@@@@@@`);
     }
-    res.json({ status: `successful`, news: news })
   })
 
   .post(async (req, res) => {

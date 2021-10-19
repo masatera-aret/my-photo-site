@@ -8,6 +8,7 @@ import News from "@/components/News";
 import { StoreState } from "@/store/index";
 import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
+import axios from "axios";
 
 const Home: React.FC = ({
   newsData,

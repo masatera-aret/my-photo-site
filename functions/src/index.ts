@@ -10,7 +10,7 @@ app.use(`/`, router)
 const FieldValue = admin.firestore.FieldValue
 
 
-// export const api = functions.region(`asia-northeast1`).https.onRequest(app)
+export const api = functions.region(`asia-northeast1`).https.onRequest(app)
 
 export const addImageUrl = functions.region(`asia-northeast1`).storage.object().onFinalize(async (obj) => {
   const root = obj.name as string
@@ -25,9 +25,10 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
       await db.collection(topCollection).doc(photoLabel).set({
         id: 0
       })
+      functions.logger.log(`フォルダの追加完了`, root)
     }
   } catch (error) {
-    console.log(`フォルダ追加のエラー`, error);
+    functions.logger.log(error)
   }
 
   try {
@@ -55,8 +56,9 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
       label: photoLabel,
       createAt: FieldValue.serverTimestamp()
     })
+    functions.logger.log(`${photoLabel}フォルダへ${fileName}の追加が完了`)
   } catch (error) {
-    console.log(`imageのurl登録でエラー`, error);
+    functions.logger.log(`imageの追加が出来ませんでした`, error)
   }
 })
 
@@ -74,6 +76,6 @@ export const deleteImageUrl = functions.region(`asia-northeast1`).storage.object
 
     await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).delete();
   } catch (error) {
-    console.log('deleteImageUrlのエラー', error);
+    functions.logger.log('deleteImageUrlのエラー', error);
   }
 })
