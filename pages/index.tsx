@@ -8,43 +8,16 @@ import News from "@/components/News";
 import { StoreState } from "@/store/index";
 import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
-import {
-  getFirestore,
-  collection,
-  limit,
-  getDocs,
-  query,
-  orderBy,
-} from "firebase/firestore";
-
-// firestore
-const db = getFirestore();
-const admin = collection(db, "admin");
-
-export const getStaticProps: GetStaticProps = async () => {
-  // `getStaticProps` はサーバー側で実行されます
-  const newsData = [];
-  const res = await getDocs(
-    query(admin, orderBy("timestamp", "desc"), limit(5))
-  );
-  res.docs.map((doc) => {
-    const timestamp = doc.data().timestamp.toDate();
-    newsData.push({ news: doc.data().news, timestamp });
-  });
-  const json = JSON.stringify(newsData);
-  return {
-    props: {
-      newsData: json,
-    },
-  };
-};
+import axios from "axios";
 
 const Home: React.FC = ({
   newsData,
+  allImages,
+  topImagesByRandom,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
-  const [news] = useState(newsData !== undefined && JSON.parse(newsData));
+  const [news] = useState(newsData !== undefined && newsData);
 
   return (
     <>
@@ -53,7 +26,7 @@ const Home: React.FC = ({
         {isModalActive && <style>{`body {overflow-y: hidden}`}</style>}
       </Head>
       <div className={`md:flex md:justify-between`}>
-        <TopPhotoViewer />
+        <TopPhotoViewer topImagesByRandom={topImagesByRandom} />
         <section className={`md:w-1/3 flex md:justify-end`}>
           <SiteDiscription />
         </section>
@@ -66,6 +39,46 @@ const Home: React.FC = ({
       </div>
     </>
   );
+};
+
+import { getFirestore } from "firebase/firestore";
+// firestore
+const db = getFirestore();
+
+export type ImageType = {
+  id: string;
+  label: string;
+  url: string;
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  // newsとトップ画面に表示する用のimageとstorageにあるimage全てを取得
+  const apiUrl = process.env.API_URL;
+  try {
+    const newsData = await axios.get(`${apiUrl}/news`);
+    const allImagesData = await axios.get(`${apiUrl}/all_images`);
+    const allImages: Record<string, ImageType[]> = allImagesData.data;
+
+    const topImagesByRandom = Object.keys(allImages)
+      .map((key) => {
+        const length = allImages[key].length;
+        const min = 0;
+        const max = length - 1;
+        const randam = Math.floor(Math.random() * (max + 1 - min)) + min;
+        return allImages[key][randam];
+      })
+      .filter((e) => e !== undefined);
+
+    return {
+      props: {
+        newsData: newsData.data,
+        allImages: allImages,
+        topImagesByRandom,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default Home;

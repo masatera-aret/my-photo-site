@@ -16,7 +16,7 @@ import {
 import Loading from "@/components/Loading";
 
 const db = getFirestore();
-const admin = collection(db, "admin");
+const collectionNews = collection(db, "news");
 
 type typeNews = {
   news: string;
@@ -26,7 +26,9 @@ type typeNews = {
 export const getStaticProps: GetStaticProps = async () => {
   // `getStaticProps` はサーバー側で実行されます
   const newsData = [];
-  const res = await getDocs(query(admin, orderBy("timestamp", "desc")));
+  const res = await getDocs(
+    query(collectionNews, orderBy("timestamp", "desc"))
+  );
   res.docs.map((doc) => {
     newsData.push(doc.data());
   });
@@ -48,17 +50,17 @@ const Post: React.FC = ({
   const [newNews, setNewNews] = useState<string>("");
   const [testData, setTestData] = useState<typeNews[]>(JSON.parse(newsData));
 
-  async function click(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function newsPost(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     try {
-      const news = await addDoc(admin, {
+      const news = await addDoc(collectionNews, {
         news: newNews,
         timestamp: serverTimestamp(),
       });
       console.log(news.id);
       setNewNews("");
     } catch (err) {
-      console.log("書き込み失敗", err);
+      throw new Error(err);
     }
   }
 
@@ -102,7 +104,7 @@ const Post: React.FC = ({
             />
             <button
               className={`bg-green-400 text-white py-1 px-3`}
-              onClick={(e) => click(e)}
+              onClick={(e) => newsPost(e)}
             >
               テスト
             </button>
