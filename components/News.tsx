@@ -2,7 +2,8 @@ import React from "react";
 import moment from "moment";
 
 type typeNews = {
-  news: string;
+  id: string;
+  text: string;
   timestamp: any;
 };
 
@@ -14,12 +15,12 @@ const News = ({ news }) => {
       </div>
       <ul className={`mt-5`}>
         {news &&
-          news.map((el: typeNews, index) => (
+          news.map((el: typeNews) => (
             <li
-              key={index}
+              key={el.id}
               className={`font-thin text-sm mb-2 last-of-type:mb-0`}
             >
-              {`${el.news}${moment(el.timestamp).format(`YYYY/M/D`)}`}
+              {`${el.text}${moment(el.timestamp).format(`YYYY/M/D`)}`}
             </li>
           ))}
       </ul>
