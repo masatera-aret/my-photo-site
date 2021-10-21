@@ -12,10 +12,12 @@ import axios from "axios";
 
 const Home: React.FC = ({
   newsData,
+  allImages,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  console.log(allImages);
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
-  const [news] = useState(newsData !== undefined && JSON.parse(newsData));
+  const [news] = useState(newsData !== undefined && newsData.data);
 
   return (
     <>
@@ -56,21 +58,20 @@ const collectionNews = collection(db, "news");
 const docRef = collection(db, `images`, `egypt`, `images`);
 
 export const getStaticProps: GetStaticProps = async () => {
-  // `getStaticProps` はサーバー側で実行されます
-  const newsData = [];
-  const res = await getDocs(
-    query(collectionNews, orderBy("timestamp", "desc"), limit(5))
-  );
-  res.docs.forEach((doc) => {
-    const timestamp = doc.data().timestamp.toDate();
-    newsData.push({ news: doc.data().news, timestamp });
-  });
-  const json = JSON.stringify(newsData);
-  return {
-    props: {
-      newsData: json,
-    },
-  };
+  // `newsの取得
+  const apiUrl = process.env.API_URL;
+  try {
+    const newsData = await axios.get(`${apiUrl}/news`);
+    const allImages = await axios.get(`${apiUrl}/all_images`);
+    return {
+      props: {
+        newsData: newsData.data,
+        allImages: allImages.data,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default Home;

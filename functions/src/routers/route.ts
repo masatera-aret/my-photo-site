@@ -5,18 +5,70 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 })
 const db = admin.firestore()
-const FieldValue = admin.firestore.FieldValue
+// const FieldValue = admin.firestore.FieldValue
 const router = express.Router()
 
 type news = {
   id: string,
-  text: data
-}
-
-type data = {
-  news: string,
+  text: string,
   timestamp: any
 }
+
+// type data = {
+//   news: string,
+//   timestamp: any
+// }
+
+router
+  .route(`/locations`)
+  .get(async (req, res) => {
+    try {
+      const imagesRef = db.collection(`images`)
+      const snapshot = await imagesRef.get()
+      let locations: string[] = []
+      if (snapshot) {
+        snapshot.forEach(doc => {
+          locations.push(doc.id)
+        })
+      }
+      res.json({ locations })
+    } catch (error) {
+      console.log(error);
+    }
+  })
+
+
+router
+  .route(`/all_images`)
+  .get(async (req, res) => {
+    try {
+      const imagesRef = db.collection(`images`)
+      const snapshot = await imagesRef.get()
+      let locations: string[] = []
+      if (snapshot) {
+        snapshot.forEach(doc => {
+          locations.push(doc.id)
+        })
+      }
+      // ! reduceを使ってスマートに書きたかったけど、なんかよくわからなエラーが出るからやめる
+      let allImages = {}
+      await Promise.all(locations.map(async location => {
+        const locationRef = db.collection(`images`).doc(location).collection(`photos`)
+        const snapshot = await locationRef.get()
+        let images: any[] = []
+        if (snapshot) {
+          snapshot.forEach(doc => {
+            images.push({ id: doc.id, url: doc.data().url, label: doc.data().label })
+          })
+        }
+        allImages = { ...allImages, [location]: images }
+      }))
+      res.json(allImages)
+
+    } catch (error) {
+      console.log(error);
+    }
+  })
 
 
 router
@@ -46,32 +98,11 @@ router
     try {
       const querySnapshot = await db.collection(`news`).orderBy(`timestamp`, `desc`).limit(5).get()
       querySnapshot.forEach(doc => {
-        news.push({ id: doc.id, text: { ...doc.data() as data } })
+        news.push({ id: doc.id, text: doc.data().news, timestamp: doc.data().timestamp })
       })
-      res.json({ status: `successful`, news: news })
+      res.json({ data: news })
     } catch (error) {
       console.log(error, `@@@@@@@@@@`);
-    }
-  })
-
-  .post(async (req, res) => {
-    const { news } = req.body
-    const timestamp = FieldValue.serverTimestamp()
-
-    try {
-      const newNewsRef = await db.collection('news').add({
-        news,
-        timestamp
-      })
-      const newsSnapshot = await newNewsRef.get()
-      const createdNews = {
-        id: newsSnapshot.id,
-        ...newsSnapshot.data()
-      }
-      res.json({ data: createdNews })
-
-    } catch (error) {
-      console.log(error, `@@@@@@@@@@@@@@@@@@`);
     }
   })
 

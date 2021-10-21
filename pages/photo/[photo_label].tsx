@@ -6,16 +6,25 @@ import Head from "next/head";
 import * as Types from "@/assets/ts/types/types";
 import * as Photos from "@/assets/ts/images";
 import ViewPhotoElment from "@/components/photo_label/ViewPhotoElment";
+import axios from "axios";
 
 const all_photos = Photos.all_photos;
 
-type test = {
-  photo_label: string;
+type ImageType = {
+  imageId: string;
   id: number;
-  num: number;
+  url: string;
+  filename: string;
+  creageAt: any;
+  label: string;
 };
 
-const PhotoLabel: React.FC = () => {
+type ParamsType = {
+  images: ImageType[];
+};
+
+const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
+  console.log(images);
   const route = useRouter();
   const { photo_label, id, num } = route.query;
   const locationTitle =
@@ -99,6 +108,30 @@ const PhotoLabel: React.FC = () => {
       </div>
     </>
   );
+};
+
+const apiUrl = process.env.API_URL;
+
+export const getStaticPaths = async () => {
+  const { data } = await axios.get(`${apiUrl}/locations`);
+  const locations = data.locations;
+
+  const params = locations.map((doc) => {
+    return { params: { photo_label: doc } };
+  });
+  return {
+    paths: [...params],
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async ({ params: { photo_label } }) => {
+  const { data } = await axios.get(`${apiUrl}/images/${photo_label}`);
+  return {
+    props: {
+      images: data.images,
+    },
+  };
 };
 
 export default memo(PhotoLabel);
