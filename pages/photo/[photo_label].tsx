@@ -24,7 +24,6 @@ type ParamsType = {
 };
 
 const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
-  console.log(images);
   const route = useRouter();
   const { photo_label, id, num } = route.query;
   const locationTitle =

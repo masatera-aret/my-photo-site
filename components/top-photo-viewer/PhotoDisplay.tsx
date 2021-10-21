@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import * as Types from "@/assets/ts/types/types";
+import { ImageType } from "@/pages/index";
 import * as Photos from "@/assets/ts/images";
 import { useRouter } from "next/router";
 //context component
@@ -12,12 +12,7 @@ import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
 
-const DisplayingPhoto: React.FC<Types.PhotoList> = ({
-  id,
-  src,
-  alt,
-  label,
-}) => {
+const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
   const router = useRouter();
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
     CurrentPhotoIndexContext
@@ -95,17 +90,17 @@ const DisplayingPhoto: React.FC<Types.PhotoList> = ({
     startPhotoSliderInterval();
   }
 
-  function clickImage(
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    label: string,
-    id: number,
-    src: StaticImageData
-  ) {
-    e.preventDefault();
-    const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
-    const index = photosHasLabel.findIndex((i) => i.id === id);
-    router.push(`/photo/${label.toLowerCase()}?num=${index + 1}`);
-  }
+  // function clickImage(
+  //   e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  //   label: string,
+  //   id: string,
+  //   url: string
+  // ) {
+  //   e.preventDefault();
+  //   const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
+  //   const index = photosHasLabel.findIndex((i) => i.id === id);
+  //   router.push(`/photo/${label.toLowerCase()}?num=${index + 1}`);
+  // }
 
   return (
     <>
@@ -123,14 +118,14 @@ const DisplayingPhoto: React.FC<Types.PhotoList> = ({
         <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
           <a
             className={`block relative pt-[100%]`}
-            onClick={(e) => clickImage(e, label, id, src)}
+            // onClick={(e) => clickImage(e, label,id, url)}
           >
             <Image
               className={`cursor-pointer pointer-events-none`}
               layout="fill"
               objectFit="cover"
-              src={src}
-              alt={alt}
+              src={url}
+              alt={``}
             />
           </a>
         </Link>
