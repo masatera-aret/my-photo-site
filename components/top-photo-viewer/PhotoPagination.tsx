@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
 import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
-import * as Photos from "@/assets/ts/images";
+import { ImageType } from "@/pages/index";
 
-const PhotoImages = Photos.top_view_photos;
+type Params = {
+  topImagesByRandom: ImageType[];
+};
 
-const PhotoPagination: React.FC = () => {
+const PhotoPagination = ({ topImagesByRandom }: Params) => {
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
     CurrentPhotoIndexContext
   );
   return (
     <>
       <ul className={`flex list-none mt-1 p-1`}>
-        {PhotoImages.map((photo, index) => (
+        {topImagesByRandom.map((photo, index) => (
           <li
             key={photo.id}
             className={`rounded-[50%] border border-gray-400 w-2 h-2 mr-2 cursor-pointer duration-1000 ${

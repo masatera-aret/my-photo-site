@@ -26,7 +26,10 @@ const Home: React.FC = ({
         {isModalActive && <style>{`body {overflow-y: hidden}`}</style>}
       </Head>
       <div className={`md:flex md:justify-between`}>
-        <TopPhotoViewer topImagesByRandom={topImagesByRandom} />
+        <TopPhotoViewer
+          topImagesByRandom={topImagesByRandom}
+          allImages={allImages}
+        />
         <section className={`md:w-1/3 flex md:justify-end`}>
           <SiteDiscription />
         </section>

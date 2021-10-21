@@ -6,15 +6,16 @@ import PhotoDisplay from "@/components/top-photo-viewer/PhotoDisplay";
 import PhotoPagination from "./PhotoPagination";
 import { ImageType } from "@/pages/index";
 
-const PhotoImages = Photos.top_view_photos;
-const photosLength = PhotoImages.length;
+// const PhotoImages = Photos.top_view_photos;
+// const photosLength = PhotoImages.length;
 export const CurrentPhotoIndexContext = createContext(null);
 
 type Params = {
   topImagesByRandom: ImageType[];
+  allImages: Record<string, ImageType[]>;
 };
 
-const TopPhotoViewer = ({ topImagesByRandom }: Params) => {
+const TopPhotoViewer = ({ topImagesByRandom, allImages }: Params) => {
   const topImagesLength = topImagesByRandom.length;
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>();
   const contextValue = {
@@ -46,12 +47,14 @@ const TopPhotoViewer = ({ topImagesByRandom }: Params) => {
                     id={photo.id}
                     url={photo.url}
                     label={photo.label}
+                    imagesLength={topImagesLength}
+                    allImages={allImages}
                   />
                 )
             )}
           </AnimatePresence>
         </div>
-        <PhotoPagination />
+        <PhotoPagination topImagesByRandom={topImagesByRandom} />
       </div>
     </CurrentPhotoIndexContext.Provider>
   );

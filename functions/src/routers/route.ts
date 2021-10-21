@@ -66,7 +66,7 @@ router
       res.json(allImages)
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   })
 
@@ -86,7 +86,7 @@ router
       })
       res.json({ images: images })
     } catch (error) {
-      console.log(error);
+      console.error(error)
     }
   })
 
@@ -102,7 +102,7 @@ router
       })
       res.json(news)
     } catch (error) {
-      console.log(error, `@@@@@@@@@@`);
+      console.error(error, `@@@@@@@@@@`);
     }
   })
 
