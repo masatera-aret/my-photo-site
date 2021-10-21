@@ -42,8 +42,8 @@ yarn-error.log*
 .vercel
 
 # functions
-# /functions/lib/**/*.js
-# /functions/lib/**/*.js.map
+/functions/lib/**/*.js
+/functions/lib/**/*.js.map
 
 /functions/typings/
 

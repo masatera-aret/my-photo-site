@@ -14,7 +14,7 @@ type Params = {
   topImagesByRandom: ImageType[];
 };
 
-const TopPhotoViewer: React.FC<Params> = ({ topImagesByRandom }) => {
+const TopPhotoViewer = ({ topImagesByRandom }: Params) => {
   const topImagesLength = topImagesByRandom.length;
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>();
   const contextValue = {
