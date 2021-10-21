@@ -26,6 +26,9 @@ type ParamsType = {
 const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
   const route = useRouter();
   const { photo_label, id, num } = route.query;
+  console.log(images[Number(num as string) - 1]);
+  // ! images[Number(num as string) - 1] これで表示するimageを取得出来るよ
+
   const locationTitle =
     typeof photo_label === "string" && photo_label.toUpperCase();
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);

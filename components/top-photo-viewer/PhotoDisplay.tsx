@@ -9,10 +9,21 @@ import { useRouter } from "next/router";
 //context component
 import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 
-const PhotoImages = Photos.top_view_photos;
-const photosLength = PhotoImages.length;
+// const PhotoImages = Photos.top_view_photos;
+// const photosLength = PhotoImages.length;
 
-const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
+type Params = ImageType & {
+  imagesLength: number;
+  allImages: Record<string, ImageType[]>;
+};
+
+const DisplayingPhoto: React.FC<Params> = ({
+  id,
+  url,
+  label,
+  imagesLength,
+  allImages,
+}) => {
   const router = useRouter();
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
     CurrentPhotoIndexContext
@@ -21,7 +32,7 @@ const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
   function PhotoSlideToNext(): void {
     // if (!isMounted) return;
     setCurrentPhotoIndex((state: number) => {
-      if (photosLength - 1 <= state) {
+      if (imagesLength - 1 <= state) {
         return (state = 0);
       }
       return state + 1;
@@ -30,7 +41,7 @@ const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
   function PhotoSlideToPrev(): void {
     setCurrentPhotoIndex((state: number) => {
       if (state <= 0) {
-        return (state = photosLength - 1);
+        return (state = imagesLength - 1);
       }
       return (state = state - 1);
     });
@@ -90,17 +101,19 @@ const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
     startPhotoSliderInterval();
   }
 
-  // function clickImage(
-  //   e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  //   label: string,
-  //   id: string,
-  //   url: string
-  // ) {
-  //   e.preventDefault();
-  //   const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
-  //   const index = photosHasLabel.findIndex((i) => i.id === id);
-  //   router.push(`/photo/${label.toLowerCase()}?num=${index + 1}`);
-  // }
+  function clickImage(
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    label: string,
+    id: string,
+    url: string
+  ) {
+    e.preventDefault();
+    const images = allImages[label];
+    const indexNumber = images.findIndex((e) => e.id === id);
+    // const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
+    // const index = photosHasLabel.findIndex((i) => i.id === id);
+    router.push(`/photo/${label}?num=${indexNumber + 1}`);
+  }
 
   return (
     <>
@@ -115,20 +128,20 @@ const DisplayingPhoto: React.FC<ImageType> = ({ id, url, label }) => {
         className={`absolute top-0 left-0 w-full`}
         style={{ touchAction: "none" }}
       >
-        <Link href={`/photo/${label.toLowerCase()}?id=${id}`}>
-          <a
-            className={`block relative pt-[100%]`}
-            // onClick={(e) => clickImage(e, label,id, url)}
-          >
-            <Image
-              className={`cursor-pointer pointer-events-none`}
-              layout="fill"
-              objectFit="cover"
-              src={url}
-              alt={``}
-            />
-          </a>
-        </Link>
+        {/* <Link href={`/photo/${label.toLowerCase()}?id=${id}`}> */}
+        <a
+          className={`block relative pt-[100%]`}
+          onClick={(e) => clickImage(e, label, id, url)}
+        >
+          <Image
+            className={`cursor-pointer pointer-events-none`}
+            layout="fill"
+            objectFit="cover"
+            src={url}
+            alt={``}
+          />
+        </a>
+        {/* </Link> */}
       </motion.div>
     </>
   );
