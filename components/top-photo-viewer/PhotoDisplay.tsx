@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -12,7 +12,12 @@ import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
 
-const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
+const DisplayingPhoto: React.FC<Types.PhotoList> = ({
+  id,
+  src,
+  alt,
+  label,
+}) => {
   const router = useRouter();
   const { currentPhotoIndex, setCurrentPhotoIndex } = useContext(
     CurrentPhotoIndexContext
@@ -101,7 +106,6 @@ const DisplayingPhoto: FC<Types.PhotoList> = ({ id, src, alt, label }) => {
     const index = photosHasLabel.findIndex((i) => i.id === id);
     router.push(`/photo/${label.toLowerCase()}?num=${index + 1}`);
   }
-
 
   return (
     <>

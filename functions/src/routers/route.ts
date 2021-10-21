@@ -100,7 +100,7 @@ router
       querySnapshot.forEach(doc => {
         news.push({ id: doc.id, text: doc.data().news, timestamp: doc.data().timestamp })
       })
-      res.json({ data: news })
+      res.json(news)
     } catch (error) {
       console.log(error, `@@@@@@@@@@`);
     }

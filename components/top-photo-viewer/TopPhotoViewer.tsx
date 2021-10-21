@@ -4,12 +4,19 @@ import { AnimatePresence } from "framer-motion";
 import * as Photos from "@/assets/ts/images";
 import PhotoDisplay from "@/components/top-photo-viewer/PhotoDisplay";
 import PhotoPagination from "./PhotoPagination";
+import { ImageType } from "@/pages/index";
 
 const PhotoImages = Photos.top_view_photos;
 const photosLength = PhotoImages.length;
 export const CurrentPhotoIndexContext = createContext(null);
 
-const TopPhotoViewer: FC = () => {
+type Params = {
+  topImagesByRandom: ImageType[];
+};
+
+const TopPhotoViewer: React.FC<Params> = ({ topImagesByRandom }) => {
+  // ! topImagesByRandomを展開して写真を表示する様にしろ
+  const topImagesLength = topImagesByRandom.length;
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>();
   const contextValue = {
     currentPhotoIndex,

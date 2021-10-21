@@ -41,5 +41,14 @@ yarn-error.log*
 # vercel
 .vercel
 
+# functions
+/functions/lib/**/*.js
+/functions/lib/**/*.js.map
 
-functions/serviceAccountKey.json
+/functions/typings/
+
+/functions/node_modules/
+
+/functions/firebase-debug.log
+
+/functions/serviceAccountKey.json
