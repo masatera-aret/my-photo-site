@@ -58,7 +58,7 @@ router
         let images: any[] = []
         if (snapshot) {
           snapshot.forEach(doc => {
-            images.push({ id: doc.id, url: doc.data().url, label: doc.data().label })
+            images.push({ imageId: doc.id, ...doc.data() })
           })
         }
         allImages = { ...allImages, [location]: images }
@@ -104,6 +104,27 @@ router
     } catch (error) {
       console.error(error, `@@@@@@@@@@`);
     }
+  })
+
+const cors = require('cors')({ origin: true });
+router
+  .route(`/test`)
+  .get(async (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const testRef = db.collection(`test`).doc(`test`)
+        await db.runTransaction(async (transaction) => {
+          const doc = await transaction.get(testRef)
+
+          const newNumber = (doc.data() && doc.data()!.number || 0) + 1
+          transaction.update(testRef, { number: newNumber })
+          console.log(`success transaction`)
+          res.json({ data: newNumber })
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    });
   })
 
 

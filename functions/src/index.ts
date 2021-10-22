@@ -19,6 +19,7 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
   const photoLabel = rootChunk[1]
   const fileName = rootChunk[2]
 
+  // imagesコレクションにフォルダを追加した場合の処理
   try {
     if (obj.contentType?.match(/application\/x-www-form-urlencoded/)) {
       if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
@@ -31,30 +32,29 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
     functions.logger.log(error)
   }
 
+  // imagesコレクション内にimage/jpegを追加した場合の処理
   try {
     if (!obj.contentType?.match(/image\//)) return
     if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
     const fileRoot = root.replace(/\//g, `%2F`)
 
-    // 最後尾のidを一度取得
+    // transactionでidをuniqueな値(連番の数字)にする
     const photoLabelDocRef = db.collection(topCollection).doc(photoLabel)
+    await db.runTransaction(async (transaction) => {
+      const doc = await transaction.get(photoLabelDocRef)
 
-    // 最後尾のidに + 1 する
-    await photoLabelDocRef.update({
-      id: FieldValue.increment(1)
-    })
+      const newId: number = (doc.data() && doc.data()!.id || 0) + 1
+      transaction.update(photoLabelDocRef, { id: newId })
 
-    const doc = await photoLabelDocRef.get()
-    const id = doc.data()!.id
-
-    const chunkFileName = fileName.split(`.`)
-    const fileNameWithoutExt = chunkFileName[0]
-    await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
-      id: id,
-      filename: fileNameWithoutExt,
-      url: `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${fileRoot}?alt=media`,
-      label: photoLabel,
-      createAt: FieldValue.serverTimestamp()
+      const chunkFileName = fileName.split(`.`)
+      const fileNameWithoutExt = chunkFileName[0]
+      await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
+        id: newId,
+        filename: fileNameWithoutExt,
+        url: `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${fileRoot}?alt=media`,
+        label: photoLabel,
+        createAt: FieldValue.serverTimestamp()
+      })
     })
     functions.logger.log(`${photoLabel}フォルダへ${fileName}の追加が完了`)
   } catch (error) {
