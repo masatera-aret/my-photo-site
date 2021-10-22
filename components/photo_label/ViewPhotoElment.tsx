@@ -1,65 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import * as Types from "@/assets/ts/types/types";
+import Images from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import Loading from "../Loading";
+import { ImageType } from "@/pages/index";
 
 type Params = {
-  src: StaticImageData;
-  alt: string;
-  id: number;
-  filtered_photo: Types.PhotoList[];
-  photo_label: string | string[];
+  imageRef: ImageType;
 };
 
-const ViewPhotoElment: React.FC<Params> = ({
-  src,
-  alt,
-  id,
-  filtered_photo,
-  photo_label,
-}) => {
-  const route = useRouter();
-  const width = src.width;
-  const height = src.height;
-  const isPhotoVertical = width < height;
+const ViewPhotoElment: React.FC<Params> = ({ imageRef }) => {
+  const [isImageLoading, setImageLoad] = useState(true);
 
-  function fetchIndexByPhotoId(id: number) {
-    return filtered_photo.findIndex((photo) => photo.id === id);
+  function photoLoaded() {
+    setImageLoad(false);
   }
 
   function prevPhoto() {
-    let index = fetchIndexByPhotoId(id);
-    index += 1;
-    const last_photo = filtered_photo.length;
-    const prev_photo = index - 1;
-
-    if (index === 1) {
-      route.push(`/photo/${photo_label}?num=${last_photo}`);
-      return;
-    }
-    route.push(`/photo/${photo_label}?num=${prev_photo}`);
+    console.log("prevPhoto");
   }
 
-  // 写真の右半分をクリックした際の関数。写真は filtered_photo のindex「num」で取得している。
-  // urlで ?num=0 となるのはきれいではないのでurlでの表示はindexの+1となっている。その為 index += 1 としている。
   function nextPhoto() {
-    let index = fetchIndexByPhotoId(id);
-    index += 1;
-    const last_photo = filtered_photo.length;
-    const next_photo = index + 1;
-
-    if (index === last_photo) {
-      route.push(`/photo/${photo_label}?num=1`);
-      return;
-    }
-    route.push(`/photo/${photo_label}?num=${next_photo}`);
-  }
-
-  const [isImageLoading, setImageLoad] = useState(true);
-  function photoLoaded() {
-    setImageLoad(false);
+    console.log("nextPhoto");
   }
 
   return (
@@ -68,9 +29,7 @@ const ViewPhotoElment: React.FC<Params> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className={`relative inline-block leading-3 ${
-          isPhotoVertical ? `w-3/4 max-w-[600px]` : `max-w-[950px]`
-        }`}
+        className={`relative inline-block leading-3`}
       >
         <span
           className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
@@ -80,11 +39,11 @@ const ViewPhotoElment: React.FC<Params> = ({
           className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
           onClick={nextPhoto}
         ></span>
-        <Image
-          src={src}
-          alt={alt}
-          width={src.width}
-          height={src.height}
+        <Images
+          src={imageRef.url}
+          alt={``}
+          width={imageRef.width}
+          height={imageRef.height}
           onLoad={photoLoaded}
         />
       </motion.div>

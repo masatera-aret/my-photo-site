@@ -68,7 +68,7 @@ const TestPhoto = ({ images, locations }) => {
             photos.map(
               (photo: string, index: number) =>
                 index === currentPhotoIndex && (
-                  <div key={photo} className={`w-[300px] h-[300px] absolute`}>
+                  <div key={index} className={`w-[300px] h-[300px] absolute`}>
                     <Image
                       src={`/images/${loc}/${photo}`}
                       layout={`fill`}

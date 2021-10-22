@@ -4,20 +4,9 @@ import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index";
 import Head from "next/head";
 import * as Types from "@/assets/ts/types/types";
-import * as Photos from "@/assets/ts/images";
 import ViewPhotoElment from "@/components/photo_label/ViewPhotoElment";
 import axios from "axios";
-
-const all_photos = Photos.all_photos;
-
-type ImageType = {
-  imageId: string;
-  id: number;
-  url: string;
-  filename: string;
-  creageAt: any;
-  label: string;
-};
+import { ImageType } from "@/pages/index";
 
 type ParamsType = {
   images: ImageType[];
@@ -26,8 +15,7 @@ type ParamsType = {
 const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
   const route = useRouter();
   const { photo_label, id, num } = route.query;
-  console.log(images[Number(num as string) - 1]);
-  // ! images[Number(num as string) - 1] これで表示するimageを取得出来るよ
+  const testPhotoRef = images.find((e) => e.id === `${photo_label}_${id}`);
 
   const locationTitle =
     typeof photo_label === "string" && photo_label.toUpperCase();
@@ -69,44 +57,13 @@ const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
     setCurrentPhoto(filtered_photo[inner_index]);
   }
 
-  //route.query の photo_label でフィルターした写真を filtered_photo に更新
-  useEffect(() => {
-    if (!photo_label) return;
-    const photos = all_photos.filter((photo) => {
-      return photo.label.toLocaleLowerCase() === photo_label;
-    });
-    setFilteredPhotos(photos);
-  }, [photo_label]);
-
-  // route.query で受け取る値で表示する写真を変える
-  useEffect(() => {
-    if (!Object.keys(route.query).length) return;
-    if (!filtered_photo) return;
-    if (!filtered_photo.length) {
-      route.push(`/`);
-      return;
-    }
-    if (!id && !num) return setCurrentPhoto(filtered_photo[0]);
-    if (id) return validatePhotoId(Number(id));
-    if (num) return validatePhotoIndex(Number(num));
-  }, [filtered_photo, id, num]);
-
   return (
     <>
       <Head>
         <title>{locationTitle ? `Location ${locationTitle}` : siteTitle}</title>
       </Head>
       <div className={`flex t-main-height justify-center items-center`}>
-        {current_photo && (
-          <ViewPhotoElment
-            key={current_photo.id}
-            id={current_photo.id}
-            src={current_photo.src}
-            alt={current_photo.alt}
-            filtered_photo={filtered_photo}
-            photo_label={photo_label}
-          />
-        )}
+        {testPhotoRef && <ViewPhotoElment imageRef={testPhotoRef} />}
       </div>
     </>
   );

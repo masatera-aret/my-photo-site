@@ -1,26 +1,20 @@
 import React, { useContext } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ImageType } from "@/pages/index";
-import * as Photos from "@/assets/ts/images";
+import Image from "next/image";
 import { useRouter } from "next/router";
 //context component
 import { CurrentPhotoIndexContext } from "./TopPhotoViewer";
 
-// const PhotoImages = Photos.top_view_photos;
-// const photosLength = PhotoImages.length;
-
-type Params = ImageType & {
+type Params = {
+  photo: ImageType;
   imagesLength: number;
   allImages: Record<string, ImageType[]>;
 };
 
 const DisplayingPhoto: React.FC<Params> = ({
-  id,
-  url,
-  label,
+  photo,
   imagesLength,
   allImages,
 }) => {
@@ -101,18 +95,16 @@ const DisplayingPhoto: React.FC<Params> = ({
     startPhotoSliderInterval();
   }
 
-  function clickImage(
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    label: string,
-    id: string,
-    url: string
-  ) {
+  function clickImage(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     e.preventDefault();
-    const images = allImages[label];
-    const indexNumber = images.findIndex((e) => e.id === id);
+    const chunkId = photo.id.split(`_`);
+    const location = chunkId[0];
+    const numberId = chunkId[1];
+    const images = allImages[location];
+    const imageId = images.find((e) => e.id === photo.id);
     // const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
     // const index = photosHasLabel.findIndex((i) => i.id === id);
-    router.push(`/photo/${label}?num=${indexNumber + 1}`);
+    router.push(`/photo/${location}?id=${numberId}`);
   }
 
   return (
@@ -125,23 +117,21 @@ const DisplayingPhoto: React.FC<Params> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
-        className={`absolute top-0 left-0 w-full`}
+        className={`absolute top-0 left-0 w-full cursor-pointer`}
         style={{ touchAction: "none" }}
       >
-        {/* <Link href={`/photo/${label.toLowerCase()}?id=${id}`}> */}
         <a
           className={`block relative pt-[100%]`}
-          onClick={(e) => clickImage(e, label, id, url)}
+          onClick={(e) => clickImage(e)}
         >
           <Image
-            className={`cursor-pointer pointer-events-none`}
+            className={`pointer-events-none`}
+            src={photo.url}
             layout="fill"
             objectFit="cover"
-            src={url}
             alt={``}
           />
         </a>
-        {/* </Link> */}
       </motion.div>
     </>
   );
