@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 
 type typeNews = {
-  id: string;
+  documentId: string;
   text: string;
   timestamp: any;
 };
@@ -17,7 +17,7 @@ const News = ({ news }) => {
         {news &&
           news.map((el: typeNews) => (
             <li
-              key={el.id}
+              key={el.documentId}
               className={`font-thin text-sm mb-2 last-of-type:mb-0`}
             >
               {`${el.text}${moment(el.timestamp).format(`YYYY/M/D`)}`}

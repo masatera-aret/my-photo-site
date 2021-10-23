@@ -5,19 +5,14 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 })
 const db = admin.firestore()
-// const FieldValue = admin.firestore.FieldValue
 const router = express.Router()
 
 type news = {
-  id: string,
+  documentId: string,
   text: string,
   timestamp: any
 }
 
-// type data = {
-//   news: string,
-//   timestamp: any
-// }
 
 router
   .route(`/locations`)
@@ -50,7 +45,6 @@ router
           locations.push(doc.id)
         })
       }
-      // ! reduceを使ってスマートに書きたかったけど、なんかよくわからなエラーが出るからやめる
       let allImages = {}
       await Promise.all(locations.map(async location => {
         const locationRef = db.collection(`images`).doc(location).collection(`photos`)
@@ -58,7 +52,7 @@ router
         let images: any[] = []
         if (snapshot) {
           snapshot.forEach(doc => {
-            images.push({ id: doc.id, url: doc.data().url, label: doc.data().label })
+            images.push({ documentId: doc.id, ...doc.data() })
           })
         }
         allImages = { ...allImages, [location]: images }
@@ -98,7 +92,7 @@ router
     try {
       const querySnapshot = await db.collection(`news`).orderBy(`timestamp`, `desc`).limit(5).get()
       querySnapshot.forEach(doc => {
-        news.push({ id: doc.id, text: doc.data().news, timestamp: doc.data().timestamp })
+        news.push({ documentId: doc.id, text: doc.data().news, timestamp: doc.data().timestamp })
       })
       res.json(news)
     } catch (error) {

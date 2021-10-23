@@ -2,6 +2,7 @@ import React from "react";
 import { GetStaticProps } from "next";
 import fs from "fs";
 import path from "path";
+import axios from "axios";
 
 type Post = { filename: any; content: any };
 

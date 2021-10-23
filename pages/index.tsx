@@ -49,9 +49,12 @@ import { getFirestore } from "firebase/firestore";
 const db = getFirestore();
 
 export type ImageType = {
+  documentId: string;
   id: string;
-  label: string;
   url: string;
+  width: number;
+  height: number;
+  filename: string;
 };
 
 export const getStaticProps: GetStaticProps = async () => {

@@ -1,66 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
-import * as Types from "@/assets/ts/types/types";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import Loading from "../Loading";
+import { ImageType } from "@/pages/index";
 
 type Params = {
-  src: StaticImageData;
-  alt: string;
-  id: number;
-  filtered_photo: Types.PhotoList[];
-  photo_label: string | string[];
+  imageRef: ImageType;
 };
 
-const ViewPhotoElment: React.FC<Params> = ({
-  src,
-  alt,
-  id,
-  filtered_photo,
-  photo_label,
-}) => {
-  const route = useRouter();
-  const width = src.width;
-  const height = src.height;
-  const isPhotoVertical = width < height;
-
-  function fetchIndexByPhotoId(id: number) {
-    return filtered_photo.findIndex((photo) => photo.id === id);
-  }
-
-  function prevPhoto() {
-    let index = fetchIndexByPhotoId(id);
-    index += 1;
-    const last_photo = filtered_photo.length;
-    const prev_photo = index - 1;
-
-    if (index === 1) {
-      route.push(`/photo/${photo_label}?num=${last_photo}`);
-      return;
-    }
-    route.push(`/photo/${photo_label}?num=${prev_photo}`);
-  }
-
-  // 写真の右半分をクリックした際の関数。写真は filtered_photo のindex「num」で取得している。
-  // urlで ?num=0 となるのはきれいではないのでurlでの表示はindexの+1となっている。その為 index += 1 としている。
-  function nextPhoto() {
-    let index = fetchIndexByPhotoId(id);
-    index += 1;
-    const last_photo = filtered_photo.length;
-    const next_photo = index + 1;
-
-    if (index === last_photo) {
-      route.push(`/photo/${photo_label}?num=1`);
-      return;
-    }
-    route.push(`/photo/${photo_label}?num=${next_photo}`);
-  }
+const ViewPhotoElment: React.FC<Params> = ({ imageRef }) => {
+  const router = useRouter();
+  const [isPhotoVertical, setIsPhotoVertical] = useState<boolean>();
+  const { photo_label, id } = router.query;
 
   const [isImageLoading, setImageLoad] = useState(true);
+
   function photoLoaded() {
     setImageLoad(false);
   }
+
+  function prevPhoto() {
+    const prev = Number(id) - 1;
+    router.push(`/photo/${photo_label}?id=${prev}`);
+  }
+
+  function nextPhoto() {
+    const next = Number(id) + 1;
+    router.push(`/photo/${photo_label}?id=${next}`);
+  }
+
+  useEffect(() => {
+    if (!imageRef) return;
+    setIsPhotoVertical(imageRef.width < imageRef.height);
+  }, [imageRef]);
 
   return (
     <>
@@ -81,10 +54,10 @@ const ViewPhotoElment: React.FC<Params> = ({
           onClick={nextPhoto}
         ></span>
         <Image
-          src={src}
-          alt={alt}
-          width={src.width}
-          height={src.height}
+          src={imageRef.url}
+          alt={``}
+          width={imageRef.width}
+          height={imageRef.height}
           onLoad={photoLoaded}
         />
       </motion.div>

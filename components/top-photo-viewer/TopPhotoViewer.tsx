@@ -44,9 +44,7 @@ const TopPhotoViewer = ({ topImagesByRandom, allImages }: Params) => {
                 currentPhotoIndex === index && (
                   <PhotoDisplay
                     key={photo.id}
-                    id={photo.id}
-                    url={photo.url}
-                    label={photo.label}
+                    photo={photo}
                     imagesLength={topImagesLength}
                     allImages={allImages}
                   />

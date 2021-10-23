@@ -2,6 +2,8 @@ import * as functions from "firebase-functions";
 import * as express from "express"
 import * as router from "./routers/route"
 import * as admin from "firebase-admin"
+import imageSize from 'image-size';
+import axios from "axios";
 
 const db = admin.firestore()
 const app = express()
@@ -19,6 +21,7 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
   const photoLabel = rootChunk[1]
   const fileName = rootChunk[2]
 
+  // imagesコレクションにフォルダを追加した場合の処理
   try {
     if (obj.contentType?.match(/application\/x-www-form-urlencoded/)) {
       if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
@@ -31,30 +34,36 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
     functions.logger.log(error)
   }
 
+  // imagesコレクション内にimage/jpegを追加した場合の処理
   try {
     if (!obj.contentType?.match(/image\//)) return
     if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
     const fileRoot = root.replace(/\//g, `%2F`)
+    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${fileRoot}?alt=media`
 
-    // 最後尾のidを一度取得
+    // transactionでidをuniqueな値(連番の数字)にする
     const photoLabelDocRef = db.collection(topCollection).doc(photoLabel)
+    await db.runTransaction(async (transaction) => {
+      const doc = await transaction.get(photoLabelDocRef)
 
-    // 最後尾のidに + 1 する
-    await photoLabelDocRef.update({
-      id: FieldValue.increment(1)
-    })
+      // imageのwidthとheightを取得する
+      const response = await axios.get(imageUrl, { responseType: `arraybuffer` })
+      const img = imageSize(response.data as string)
 
-    const doc = await photoLabelDocRef.get()
-    const id = doc.data()!.id
+      // idの連番をインクリメント
+      const newId: number = (doc.data() && doc.data()!.id || 0) + 1
+      transaction.update(photoLabelDocRef, { id: newId })
 
-    const chunkFileName = fileName.split(`.`)
-    const fileNameWithoutExt = chunkFileName[0]
-    await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
-      id: id,
-      filename: fileNameWithoutExt,
-      url: `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${fileRoot}?alt=media`,
-      label: photoLabel,
-      createAt: FieldValue.serverTimestamp()
+      const chunkFileName = fileName.split(`.`)
+      const fileNameWithoutExt = chunkFileName[0]
+      await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
+        id: `${photoLabel}_${newId}`,
+        filename: fileNameWithoutExt,
+        url: imageUrl,
+        width: img.width,
+        height: img.height,
+        createAt: FieldValue.serverTimestamp()
+      })
     })
     functions.logger.log(`${photoLabel}フォルダへ${fileName}の追加が完了`)
   } catch (error) {
@@ -63,7 +72,6 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
 })
 
 export const deleteImageUrl = functions.region(`asia-northeast1`).storage.object().onDelete(async (obj) => {
-  if (!obj.contentType?.match(/image\//)) return
   try {
     const filePath = obj.name
     const chunkFilePath = filePath!.split(`/`)
@@ -73,8 +81,16 @@ export const deleteImageUrl = functions.region(`asia-northeast1`).storage.object
     const chunkFileName = fileName.split(`.`)
     const fileNameWithoutExt = chunkFileName[0]
     if (topCollection !== `images`) return
+    // imagesコレクション内でディレクトリが削除された場合
+    if (obj.contentType?.match(/application\/x-www-form-urlencoded/)) {
+      await db.collection(topCollection).doc(photoLabel).delete()
+      functions.logger.log(`${topCollection}/${photoLabel}を削除しました`)
+    }
+    // imagesコレクション内でimageオブジェクトが削除された場合
+    if (obj.contentType?.match(/image\//)) {
+      await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).delete();
+    }
 
-    await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).delete();
   } catch (error) {
     functions.logger.log('deleteImageUrlのエラー', error);
   }
