@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import * as Types from "@/assets/ts/types/types";
 import { useRouter } from "next/router";
-import { useHeadersContext, InitialState } from "./HeadersContext";
+import { useHeadersContext } from "./HeadersContext";
 
 type Params = {
   params: {
@@ -21,11 +20,11 @@ const MainModal = ({ params }: Params) => {
   }
   function handleClick(
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    el: string
+    location: string
   ) {
     e.preventDefault();
     dispatch({ type: state.isModalActive ? `inactive` : `active` });
-    router.push(`/photo/${el}`);
+    router.push(`/photo/${location}`);
   }
   return (
     <motion.div
@@ -37,16 +36,16 @@ const MainModal = ({ params }: Params) => {
       <div className={`border border-gray-400 px-5 py-7 min-w-[200px]`}>
         <ul>
           {params &&
-            params.locations.map((el) => (
+            params.locations.map((location) => (
               <li
-                key={el}
+                key={location}
                 className={`text-center pb-2 last-of-type:pb-0 ${
-                  photo_label === el ? `text-green-600` : `text-gray-500`
+                  photo_label === location ? `text-green-600` : `text-gray-500`
                 }`}
               >
-                <Link href={`/photo/${el}`}>
-                  <a onClick={(e) => handleClick(e, el)}>
-                    {`${el.charAt(0).toUpperCase()}${el.slice(1)}`}
+                <Link href={`/photo/${location}`}>
+                  <a onClick={(e) => handleClick(e, location)}>
+                    {`${location.charAt(0).toUpperCase()}${location.slice(1)}`}
                   </a>
                 </Link>
               </li>

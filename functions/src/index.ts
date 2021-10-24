@@ -2,8 +2,6 @@ import * as functions from "firebase-functions";
 import * as express from "express"
 import * as router from "./routers/route"
 import * as admin from "firebase-admin"
-import imageSize from 'image-size';
-import axios from "axios";
 
 const db = admin.firestore()
 const app = express()
@@ -38,17 +36,12 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
   try {
     if (!obj.contentType?.match(/image\//)) return
     if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
-    const fileRoot = root.replace(/\//g, `%2F`)
-    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${fileRoot}?alt=media`
+    const imageUrl = `https://storage.googleapis.com/${obj.bucket}/${obj.name}`
 
     // transactionでidをuniqueな値(連番の数字)にする
     const photoLabelDocRef = db.collection(topCollection).doc(photoLabel)
     await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(photoLabelDocRef)
-
-      // imageのwidthとheightを取得する
-      const response = await axios.get(imageUrl, { responseType: `arraybuffer` })
-      const img = imageSize(response.data as string)
 
       // idの連番をインクリメント
       const newId: number = (doc.data() && doc.data()!.id || 0) + 1
@@ -58,10 +51,8 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
       const fileNameWithoutExt = chunkFileName[0]
       await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
         id: `${photoLabel}_${newId}`,
-        filename: fileNameWithoutExt,
+        filename: fileName,
         url: imageUrl,
-        width: img.width,
-        height: img.height,
         createAt: FieldValue.serverTimestamp()
       })
     })

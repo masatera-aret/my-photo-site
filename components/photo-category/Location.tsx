@@ -1,16 +1,12 @@
-import React, { FC, memo, useState, useEffect, useRef } from "react";
-import * as Types from "@/assets/ts/types/types";
-import * as Photos from "@/assets/ts/images";
+import React, { memo, useState, useEffect, useRef } from "react";
 import ImagePhoto from "./ImagePhoto";
+import { ImageType } from "@/pages/index";
 
-const PhotoImages = Photos.location;
-
-export type ExpansionPhotoList = Types.PhotoList & {
-  index: number;
-  hasBreak: boolean;
+type props = {
+  locations: ImageType[];
 };
 
-const Location: FC = () => {
+const Location = ({ locations }: props) => {
   const el = useRef(null);
 
   const [hasBreak, setHasBreak] = useState(false);
@@ -51,17 +47,15 @@ const Location: FC = () => {
         </h1>
       </div>
       <ul ref={el} className={`mt-10 mx-auto`}>
-        {PhotoImages.map((photo, index) => (
-          <ImagePhoto
-            index={index}
-            key={photo.id}
-            id={photo.id}
-            src={photo.src}
-            alt={photo.alt}
-            label={photo.label}
-            hasBreak={hasBreak}
-          />
-        ))}
+        {locations &&
+          locations.map((location, index) => (
+            <ImagePhoto
+              index={index}
+              key={location.id}
+              location={location}
+              hasBreak={hasBreak}
+            />
+          ))}
       </ul>
     </>
   );

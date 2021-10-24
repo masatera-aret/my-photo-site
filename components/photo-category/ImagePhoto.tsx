@@ -1,22 +1,22 @@
-import React, { FC, memo, useState, useEffect, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
-import { ExpansionPhotoList } from "./Location";
+import NextImage from "next/image";
+import { ImageType } from "@/pages/index";
 
-const ImagePhoto: React.FC<ExpansionPhotoList> = ({
-  id,
-  src,
-  alt,
-  label,
-  index,
-  hasBreak,
-}) => {
+type Props = {
+  location: ImageType;
+  index: number;
+  hasBreak: boolean;
+};
+
+const ImagePhoto = ({ location, index, hasBreak }: Props) => {
+  const label = location.id.split(`_`)[0];
   return (
     <>
       {hasBreak ? (
-        <li key={id} className={`w-1/2 md:w-1/5 mb-5 inline-block`}>
-          <Link href={`/photo/${label.toLowerCase()}`}>
+        <li key={location.id} className={`w-1/2 md:w-1/5 mb-5 inline-block`}>
+          <Link href={`/photo/${label}`}>
             <motion.a
               initial={{ opacity: 0, y: 20 }}
               animate={{
@@ -30,12 +30,12 @@ const ImagePhoto: React.FC<ExpansionPhotoList> = ({
               }}
               className={`block cursor-pointer relative w-[90%] pt-[45%] mx-auto`}
             >
-              <Image
+              <NextImage
                 className={`pointer-events-none`}
                 layout="fill"
                 objectFit="cover"
-                src={src}
-                alt={alt}
+                src={location.url}
+                alt={``}
               />
             </motion.a>
           </Link>
