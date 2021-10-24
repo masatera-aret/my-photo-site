@@ -47,14 +47,15 @@ const Location = ({ locations }: props) => {
         </h1>
       </div>
       <ul ref={el} className={`mt-10 mx-auto`}>
-        {locations.map((location, index) => (
-          <ImagePhoto
-            index={index}
-            key={location.id}
-            location={location}
-            hasBreak={hasBreak}
-          />
-        ))}
+        {locations &&
+          locations.map((location, index) => (
+            <ImagePhoto
+              index={index}
+              key={location.id}
+              location={location}
+              hasBreak={hasBreak}
+            />
+          ))}
       </ul>
     </>
   );

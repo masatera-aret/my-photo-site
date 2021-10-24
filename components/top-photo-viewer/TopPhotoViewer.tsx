@@ -1,7 +1,6 @@
 import React, { FC, memo, createContext } from "react";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import * as Photos from "@/assets/ts/images";
 import PhotoDisplay from "@/components/top-photo-viewer/PhotoDisplay";
 import PhotoPagination from "./PhotoPagination";
 import { ImageType } from "@/pages/index";
