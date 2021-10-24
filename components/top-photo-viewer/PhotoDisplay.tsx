@@ -95,16 +95,20 @@ const DisplayingPhoto: React.FC<Params> = ({
     startPhotoSliderInterval();
   }
 
+  // クリックされた画像のidからindexを抽出してindexでページを表示させる
   function clickImage(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     e.preventDefault();
     const chunkId = photo.id.split(`_`);
     const location = chunkId[0];
-    const numberId = chunkId[1];
+    const idNumber = chunkId[1];
     const images = allImages[location];
-    const imageId = images.find((e) => e.id === photo.id);
-    // const photosHasLabel = Photos.all_photos.filter((i) => i.label === label);
-    // const index = photosHasLabel.findIndex((i) => i.id === id);
-    router.push(`/photo/${location}?id=${numberId}`);
+    const imagesSortdInDesc = images.sort((a, b) => {
+      if (a.id > b.id) return -1;
+      if (a.id < b.id) return 1;
+      return 0;
+    });
+    const imageIndex = imagesSortdInDesc.findIndex((el) => el.id === photo.id);
+    router.push(`/photo/${location}?num=${imageIndex + 1}`);
   }
 
   return (

@@ -13,10 +13,11 @@ type news = {
   timestamp: any
 }
 
-
+// const cors = require("cors")({ origin: true });
 router
   .route(`/locations`)
   .get(async (req, res) => {
+    // cors(req, res, async () => {
     try {
       const imagesRef = db.collection(`images`)
       const snapshot = await imagesRef.get()
@@ -26,10 +27,12 @@ router
           locations.push(doc.id)
         })
       }
+      res.set("Access-Control-Allow-Origin", "*");
       res.json({ locations })
     } catch (error) {
       console.log(error);
     }
+    // });
   })
 
 
