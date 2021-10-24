@@ -24,6 +24,14 @@ const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
     return 0;
   });
 
+  // imageのprerender
+  useEffect(() => {
+    images.map((el) => {
+      const img = new Image();
+      img.src = el.url;
+    });
+  }, []);
+
   useEffect(() => {
     if (!num) return;
     if (Number(num) > imagesLength || Number(num) < 1 || isNaN(Number(num))) {

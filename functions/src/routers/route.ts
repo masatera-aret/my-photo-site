@@ -28,6 +28,7 @@ router
         })
       }
       res.set("Access-Control-Allow-Origin", "*");
+      res.set('Access-Control-Allow-Methods', 'GET');
       res.json({ locations })
     } catch (error) {
       console.log(error);
