@@ -15,16 +15,18 @@ type ParamsType = {
 const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
   const [viewImageIndex, setViewImageIndex] = useState<number>();
   const route = useRouter();
-  const { photo_label, id, num } = route.query;
+  const { photo_label, num } = route.query;
   const imagesLength = images.length;
 
   const sortImagesByIdInDesc = images.sort((a, b) => {
-    if (a.id > b.id) return -1;
-    if (a.id < b.id) return 1;
+    const idA = a.id.split(`_`)[1];
+    const idB = b.id.split(`_`)[1];
+    if (Number(idA) > Number(idB)) return -1;
+    if (Number(idA) < Number(idB)) return 1;
     return 0;
   });
 
-  // imageのprerender
+  // imageのpre-loading
   useEffect(() => {
     images.map((el) => {
       const img = new Image();
@@ -41,6 +43,11 @@ const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
     const index = Number(num) - 1;
     setViewImageIndex(index);
   }, [num]);
+
+  useEffect(() => {
+    if (num) return;
+    setViewImageIndex(0);
+  }, [photo_label]);
 
   const locationTitle =
     typeof photo_label === "string" && photo_label.toUpperCase();

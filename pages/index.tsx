@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import TopPhotoViewer from "@/components/top-photo-viewer/TopPhotoViewer";
@@ -10,14 +10,30 @@ import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
 import axios from "axios";
 
-const Home: React.FC = ({
+type Params = {
+  newsData: any;
+  allImages: Record<string, ImageType[]>;
+  topImagesByRandom: ImageType[];
+  locations: ImageType[];
+};
+
+const Home = ({
   newsData,
   allImages,
   topImagesByRandom,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  locations,
+}: Params) => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
   const [news] = useState(newsData !== undefined && newsData);
+
+  // imageのpre-loading
+  useEffect(() => {
+    topImagesByRandom.forEach((el) => {
+      const img = new Image();
+      img.src = el.url;
+    });
+  }, []);
 
   return (
     <>
@@ -38,7 +54,7 @@ const Home: React.FC = ({
         <News news={news} />
       </div>
       <div>
-        <Location />
+        <Location locations={locations} />
       </div>
     </>
   );
@@ -52,8 +68,6 @@ export type ImageType = {
   documentId: string;
   id: string;
   url: string;
-  width: number;
-  height: number;
   filename: string;
 };
 
@@ -75,10 +89,25 @@ export const getStaticProps: GetStaticProps = async () => {
       })
       .filter((e) => e !== undefined);
 
+    const locations = Object.keys(allImages).map((key) => {
+      const length = allImages[key].length;
+      const min = 0;
+      const max = length - 1;
+      let isSame: boolean;
+      let randomLocation: ImageType;
+      do {
+        const randam = Math.floor(Math.random() * (max + 1 - min)) + min;
+        randomLocation = allImages[key][randam];
+        isSame = topImagesByRandom.some((e) => e.id === randomLocation.id);
+      } while (isSame);
+      return randomLocation;
+    });
+
     return {
       props: {
         newsData: newsData.data,
         allImages: allImages,
+        locations: locations,
         topImagesByRandom,
       },
     };

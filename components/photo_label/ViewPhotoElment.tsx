@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import Loading from "../Loading";
@@ -20,23 +20,31 @@ const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
     setImageLoad(false);
   }
 
+  // imageの幅と高さを取得する為にImageを作成
+  const img = new Image();
+  img.src = imageRef.url;
+
   // ! imageRefのlengthを取って、それで num= に入れる値を決めよう。
   function prevPhoto() {
-    const prev = Number(num) - 1;
+    let prev: number;
+    if (num) prev = Number(num) - 1;
+    if (!num) prev = length;
     if (prev < 1) return router.push(`/photo/${photo_label}?num=${length}`);
     router.push(`/photo/${photo_label}?num=${prev}`);
   }
 
   function nextPhoto() {
-    const next = Number(num) + 1;
+    let next: number;
+    if (num) next = Number(num) + 1;
+    if (!num) next = 2;
     if (next > length) return router.push(`/photo/${photo_label}?num=1`);
     router.push(`/photo/${photo_label}?num=${next}`);
   }
 
   useEffect(() => {
-    if (!imageRef) return;
-    setIsPhotoVertical(imageRef.width < imageRef.height);
-  }, [imageRef]);
+    if (!img) return;
+    setIsPhotoVertical(img.width < img.height);
+  }, [img]);
 
   return (
     <>
@@ -56,11 +64,12 @@ const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
           className={`absolute top-0 right-0 h-full w-1/2 cursor-pointer z-10`}
           onClick={nextPhoto}
         ></span>
-        <Image
+        <NextImage
           src={imageRef.url}
           alt={``}
-          width={imageRef.width}
-          height={imageRef.height}
+          priority={true}
+          width={img.width}
+          height={img.height}
           onLoad={photoLoaded}
         />
       </motion.div>
