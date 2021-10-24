@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useHeadersContext, InitialState } from "./HeadersContext";
+import { useHeadersContext } from "./HeadersContext";
 
 type Params = {
   params: {
