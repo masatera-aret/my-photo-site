@@ -61,6 +61,7 @@ const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
       <div className={`flex t-main-height justify-center items-center`}>
         {sortImagesByIdInDesc.map(
           (imageRef, index) =>
+            viewImageIndex !== undefined &&
             index === viewImageIndex && (
               <ViewPhotoElment
                 key={imageRef.id}
