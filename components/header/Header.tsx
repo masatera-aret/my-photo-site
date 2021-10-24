@@ -63,7 +63,6 @@ const Header: React.FC = () => {
         ) : (
           isMobile !== undefined && <HeaderNavByPC params={data} />
         )}
-        {!data && !error && <p>Loading...</p>}
         {error && <p>データ取得に失敗しました。更新を実行してください</p>}
         <div className={`absolute right-0`}>
           <a

@@ -10,11 +10,17 @@ type Params = {
   length: number;
 };
 
+type ImgSize = {
+  width: number;
+  height: number;
+};
+
 const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
   const router = useRouter();
   const [isPhotoVertical, setIsPhotoVertical] = useState<boolean>();
   const { photo_label, num } = router.query;
   const [isImageLoading, setImageLoad] = useState(true);
+  // const [imgSize, setImgSize] = useState<ImgSize>();
 
   function photoLoaded() {
     setImageLoad(false);
@@ -68,8 +74,8 @@ const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
           src={imageRef.url}
           alt={``}
           priority={true}
-          width={img.width}
-          height={img.height}
+          width={img.width ? img.width : 300}
+          height={img.height ? img.height : 300}
           onLoad={photoLoaded}
         />
       </motion.div>
