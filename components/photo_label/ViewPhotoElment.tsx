@@ -7,27 +7,30 @@ import { ImageType } from "@/pages/index";
 
 type Params = {
   imageRef: ImageType;
+  length: number;
 };
 
-const ViewPhotoElment: React.FC<Params> = ({ imageRef }) => {
+const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
   const router = useRouter();
   const [isPhotoVertical, setIsPhotoVertical] = useState<boolean>();
-  const { photo_label, id } = router.query;
-
+  const { photo_label, num } = router.query;
   const [isImageLoading, setImageLoad] = useState(true);
 
   function photoLoaded() {
     setImageLoad(false);
   }
 
+  // ! imageRefのlengthを取って、それで num= に入れる値を決めよう。
   function prevPhoto() {
-    const prev = Number(id) - 1;
-    router.push(`/photo/${photo_label}?id=${prev}`);
+    const prev = Number(num) - 1;
+    if (prev < 1) return router.push(`/photo/${photo_label}?num=${length}`);
+    router.push(`/photo/${photo_label}?num=${prev}`);
   }
 
   function nextPhoto() {
-    const next = Number(id) + 1;
-    router.push(`/photo/${photo_label}?id=${next}`);
+    const next = Number(num) + 1;
+    if (next > length) return router.push(`/photo/${photo_label}?num=1`);
+    router.push(`/photo/${photo_label}?num=${next}`);
   }
 
   useEffect(() => {

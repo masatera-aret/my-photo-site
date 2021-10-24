@@ -13,19 +13,26 @@ type ParamsType = {
 };
 
 const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
-  const sortdImages = images.sort((a, b) => {
+  const [viewImageIndex, setViewImageIndex] = useState<number>();
+  const route = useRouter();
+  const { photo_label, id, num } = route.query;
+  const imagesLength = images.length;
+
+  const sortImagesByIdInDesc = images.sort((a, b) => {
     if (a.id > b.id) return -1;
     if (a.id < b.id) return 1;
     return 0;
   });
-  const route = useRouter();
-  const { photo_label, id, num } = route.query;
-  const [testPhotoRef, setTestPhotoRef] = useState<ImageType>();
 
   useEffect(() => {
-    const img = images.find((e) => e.id === `${photo_label}_${id}`);
-    setTestPhotoRef(img);
-  }, [id]);
+    if (!num) return;
+    if (Number(num) > imagesLength || Number(num) < 1 || isNaN(Number(num))) {
+      route.push(`/photo/${photo_label}?num=1`);
+      return;
+    }
+    const index = Number(num) - 1;
+    setViewImageIndex(index);
+  }, [num]);
 
   const locationTitle =
     typeof photo_label === "string" && photo_label.toUpperCase();
@@ -37,7 +44,16 @@ const PhotoLabel: React.FC<ParamsType> = ({ images }) => {
         <title>{locationTitle ? `Location ${locationTitle}` : siteTitle}</title>
       </Head>
       <div className={`flex t-main-height justify-center items-center`}>
-        {testPhotoRef && <ViewPhotoElment imageRef={testPhotoRef} />}
+        {sortImagesByIdInDesc.map(
+          (imageRef, index) =>
+            index === viewImageIndex && (
+              <ViewPhotoElment
+                key={imageRef.id}
+                imageRef={imageRef}
+                length={imagesLength}
+              />
+            )
+        )}
       </div>
     </>
   );
@@ -60,6 +76,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params: { photo_label } }) => {
   const { data } = await axios.get(`${apiUrl}/images/${photo_label}`);
+
   return {
     props: {
       images: data.images,

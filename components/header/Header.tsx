@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { StoreState } from "@/store/index";
 import { AnimatePresence } from "framer-motion";
+import useSWR from "swr";
+import axios from "axios";
 import HeaderNavByMobile from "./HeaderNavByMobile";
 import HeaderNavByPC from "./HeaderNavByPC";
 import MainModal from "./MainModal";
@@ -19,6 +21,11 @@ const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>();
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
   const breakpoint = useSelector((state: StoreState) => state.breakpoint);
+
+  const apiUrl = process.env.API_URL;
+  const fetcher = async (url: string) =>
+    await axios.get(url).then((res) => res.data);
+  const { data, error } = useSWR(`${apiUrl}/locations`, fetcher);
 
   let viewPortwWidth: number;
   useEffect(() => {
@@ -54,8 +61,10 @@ const Header: React.FC = () => {
         {isMobile ? (
           <HeaderNavByMobile />
         ) : (
-          isMobile !== undefined && <HeaderNavByPC />
+          isMobile !== undefined && <HeaderNavByPC params={data} />
         )}
+        {!data && <p>Loading...</p>}
+        {error && <p>データ取得に失敗しました。更新を実行してください</p>}
         <div className={`absolute right-0`}>
           <a
             href={`/`}
@@ -66,7 +75,9 @@ const Header: React.FC = () => {
           </a>
         </div>
       </div>
-      <AnimatePresence>{state.isModalActive && <MainModal />}</AnimatePresence>
+      <AnimatePresence>
+        {state.isModalActive && <MainModal params={data} />}
+      </AnimatePresence>
     </header>
   );
 };
