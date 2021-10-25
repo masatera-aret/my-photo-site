@@ -61,9 +61,10 @@ const Header: React.FC = () => {
         {isMobile ? (
           <HeaderNavByMobile />
         ) : (
-          isMobile !== undefined && <HeaderNavByPC params={data} />
+          isMobile !== undefined && (
+            <HeaderNavByPC params={data} error={error} />
+          )
         )}
-        {error && <p>データ取得に失敗しました。更新を実行してください</p>}
         <div className={`absolute right-0`}>
           <a
             href={`/`}
@@ -75,7 +76,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <AnimatePresence>
-        {state.isModalActive && <MainModal params={data} />}
+        {state.isModalActive && <MainModal params={data} error={error} />}
       </AnimatePresence>
     </header>
   );

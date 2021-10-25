@@ -69,6 +69,8 @@ export type ImageType = {
   id: string;
   url: string;
   filename: string;
+  width: number;
+  height: number;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
