@@ -1,13 +1,14 @@
 import React from "react";
-import moment from "moment";
+import Link from "next/link";
 
-type typeNews = {
-  documentId: string;
-  text: string;
-  timestamp: any;
+type Props = {
+  news: {
+    title: string;
+    date: string;
+  }[];
 };
 
-const News = ({ news }) => {
+const News = ({ news }: Props) => {
   return (
     <>
       <div className={`flex justify-center`}>
@@ -15,12 +16,15 @@ const News = ({ news }) => {
       </div>
       <ul className={`mt-5`}>
         {news &&
-          news.map((el: typeNews) => (
+          news.map((f, index) => (
             <li
-              key={el.documentId}
+              key={index}
               className={`font-thin text-sm mb-2 last-of-type:mb-0`}
             >
-              {`${el.text}${moment(el.timestamp).format(`YYYY/M/D`)}`}
+              <Link href={`/news/${f.title}`}>
+                <a>{f.title}</a>
+              </Link>
+              <time>{f.date}</time>
             </li>
           ))}
       </ul>

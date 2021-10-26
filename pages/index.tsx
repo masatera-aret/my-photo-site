@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import TopPhotoViewer from "@/components/top-photo-viewer/TopPhotoViewer";
@@ -7,25 +7,33 @@ import Location from "@/components/photo-category/Location";
 import News from "@/components/News";
 import { StoreState } from "@/store/index";
 import { GetStaticProps } from "next";
-import { InferGetStaticPropsType } from "next";
+import { getFirestore } from "firebase/firestore";
 import axios from "axios";
+import * as fs from "fs";
+import * as path from "path";
+import matter from "gray-matter";
+import moment from "moment";
 
 type Params = {
-  newsData: any;
   allImages: Record<string, ImageType[]>;
   topImagesByRandom: ImageType[];
   locations: ImageType[];
+  newsTitles: NewsTitles[];
+};
+
+type NewsTitles = {
+  title: string;
+  date: string;
 };
 
 const Home = ({
-  newsData,
   allImages,
   topImagesByRandom,
   locations,
+  newsTitles,
 }: Params) => {
   const isModalActive = useSelector((state: StoreState) => state.isModalActive);
   const siteTitle = useSelector((state: StoreState) => state.siteTitle);
-  const [news] = useState(newsData !== undefined && newsData);
 
   // imageのpre-loading
   useEffect(() => {
@@ -51,7 +59,7 @@ const Home = ({
         </section>
       </div>
       <div className={`mt-5`}>
-        <News news={news} />
+        <News news={newsTitles} />
       </div>
       <div>
         <Location locations={locations} />
@@ -60,7 +68,6 @@ const Home = ({
   );
 };
 
-import { getFirestore } from "firebase/firestore";
 // firestore
 const db = getFirestore();
 
@@ -69,13 +76,13 @@ export type ImageType = {
   id: string;
   url: string;
   filename: string;
+  width: number;
+  height: number;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  // newsとトップ画面に表示する用のimageとstorageにあるimage全てを取得
   const apiUrl = process.env.API_URL;
   try {
-    const newsData = await axios.get(`${apiUrl}/news`);
     const allImagesData = await axios.get(`${apiUrl}/all_images`);
     const allImages: Record<string, ImageType[]> = allImagesData.data;
 
@@ -105,15 +112,42 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        newsData: newsData.data,
-        allImages: allImages,
-        locations: locations,
+        allImages,
+        locations,
+        newsTitles: getPostsTitles(),
         topImagesByRandom,
       },
     };
   } catch (error) {
     console.log(error);
   }
+};
+
+//posts/内の.mdファイルを取得してdateでsortしてorigのデータは弾くrestructureして
+const getPostsTitles = () => {
+  const dirPath = path.join(process.cwd(), `posts`);
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((dirEnt) => !dirEnt.isDirectory())
+    .map((dirEnt) => {
+      const filePath = path.join(dirPath, dirEnt.name);
+      return fs.readFileSync(filePath);
+    })
+    .map((f) => {
+      const { orig, ...post } = matter(f);
+      return post;
+    })
+    .sort((a, b) => {
+      const NumA = Number(moment(a.data.date).format(`YYYYMMDD`));
+      const NumB = Number(moment(b.data.date).format(`YYYYMMDD`));
+      if (NumA > NumB) return -1;
+      if (NumA < NumB) return 1;
+      return 0;
+    })
+    .map((f) => {
+      return { title: f.data.title, date: f.data.date };
+    })
+    .slice(0, 5);
 };
 
 export default Home;

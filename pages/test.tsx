@@ -3,21 +3,35 @@ import { GetStaticProps } from "next";
 import fs from "fs";
 import path from "path";
 import axios from "axios";
+// const matter = require("gray-matter");
+import matter from "gray-matter";
+import Photo from "./photo";
+import { json } from "stream/consumers";
 
-type Post = { filename: any; content: any };
-
-type Props = {
-  posts: Post[];
-};
+interface Props {
+  posts: {
+    content: string;
+    data: {
+      title: string;
+    };
+    isEnpty: boolean;
+  }[];
+}
 
 const Test = ({ posts }: Props) => {
+  console.log(posts);
   return (
     <div className={`bg-red-200 p-5`}>
+      <pre>{JSON.stringify(posts[0], null, 2)}</pre>
       <h1>Test page</h1>
       <ul>
-        {posts.map((post) => (
-          <li key={post.filename} className={`rounded bg-blue-400 p-3 mt-5`}>
-            <h3>ファイル名:{post.filename}</h3>
+        {posts.map((post, index) => (
+          <li key={index} className={`rounded bg-blue-400 p-3 mt-5`}>
+            {Object.keys(post.data).length ? (
+              <h3>ファイル名:{post.data.title}</h3>
+            ) : (
+              <h3>タイトルなし</h3>
+            )}
             <p>コンテンツ:{post.content}</p>
           </li>
         ))}
@@ -36,9 +50,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
       const file = fs.statSync(filepath);
       if (file.isDirectory()) return;
       const fileContents = fs.readFileSync(filepath, `utf-8`);
-      return { filename, content: fileContents };
+      const { orig, ...prop } = matter(fileContents);
+      console.log(prop);
+      return prop;
     })
     .filter((el) => el !== undefined);
+
   return {
     props: {
       posts,

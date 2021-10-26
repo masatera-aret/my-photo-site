@@ -10,27 +10,16 @@ type Params = {
   length: number;
 };
 
-type ImgSize = {
-  width: number;
-  height: number;
-};
-
 const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
   const router = useRouter();
-  const [isPhotoVertical, setIsPhotoVertical] = useState<boolean>();
+  const [isVerticalPhoto, setIsPhotoVertical] = useState<boolean>();
   const { photo_label, num } = router.query;
   const [isImageLoading, setImageLoad] = useState(true);
-  // const [imgSize, setImgSize] = useState<ImgSize>();
 
   function photoLoaded() {
     setImageLoad(false);
   }
 
-  // imageの幅と高さを取得する為にImageを作成
-  const img = new Image();
-  img.src = imageRef.url;
-
-  // ! imageRefのlengthを取って、それで num= に入れる値を決めよう。
   function prevPhoto() {
     let prev: number;
     if (num) prev = Number(num) - 1;
@@ -48,19 +37,42 @@ const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
   }
 
   useEffect(() => {
-    if (!img) return;
-    setIsPhotoVertical(img.width < img.height);
-  }, [img]);
+    if (!imageRef) return;
+    setIsPhotoVertical(imageRef.width < imageRef.height);
+  }, [imageRef]);
+
+  let tapPositionX: number;
+  let unTapPositionX: number;
+  function onTapStart(event: any, info: any) {
+    tapPositionX = info.point.x;
+  }
+
+  const necessaryMoveX = 30;
+  function onTap(event: any, info: any) {
+    unTapPositionX = info.point.x;
+    const movedPositionX = unTapPositionX - tapPositionX;
+
+    if (movedPositionX < -necessaryMoveX) {
+      nextPhoto();
+      return;
+    } else if (necessaryMoveX < movedPositionX) {
+      prevPhoto();
+      return;
+    }
+  }
 
   return (
     <>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        onTapStart={onTapStart}
+        onTap={onTap}
         transition={{ duration: 0.5 }}
-        className={`relative inline-block leading-3 ${
-          isPhotoVertical ? `w-3/4 max-w-[600px]` : `max-w-[950px]`
+        className={`relative leading-3 ${
+          isVerticalPhoto ? `w-3/4 max-w-[500px]` : `max-w-[800px]`
         }`}
+        style={{ touchAction: "none" }}
       >
         <span
           className={`absolute top-0 left-0 h-full w-1/2 cursor-pointer z-10`}
@@ -74,8 +86,8 @@ const ViewPhotoElment: React.FC<Params> = ({ imageRef, length }) => {
           src={imageRef.url}
           alt={``}
           priority={true}
-          width={img.width ? img.width : 300}
-          height={img.height ? img.height : 300}
+          width={imageRef.width}
+          height={imageRef.height}
           onLoad={photoLoaded}
         />
       </motion.div>

@@ -2,6 +2,8 @@ import * as functions from "firebase-functions";
 import * as express from "express"
 import * as router from "./routers/route"
 import * as admin from "firebase-admin"
+import imageSize from 'image-size';
+import axios from 'axios';
 
 const db = admin.firestore()
 const app = express()
@@ -37,6 +39,11 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
     if (!obj.contentType?.match(/image\//)) return
     if (topCollection !== `images`) throw new Error(`imagesじゃないところに入れてるよ`)
     const imageUrl = `https://storage.googleapis.com/${obj.bucket}/${obj.name}`
+    const firebaseUrl = `https://firebasestorage.googleapis.com/v0/b/${obj.bucket}/o/${topCollection}%2F${photoLabel}%2F${fileName}?alt=media`
+
+    // 画像のwidth heightを取得
+    const response = await axios.get(firebaseUrl, { responseType: 'arraybuffer' })
+    const img = imageSize(response.data as string)
 
     // transactionでidをuniqueな値(連番の数字)にする
     const photoLabelDocRef = db.collection(topCollection).doc(photoLabel)
@@ -52,6 +59,8 @@ export const addImageUrl = functions.region(`asia-northeast1`).storage.object().
       await db.collection(topCollection).doc(photoLabel).collection(`photos`).doc(`${photoLabel}_${fileNameWithoutExt}`).set({
         id: `${photoLabel}_${newId}`,
         filename: fileName,
+        width: img.width,
+        height: img.height,
         url: imageUrl,
         createAt: FieldValue.serverTimestamp()
       })
