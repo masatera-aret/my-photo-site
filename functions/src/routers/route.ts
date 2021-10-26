@@ -7,12 +7,6 @@ admin.initializeApp({
 const db = admin.firestore()
 const router = express.Router()
 
-type news = {
-  documentId: string,
-  text: string,
-  timestamp: any
-}
-
 // const cors = require("cors")({ origin: true });
 router
   .route(`/locations`)
@@ -85,22 +79,6 @@ router
       res.json({ images: images })
     } catch (error) {
       console.error(error)
-    }
-  })
-
-
-router
-  .route(`/news`)
-  .get(async (req, res) => {
-    const news: news[] = []
-    try {
-      const querySnapshot = await db.collection(`news`).orderBy(`timestamp`, `desc`).limit(5).get()
-      querySnapshot.forEach(doc => {
-        news.push({ documentId: doc.id, text: doc.data().news, timestamp: doc.data().timestamp })
-      })
-      res.json(news)
-    } catch (error) {
-      console.error(error, `@@@@@@@@@@`);
     }
   })
 

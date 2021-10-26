@@ -1,6 +1,7 @@
 const isProduction = process.env.NODE_ENV === `production`
 const path = require('path')
 
+
 module.exports = {
   reactStrictMode: true,
   env: {
@@ -14,3 +15,4 @@ module.exports = {
     domains: ['firebasestorage.googleapis.com', `storage.googleapis.com`]
   }
 }
+
